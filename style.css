@@ -1,0 +1,218 @@
+/* ===================================================================
+   styles.css - Rabbit Hole IT
+   -------------------------------------------------------------------
+   - Root variables (colors, timing)
+   - Canvas behind content
+   - Panels / layout
+   - Utility classes for animation hooks (.animate-in, .active)
+   - Responsive breakpoints
+   =================================================================== */
+
+/* ---------------------------
+   Root variables (customize here)
+   --------------------------- */
+:root{
+  --bg-start: #001f3f;    /* entrance deep navy */
+  --bg-end:   #007bff;    /* deeper azure */
+  --accent:    #00ffff;   /* electric cyan for buttons/highlights */
+  --text:      #e8f7ff;   /* light text color */
+  --muted:     rgba(232,247,255,0.85);
+
+  --max-width: 1100px;
+  --radius: 12px;
+  --tween: 0.6s cubic-bezier(.19,1,.22,1);
+
+  --panel-alpha: 0.18; /* base overlay transparency (panel backgrounds) */
+}
+
+/* ---------------------------
+   Reset & base
+   --------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html,body { height: 100%; }
+
+body{
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: 1.45;
+}
+
+/* ---------------------------
+   Fullscreen WebGL canvas (behind content)
+   --------------------------- */
+#tunnel-bg{
+  position: fixed;
+  inset: 0; /* top/right/bottom/left: 0 */
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* behind everything */
+  display: block;
+}
+
+/* ---------------------------
+   Header
+   --------------------------- */
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  backdrop-filter: blur(6px) saturate(140%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.08));
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.header-inner{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{ font-weight:700; letter-spacing:0.4px; }
+.logo .accent{ color: var(--accent); font-weight:800; }
+
+/* nav toggle */
+.nav-toggle{
+  padding:8px 10px;
+  border-radius:10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* ---------------------------
+   Panel layout
+   --------------------------- */
+.panel{
+  min-height: 100vh;
+  display:grid;
+  place-items:center;
+  padding: 10vh 4vw;
+  text-align:center;
+}
+
+.panel__inner{
+  width:100%;
+  max-width: var(--max-width);
+  padding: 2rem;
+  border-radius: calc(var(--radius) - 2px);
+  background: rgba(255,255,255,var(--panel-alpha)); /* subtle overlay so tunnel shows */
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Slight alternation for visual variety */
+.panel.node:nth-child(even) .panel__inner{
+  background: rgba(0,0,0,0.16);
+}
+.panel.node:nth-child(odd) .panel__inner{
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+}
+
+.hero .panel__inner{
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
+}
+
+/* CTA panel stronger */
+.cta-panel .panel__inner{
+  background: linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,123,255,0.06));
+  border: 1px solid rgba(0,255,255,0.06);
+}
+
+/* ---------------------------
+   Type scale
+   --------------------------- */
+.heading{ font-size: clamp(1.8rem, 4vw, 3rem); margin: 0 0 0.6rem; font-weight:800; }
+.subhead{ font-size: 1.05rem; margin: 0 0 1rem; color: var(--muted); }
+
+h2{ font-size: clamp(1.4rem, 3vw, 2.25rem); margin: 0 0 0.5rem; font-weight:700; }
+p{ margin: 0 0 1rem; color: var(--muted); }
+
+/* Buttons */
+.btn{
+  display:inline-block;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #00222a;
+  font-weight:700;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 30px rgba(0,255,255,0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn:hover{ transform: translateY(-3px); box-shadow: 0 18px 50px rgba(0,255,255,0.12); }
+.btn--cta{ padding: 18px 32px; font-size: 1.05rem; }
+
+/* icons row */
+.icons-row{ display:flex; gap:18px; justify-content:center; margin:12px 0 14px; }
+.icon{ font-size: 1.8rem; background: rgba(255,255,255,0.02); padding:10px; border-radius:12px; }
+
+/* progress bars */
+.progress-bars{ max-width:760px; margin:0 auto; }
+.bar{ display:flex; gap:12px; align-items:center; margin:10px 0; }
+.bar__label{ width:220px; text-align:left; font-weight:600; color: var(--muted); font-size:0.95rem; }
+.track{ flex:1; background: rgba(255,255,255,0.04); border-radius:999px; height:12px; overflow:hidden; }
+.fill{ width:0%; height:100%; background: linear-gradient(90deg, rgba(0,255,255,0.14), rgba(0,255,255,0.30)); transition: width 0.8s cubic-bezier(.19,1,.22,1); }
+
+/* network svg */
+.network-svg{ width:100%; max-width:580px; height:auto; margin:12px auto; stroke:var(--accent); fill:none; stroke-width:3; }
+.net-node{ fill:var(--accent); }
+
+/* iot cards */
+.iot-row{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+.iot-card{ width:150px; height:150px; border-radius:12px; background: rgba(255,255,255,0.02); display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; transition: transform 0.35s ease; }
+.iot-card .icon{ font-size:1.8rem; margin-bottom:8px; }
+.iot-card.revealed{ transform: translateY(-8px); }
+
+/* footer */
+.site-footer{ padding:28px 20px; text-align:center; color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.04); }
+
+/* ---------------------------
+   Utility: animate-in baseline + active state
+   --------------------------- */
+/* Initial hidden state for elements participating in scroll animations */
+.animate-in{
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity var(--tween), transform var(--tween);
+}
+
+/* When JS toggles .active (via ScrollTrigger), element animates to visible */
+.animate-in.active{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* You can also use data-direction or data-dir to handle left/right/bottom slide variations.
+   Example CSS selector for left slide when data-dir="left":
+*/
+.animate-in[data-dir="left"]{ transform: translateX(-80px) translateY(20px); }
+.animate-in[data-dir="left"].active{ transform: translateX(0) translateY(0); }
+
+.animate-in[data-dir="right"]{ transform: translateX(80px) translateY(20px); }
+.animate-in[data-dir="right"].active{ transform: translateX(0) translateY(0); }
+
+.animate-in[data-dir="bottom"]{ transform: translateY(80px); }
+.animate-in[data-dir="bottom"].active{ transform: translateY(0); }
+
+/* ---------------------------
+   Responsive
+   --------------------------- */
+@media (max-width: 900px){
+  .header-inner{ padding:12px; }
+  .panel{ padding: 12vh 4vw; }
+  .bar__label{ width:140px; font-size:0.95rem; }
+  .panel__inner{ padding:1.25rem; }
+  .heading{ font-size: clamp(1.6rem, 6vw, 2.2rem); }
+}

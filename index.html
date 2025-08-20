@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rabbit Hole IT — Immersive Services</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./css/styles.css">
+
+  <!-- NOTE:
+       Vendor libs (Three.js, GSAP, ScrollTrigger) are loaded via CDN below.
+       If you prefer local copies, download the files and replace these src URLs with
+       /js/three.min.js, /js/gsap.min.js, /js/ScrollTrigger.min.js and remove integrity/crossorigin attributes.
+  -->
+</head>
+<body>
+  <!-- Full-viewport WebGL canvas behind content -->
+  <canvas id="tunnel-bg" aria-hidden="true"></canvas>
+
+  <!-- Sticky header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="logo">RabbitHole<span class="accent">IT</span></div>
+      <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- Main content: 6 service panels + CTA.
+       Each section has .panel and .animate-in children for GSAP hooks.
+       You can add data attributes like data-speed or data-index if needed.
+  -->
+  <main id="main" role="main">
+    <!-- Hero / Entrance -->
+    <section class="panel hero">
+      <div class="panel__inner">
+        <h1 class="animate-in heading">Descend into the Rabbit Hole of IT Excellence</h1>
+        <p class="animate-in subhead">Immersive security, cloud, devops, and next-gen solutions built for modern enterprise.</p>
+        <div class="animate-in cta-row">
+          <a class="btn" href="#node-1">Request a Demo</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Node 1: Network Security -->
+    <section id="node-1" class="panel node">
+      <div class="panel__inner">
+        <h2 class="animate-in">Network Security</h2>
+        <p class="animate-in">Proactive monitoring, zero-trust architecture, and rapid incident response to keep threats at bay.</p>
+      </div>
+    </section>
+
+    <!-- Node 2: Penetration Testing -->
+    <section id="node-2" class="panel node">
+      <div class="panel__inner">
+        <h2 class="animate-in">Penetration Testing</h2>
+        <div class="icons-row">
+          <div class="icon animate-in" data-dir="left">🔒</div>
+          <div class="icon animate-in" data-dir="bottom">🧩</div>
+          <div class="icon animate-in" data-dir="right">⚙️</div>
+        </div>
+        <p class="animate-in">Simulated adversarial attacks to reveal and remediate critical vulnerabilities.</p>
+      </div>
+    </section>
+
+    <!-- Node 3: Cloud Architecture (Pinned) -->
+    <section id="node-3" class="panel node pin-me" data-pin>
+      <div class="panel__inner">
+        <h2 class="animate-in">Cloud Architecture</h2>
+        <p class="animate-in">Designing resilient and cost-optimized cloud platforms for scale and reliability.</p>
+      </div>
+    </section>
+
+    <!-- Node 4: DevOps & Automation -->
+    <section id="node-4" class="panel node">
+      <div class="panel__inner">
+        <h2 class="animate-in">DevOps & Automation</h2>
+        <div class="progress-bars">
+          <div class="bar">
+            <div class="bar__label">CI/CD</div>
+            <div class="track"><div class="fill" data-target="95"></div></div>
+          </div>
+          <div class="bar">
+            <div class="bar__label">Infra as Code</div>
+            <div class="track"><div class="fill" data-target="88"></div></div>
+          </div>
+          <div class="bar">
+            <div class="bar__label">Test Automation</div>
+            <div class="track"><div class="fill" data-target="80"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Node 5: Blockchain Auditing -->
+    <section id="node-5" class="panel node">
+      <div class="panel__inner">
+        <h2 class="animate-in">Blockchain Auditing</h2>
+        <!-- SVG network graph; path(s) will be drawn on scroll -->
+        <svg class="network-svg animate-in" viewBox="0 0 600 180" aria-hidden="true">
+          <path class="net-path" d="M60 90 C 160 20, 260 160, 360 90 C 420 50, 480 60, 540 90" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <circle class="net-node" cx="60" cy="90" r="8"/>
+          <circle class="net-node" cx="360" cy="90" r="8"/>
+          <circle class="net-node" cx="540" cy="90" r="8"/>
+        </svg>
+        <p class="animate-in">Comprehensive smart contract reviews and automated fuzzing to secure DeFi and L2 systems.</p>
+      </div>
+    </section>
+
+    <!-- Node 6: IoT Solutions -->
+    <section id="node-6" class="panel node">
+      <div class="panel__inner">
+        <h2 class="animate-in">IoT Solutions</h2>
+        <div class="iot-row">
+          <div class="iot-card animate-in"><div class="mask"></div><div class="icon">📟</div><p>Edge Management</p></div>
+          <div class="iot-card animate-in"><div class="mask"></div><div class="icon">📶</div><p>Connectivity</p></div>
+          <div class="iot-card animate-in"><div class="mask"></div><div class="icon">🛰️</div><p>Telemetry</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Panel -->
+    <section id="cta" class="panel cta-panel">
+      <div class="panel__inner">
+        <h2 class="animate-in">Ready to Enter the Rabbit Hole of IT Excellence?</h2>
+        <a class="btn btn--cta animate-in" href="#contact">Request a Demo</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p>© 2025 RabbitHole IT. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Vendor scripts: replace CDN with local /js/*.js if desired -->
+  <script src="https://unpkg.com/three@0.154.0/build/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Main application script -->
+  <script src="./js/main.js"></script>
+</body>
+</html>
