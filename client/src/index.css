@@ -1,0 +1,633 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(215, 27.9%, 16.9%);
+  --foreground: hsl(0, 0%, 100%);
+  --card: hsl(215, 27.9%, 16.9%);
+  --card-foreground: hsl(0, 0%, 100%);
+  --popover: hsl(215, 27.9%, 16.9%);
+  --popover-foreground: hsl(0, 0%, 100%);
+  --primary: hsl(239, 84%, 67%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(188, 95%, 43%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(215, 27.9%, 16.9%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --accent: hsl(188, 95%, 43%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(239, 84%, 67%, 0.1);
+  --input: hsl(215, 27.9%, 16.9%);
+  --ring: hsl(239, 84%, 67%);
+  --chart-1: hsl(239, 84%, 67%);
+  --chart-2: hsl(188, 95%, 43%);
+  --chart-3: hsl(42, 92%, 56%);
+  --chart-4: hsl(147, 78%, 42%);
+  --chart-5: hsl(341, 75%, 51%);
+  --sidebar: hsl(215, 27.9%, 16.9%);
+  --sidebar-foreground: hsl(0, 0%, 100%);
+  --sidebar-primary: hsl(239, 84%, 67%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(188, 95%, 43%);
+  --sidebar-accent-foreground: hsl(0, 0%, 100%);
+  --sidebar-border: hsl(239, 84%, 67%, 0.1);
+  --sidebar-ring: hsl(239, 84%, 67%);
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 1rem;
+  
+  /* FlowTech Custom Properties */
+  --flowtech-primary: hsl(239, 84%, 67%);
+  --flowtech-accent: hsl(188, 95%, 43%);
+  --flowtech-dark-bg: hsl(215, 27.9%, 16.9%);
+  --flowtech-glass-bg: hsla(215, 27.9%, 16.9%, 0.4);
+  --flowtech-glass-border: hsla(239, 84%, 67%, 0.1);
+  --flowtech-text-primary: hsl(0, 0%, 100%);
+  --flowtech-text-secondary: hsla(0, 0%, 100%, 0.7);
+  --flowtech-text-muted: hsla(0, 0%, 100%, 0.5);
+}
+
+.dark {
+  --background: hsl(215, 27.9%, 16.9%);
+  --foreground: hsl(0, 0%, 100%);
+  --card: hsl(215, 27.9%, 16.9%);
+  --card-foreground: hsl(0, 0%, 100%);
+  --popover: hsl(215, 27.9%, 16.9%);
+  --popover-foreground: hsl(0, 0%, 100%);
+  --primary: hsl(239, 84%, 67%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(188, 95%, 43%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(215, 27.9%, 16.9%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --accent: hsl(188, 95%, 43%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(239, 84%, 67%, 0.1);
+  --input: hsl(215, 27.9%, 16.9%);
+  --ring: hsl(239, 84%, 67%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background: var(--flowtech-dark-bg);
+    color: var(--flowtech-text-primary);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Liquid Background Effects */
+  .ambient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+      radial-gradient(ellipse 80% 50% at 20% 40%, hsla(239, 84%, 67%, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 80% at 80% 60%, hsla(188, 95%, 43%, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 60% at 40% 80%, hsla(239, 84%, 67%, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 70% 40% at 60% 20%, hsla(188, 95%, 43%, 0.08) 0%, transparent 50%);
+    animation: liquidFlow 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes liquidFlow {
+    0% {
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, hsla(239, 84%, 67%, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 60%, hsla(188, 95%, 43%, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 60% at 40% 80%, hsla(239, 84%, 67%, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 40% at 60% 20%, hsla(188, 95%, 43%, 0.08) 0%, transparent 50%);
+    }
+    50% {
+      background: 
+        radial-gradient(ellipse 90% 60% at 60% 30%, hsla(239, 84%, 67%, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 90% at 70% 70%, hsla(188, 95%, 43%, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 30% 60%, hsla(239, 84%, 67%, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 50% at 80% 40%, hsla(188, 95%, 43%, 0.12) 0%, transparent 50%);
+    }
+    100% {
+      background: 
+        radial-gradient(ellipse 70% 80% at 80% 20%, hsla(239, 84%, 67%, 0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 20% 80%, hsla(188, 95%, 43%, 0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 60% 40%, hsla(239, 84%, 67%, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 40% 60%, hsla(188, 95%, 43%, 0.10) 0%, transparent 50%);
+    }
+  }
+
+  .floating-orb {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(1px);
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, var(--flowtech-accent), var(--flowtech-primary));
+    top: 70%;
+    right: 10%;
+    animation-delay: -7s;
+  }
+
+  .orb-3 {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(225deg, var(--flowtech-primary), transparent);
+    top: 40%;
+    left: 80%;
+    animation-delay: -14s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+  }
+
+  /* Glass Card Component */
+  .glass-card {
+    background: var(--flowtech-glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--flowtech-glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--flowtech-primary), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-10px);
+    border-color: hsla(239, 84%, 67%, 0.3);
+    box-shadow: 0 20px 40px hsla(239, 84%, 67%, 0.1);
+  }
+
+  .glass-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Button Styles */
+  .btn-flowtech {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 1rem;
+  }
+
+  .btn-flowtech-primary {
+    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    color: var(--flowtech-text-primary);
+  }
+
+  .btn-flowtech-secondary {
+    background: transparent;
+    color: var(--flowtech-text-primary);
+    border: 2px solid var(--flowtech-primary);
+  }
+
+  .btn-flowtech:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px hsla(239, 84%, 67%, 0.3);
+  }
+
+  .btn-flowtech::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, hsla(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-flowtech:hover::before {
+    left: 100%;
+  }
+
+  /* Progress Bar Styles */
+  .progress-bar-flowtech {
+    width: 100%;
+    height: 8px;
+    background: hsla(239, 84%, 67%, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill-flowtech {
+    height: 100%;
+    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  /* Particle Effect */
+  .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--flowtech-accent);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: particle-float 15s linear infinite;
+  }
+
+  @keyframes particle-float {
+    0% {
+      transform: translateY(100vh) translateX(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.5;
+    }
+    90% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-100px) translateX(100px);
+      opacity: 0;
+    }
+  }
+
+  /* Liquid Animation Classes */
+  .liquid-section {
+    opacity: 0;
+    transform: scale(0.8) rotateX(-15deg);
+    filter: blur(10px);
+    transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .liquid-section.animate {
+    opacity: 1;
+    transform: scale(1) rotateX(0deg);
+    filter: blur(0px);
+  }
+
+  .liquid-text {
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .liquid-text .char {
+    display: inline-block;
+    transform: translateY(100px) rotateX(-90deg);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .liquid-text .char.animate {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+  }
+
+  .liquid-card {
+    position: relative;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+  }
+
+  .liquid-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(6, 182, 212, 0.5), rgba(99, 102, 241, 0.5));
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .liquid-card:hover::before {
+    opacity: 1;
+  }
+
+  .liquid-card:hover {
+    transform: translateY(-10px) rotateX(2deg) rotateY(1deg);
+    box-shadow: 
+      0 25px 50px rgba(99, 102, 241, 0.15),
+      0 15px 35px rgba(6, 182, 212, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  /* Liquid Morphing Effects */
+  @keyframes liquidMorph {
+    0% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    50% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+  }
+
+  .liquid-blob {
+    animation: liquidMorph 8s ease-in-out infinite;
+    background: linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(6, 182, 212, 0.3));
+    filter: blur(1px);
+  }
+
+  /* Fade in animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .fade-in.animate {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease;
+  }
+
+  .slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  .slide-in-left.animate {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.8s ease;
+  }
+
+  .slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  .slide-in-right.animate {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.8s ease;
+  }
+
+  .scale-in {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .scale-in.animate {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.8s ease;
+  }
+
+  /* Navigation Blur Effect */
+  .nav-blur {
+    backdrop-filter: blur(20px);
+    background: hsla(215, 27.9%, 16.9%, 0.8);
+    border-bottom: 1px solid hsla(239, 84%, 67%, 0.1);
+  }
+}
+
+@layer utilities {
+  /* ScrollSmoother fixes */
+  #smooth-wrapper {
+    overflow: hidden;
+  }
+
+  #smooth-content {
+    overflow: visible;
+  }
+
+  .text-gradient {
+    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Virus emoji animations */
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+  }
+  
+  .virus-emoji-overlay {
+    pointer-events: none !important;
+  }
+
+  /* Jeton-style flowing animations */
+  .flow-text {
+    perspective: 1000px;
+  }
+
+  .flow-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .flow-section {
+    transform-style: preserve-3d;
+  }
+
+  /* Flowing particles */
+  .floating-particle {
+    will-change: transform;
+    animation: float 8s infinite ease-in-out;
+  }
+
+  @keyframes float {
+    0%, 100% { 
+      transform: translateY(0px) translateX(0px) rotate(0deg);
+      opacity: 0.2;
+    }
+    25% { 
+      transform: translateY(-20px) translateX(10px) rotate(90deg);
+      opacity: 0.4;
+    }
+    50% { 
+      transform: translateY(-40px) translateX(-10px) rotate(180deg);
+      opacity: 0.6;
+    }
+    75% { 
+      transform: translateY(-20px) translateX(-15px) rotate(270deg);
+      opacity: 0.3;
+    }
+  }
+
+  /* Enhanced liquid effects */
+  .liquid-hero {
+    animation: heroFloat 6s ease-in-out infinite;
+  }
+
+  @keyframes heroFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .flow-text {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
+    
+    .floating-particle {
+      animation-duration: 12s;
+    }
+    
+    .liquid-card {
+      transform: none !important;
+      perspective: none !important;
+    }
+    
+    /* Reduce motion for mobile */
+    @media (prefers-reduced-motion: reduce) {
+      .floating-particle,
+      .liquid-hero,
+      .flow-card,
+      .flow-text {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  }
+
+  /* Performance optimizations */
+  .webgl-container {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Touch-friendly interactions */
+  @media (hover: none) and (pointer: coarse) {
+    .flow-card:hover {
+      transform: none;
+    }
+    
+    .liquid-card:hover {
+      scale: 1.02;
+      transition: scale 0.2s ease;
+    }
+  }
+
+  .text-gradient-hero {
+    background: linear-gradient(45deg, var(--flowtech-text-primary), var(--flowtech-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Responsive Mobile Menu */
+  @media (max-width: 768px) {
+    .nav-links-mobile {
+      display: flex;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: hsla(215, 27.9%, 16.9%, 0.98);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 2rem;
+      border-top: 1px solid hsla(239, 84%, 67%, 0.2);
+      z-index: 999;
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+  }
+
+  /* Performance optimizations */
+  .reduced-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fallback-animations .fade-in,
+  .fallback-animations .slide-in-left,
+  .fallback-animations .slide-in-right,
+  .fallback-animations .scale-in {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Hardware acceleration */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}

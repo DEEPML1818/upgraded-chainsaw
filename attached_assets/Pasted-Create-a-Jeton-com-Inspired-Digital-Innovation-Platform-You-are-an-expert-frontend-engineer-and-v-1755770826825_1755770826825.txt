@@ -1,0 +1,72 @@
+Create a Jeton.com-Inspired Digital Innovation Platform
+
+You are an expert frontend engineer and visual storyteller. Your task is to create a self-contained, static website that captures the essence of jeton.com's flowing, modern fintech design aesthetic. The site must be a complete digital innovation platform showcasing financial technology services.
+
+CORE REQUIREMENTS:
+
+1. Visual Design (Must Look Like Jeton.com):
+
+Dark theme with deep navy/slate backgrounds (#0f172a)
+Flowing gradients using purple (#6366f1), cyan (#06b6d4), and accent colors
+Smooth, organic animations that feel like liquid flow
+Glowing elements and subtle particle effects
+Premium glass-morphism cards with backdrop blur
+Flowing orbs and ambient lighting effects in the background
+2. Technology Stack:
+
+Pure HTML5, CSS3, and JavaScript (no frameworks)
+Lenis for butter-smooth scrolling (https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js)
+GSAP for advanced animations (CDN)
+ScrollTrigger for scroll-based animations
+Responsive design for all devices
+3. Content Structure:
+
+Hero Section: "Digital Innovation Flows Through Everything We Do" with animated statistics (99.9% Uptime, 50M+ Transactions, 24/7 Support)
+Services Section: Digital Payments, Blockchain Security, Analytics Dashboard with flowing card animations
+Solutions Section: Cloud Architecture with floating tech cards (API Gateway, Microservices, Load Balancer)
+Technology Section: DevOps & Automation with animated network SVG and progress bars
+CTA Section: Call-to-action with demo request buttons
+4. Animation Requirements:
+
+Scroll-triggered reveals with stagger effects
+Floating elements that move organically
+Progress bars that animate on scroll
+SVG path drawing animations
+Parallax effects on key elements
+Hover states with smooth transitions
+Background flow animations that never stop
+5. Interactive Elements:
+
+Sticky navigation header with blur effect
+Mobile hamburger menu
+Smooth anchor link scrolling
+Hover effects on all interactive elements
+Button hover animations with scale and glow
+6. Performance Specifications:
+
+Must load fast and run smoothly at 60fps
+Hardware acceleration for all animations
+Optimized for mobile performance
+Fallback animations if libraries fail to load
+7. Brand Identity:
+
+Company name: "FlowTech" with gradient text treatment
+Color scheme: Primary (#6366f1), Accent (#06b6d4), Dark BG (#0f172a)
+Typography: Inter font family, modern and clean
+Logo treatment with accent coloring on "Tech"
+8. File Structure:
+
+/index.html (complete HTML structure)
+/style.css (all CSS including animations)
+/script.js (Lenis + GSAP implementation)
+CRITICAL SUCCESS FACTORS:
+
+The site MUST feel as smooth and premium as jeton.com
+All animations must be performant and never janky
+The design should scream "modern fintech platform"
+Mobile experience must be flawless
+Every scroll interaction should feel satisfying
+INSPIRATION REFERENCE:
+Study jeton.com's flowing animations, color palette, smooth scrolling behavior, and overall premium feel. The final result should make users feel they're experiencing a cutting-edge financial technology platform.
+
+Create a complete, production-ready website that showcases the absolute best of modern web design and animation techniques, specifically mimicking the jeton.com aesthetic and user experience.
