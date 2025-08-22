@@ -1,28 +1,21 @@
 import { useEffect } from 'react';
-import { LiquidCanvas } from '@/components/liquid-canvas';
-import { LiquidNavigation } from '@/components/liquid-navigation';
-import { LiquidHero } from '@/components/liquid-hero';
-import { LiquidServices } from '@/components/liquid-services';
-import { LiquidSolutions } from '@/components/liquid-solutions';
-import { LiquidTechnology } from '@/components/liquid-technology';
-import { LiquidCTA } from '@/components/liquid-cta';
-import { WebGLParticleSystem } from '@/components/webgl-particle-system';
-import { CustomCursor } from '@/components/custom-cursor';
-import { ThreeAnimations } from '@/components/three-animations';
+import { HeroSection } from '@/components/hero-section';
+import { ServicesCybersec } from '@/components/services-cybersec';
+import { Navigation } from '@/components/navigation';
+import { SolutionsSection } from '@/components/solutions-section';
+import { TechnologySection } from '@/components/technology-section';
+import { CTASection } from '@/components/cta-section';
 import { DynamicCharts } from '@/components/dynamic-charts';
 import { PageTransition } from '@/components/page-transitions';
 import { ParticleBurst, useParticleBurst } from '@/components/particle-burst';
-import { AmbientAudio } from '@/components/ambient-audio';
+import { CustomCursor } from '@/components/custom-cursor';
 import { useLenis } from '@/hooks/use-lenis';
-import { useLiquidAnimations } from '@/hooks/use-liquid-animations';
-import { useJetonAnimations } from '@/hooks/use-jeton-animations';
+import { JetonInspiredBackgrounds, JetonSmoothWrapper } from '@/components/jeton-inspired-backgrounds';
 
 export default function Home() {
   const { burst, triggerBurst } = useParticleBurst();
-  
+
   useLenis();
-  useLiquidAnimations();
-  useJetonAnimations();
 
   // Add click handler for particle bursts
   const handleClick = (e: React.MouseEvent) => {
@@ -30,14 +23,14 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Performance monitoring for liquid animations
+    // Performance monitoring for animations
     let lastTime = performance.now();
     let frameCount = 0;
-    
+
     const monitorPerformance = () => {
       frameCount++;
       const currentTime = performance.now();
-      
+
       if (currentTime - lastTime >= 1000) {
         const fps = Math.round(frameCount * 1000 / (currentTime - lastTime));
         if (fps < 30) {
@@ -47,10 +40,10 @@ export default function Home() {
         frameCount = 0;
         lastTime = currentTime;
       }
-      
+
       requestAnimationFrame(monitorPerformance);
     };
-    
+
     monitorPerformance();
 
     // Error handling for external libraries
@@ -63,7 +56,7 @@ export default function Home() {
     };
 
     window.addEventListener('error', handleError);
-    
+
     return () => {
       window.removeEventListener('error', handleError);
     };
@@ -71,68 +64,59 @@ export default function Home() {
 
   return (
     <PageTransition>
-      <div 
-        className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 relative overflow-hidden"
-        onClick={handleClick}
-      >
-        {/* Advanced background layers */}
-        <WebGLParticleSystem />
-        <ThreeAnimations />
-        <LiquidCanvas />
-        
+      <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        {/* Jeton-Inspired Background System */}
+        <JetonInspiredBackgrounds />
+
         {/* Custom cursor for desktop */}
         <CustomCursor />
-        
+
         {/* Particle burst effects */}
         <ParticleBurst 
           trigger={burst.trigger} 
           x={burst.x} 
           y={burst.y} 
-          color="#6366f1"
-          particleCount={20}
+          color="#00ff88"
+          particleCount={12}
         />
-        
+
         {/* Navigation */}
-        <LiquidNavigation />
-        
-        {/* Floating particles for mobile/fallback */}
-        <div className="fixed inset-0 pointer-events-none z-5 md:hidden">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className="floating-particle absolute w-1 h-1 bg-gradient-to-r from-indigo-400 to-cyan-400 rounded-full opacity-30"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-            />
-          ))}
-        </div>
-        
-        {/* Main content */}
-        <div id="smooth-content" className="relative z-10">
-          <div className="flow-section">
-            <LiquidHero />
+        <Navigation />
+
+        {/* Main content sections */}
+        <JetonSmoothWrapper>
+          <div className="relative z-10" onClick={handleClick}>
+            {/* Hero Section */}
+            <section id="hero" className="min-h-screen hero-section">
+              <HeroSection />
+            </section>
+
+            {/* Services Section */}
+            <section id="services" className="min-h-screen py-20 services-section">
+              <ServicesCybersec />
+            </section>
+
+            {/* Charts Section */}
+            <section id="charts" className="min-h-screen py-20">
+              <DynamicCharts />
+            </section>
+
+            {/* Solutions Section */}
+            <section id="solutions" className="min-h-screen py-20 solutions-section">
+              <SolutionsSection />
+            </section>
+
+            {/* Technology Section */}
+            <section id="technology" className="min-h-screen py-20 technology-section">
+              <TechnologySection />
+            </section>
+
+            {/* Contact/CTA Section */}
+            <section id="contact" className="min-h-screen py-20 contact-section">
+              <CTASection />
+            </section>
           </div>
-          <div className="flow-section">
-            <LiquidServices />
-          </div>
-          <div className="flow-section">
-            <DynamicCharts />
-          </div>
-          <div className="flow-section">
-            <LiquidSolutions />
-          </div>
-          <div className="flow-section">
-            <LiquidTechnology />
-          </div>
-          <div className="flow-section">
-            <LiquidCTA />
-          </div>
-        </div>
-        
-        {/* Ambient audio controls */}
-        <AmbientAudio />
+        </JetonSmoothWrapper>
       </div>
     </PageTransition>
   );

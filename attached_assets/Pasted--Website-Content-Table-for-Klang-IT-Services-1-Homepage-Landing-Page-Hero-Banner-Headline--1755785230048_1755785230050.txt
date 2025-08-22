@@ -1,0 +1,123 @@
+📑 Website Content Table for Klang IT Services
+1. Homepage (Landing Page)
+
+Hero Banner → Headline (“Your Reliable IT Partner in Klang Valley”)
+
+Subheadline → Simple mission statement (trust + reliability)
+
+Call-to-Action (CTA) → “Get in Touch” / “Contact Us Today”
+
+Quick Highlights → (Fast Response | Local Presence | Secure IT Support)
+
+2. About Us
+
+Company Story → Who we are, why Klang IT Services exists
+
+Vision & Mission → Provide dependable IT support, reduce downtime
+
+Our Values → Trust, Security, Transparency, Customer Focus
+
+Local Advantage → Serving Klang Valley & Shah Alam businesses
+
+3. Services
+
+Managed IT Support – Proactive monitoring & troubleshooting
+
+Network & Infrastructure – Router, firewall, Wi-Fi setup
+
+Endpoint Protection – Device security, antivirus, patching
+
+Cloud & Email Services – Microsoft 365, Google Workspace, backup
+
+Onsite & Remote Support – Flexible assistance
+
+Hardware & Software Support – PCs, printers, OS troubleshooting
+
+(Each service section should have a short explanation + benefits.)
+
+4. Why Choose Us
+
+✅ Fast Response Times (local support, not overseas)
+
+✅ Trusted Security Standards
+
+✅ Scalable & Predictable Costs
+
+✅ Experienced Team
+
+(Add icons + short text to make this visually strong.)
+
+5. Industries We Serve
+
+Manufacturing
+
+SMEs & Corporate
+
+Retail & Services
+
+Logistics & Warehousing
+
+6. How We Work
+
+Step-by-step process graphic:
+
+Onboarding & IT Assessment
+
+24/7 Monitoring
+
+Support (Remote / Onsite)
+
+Reporting & Review
+
+7. Testimonials (optional for later)
+
+Customer quotes with names/companies (real or placeholders at first)
+
+Example: “We reduced downtime by 70% thanks to Klang IT Services.”
+
+8. Contact Page
+
+Contact Form (Name, Email, Message)
+
+Phone & WhatsApp
+
+Email
+
+Google Maps embed (office location)
+
+🎨 Theme & Background for Trust & Stability
+
+✅ Color Palette
+
+Blue → Trust, professionalism, security
+
+White → Clean, simple, modern
+
+Grey/Black Accents → Stability, reliability
+
+✅ Background Ideas
+
+Subtle tech patterns (digital grid, network nodes, circuit lines)
+
+Cloud + shield graphics (representing protection & backup)
+
+Minimal & modern (avoid clutter or flashy animations)
+
+✅ Fonts & Style
+
+Sans-serif fonts (Open Sans, Lato, Inter → modern & professional)
+
+Consistent spacing, clean layouts
+
+Rounded buttons with soft shadows for a modern look
+
+✅ Tone of Messaging
+
+Professional but approachable
+
+Emphasize local reliability (not just “IT support” but “your trusted IT partner in Klang Valley”)
+
+Avoid technical jargon overload — keep customer-first language
+
+👉 So the content table is:
+Home → About Us → Services → Why Choose Us → Industries → How We Work → Testimonials → Contact
