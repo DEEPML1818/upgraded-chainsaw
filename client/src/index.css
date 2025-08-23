@@ -94,6 +94,19 @@
   z-index: 10;
 }
 
+/* Ensure content is above backgrounds */
+.content-layer {
+  position: relative;
+  z-index: 100;
+}
+
+/* Force background elements to stay behind */
+.background-layer {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+}
+
 :root {
   --background: hsl(215, 27.9%, 16.9%);
   --foreground: hsl(0, 0%, 100%);
