@@ -70,44 +70,50 @@ export function HeroSection() {
       
       <div className="container max-w-6xl mx-auto px-8">
         <div className="hero-content text-center max-w-4xl mx-auto fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gradient-hero">
-            Digital Innovation Flows Through Everything We Do
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-2xl">
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+              Secure Digital Infrastructure
+            </span>
           </h1>
-          <p className="text-xl md:text-xl text-white/70 mb-12 leading-relaxed">
-            Empowering the future of finance through cutting-edge technology, seamless user experiences, and revolutionary digital solutions that transform how businesses and individuals interact with money.
+          <p className="text-xl md:text-xl text-white/90 mb-12 leading-relaxed drop-shadow-lg">
+            Protecting your digital assets with enterprise-grade cybersecurity solutions. Advanced threat detection, real-time monitoring, and AI-powered defense systems.
           </p>
           
           <div className="hero-actions flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a 
-              href="#contact" 
-              onClick={(e) => handleCTAClick(e, 'contact')}
-              className="btn-flowtech btn-flowtech-primary"
-              data-testid="hero-get-started"
-            >
-              Get Started
-            </a>
-            <a 
               href="#services" 
               onClick={(e) => handleCTAClick(e, 'services')}
-              className="btn-flowtech btn-flowtech-secondary"
-              data-testid="hero-explore-services"
+              className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 px-8 py-4 rounded-lg font-bold text-white transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              data-testid="hero-get-started"
             >
-              Explore Services
+              🛡️ Start Security Audit
+            </a>
+            <a 
+              href="#contact" 
+              onClick={(e) => handleCTAClick(e, 'contact')}
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 px-8 py-4 rounded-lg font-bold text-white transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              data-testid="hero-watch-demo"
+            >
+              📺 Watch Demo
             </a>
           </div>
           
-          <div className="stats-grid grid grid-cols-1 md:grid-cols-3 gap-8" ref={statsRef}>
-            <div className="stat-item text-center p-6 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 scale-in" data-testid="stat-uptime">
-              <span className="stat-number text-4xl font-bold text-cyan-400 block" data-count="99.9">0</span>%
-              <div className="stat-label text-white/70 text-sm mt-2">Uptime</div>
+          <div className="stats-grid grid grid-cols-1 md:grid-cols-4 gap-6" ref={statsRef}>
+            <div className="stat-item text-center p-6 bg-black/50 backdrop-blur-md rounded-2xl border border-green-500/30 shadow-2xl" data-testid="stat-threat-detection">
+              <span className="stat-number text-4xl font-bold text-green-400 block" data-count="99.9">0</span>%
+              <div className="stat-label text-white/90 text-sm mt-2">Threat Detection</div>
             </div>
-            <div className="stat-item text-center p-6 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 scale-in" data-testid="stat-transactions">
-              <span className="stat-number text-4xl font-bold text-cyan-400 block" data-count="50">0</span>M+
-              <div className="stat-label text-white/70 text-sm mt-2">Transactions</div>
+            <div className="stat-item text-center p-6 bg-black/50 backdrop-blur-md rounded-2xl border border-cyan-500/30 shadow-2xl" data-testid="stat-systems-protected">
+              <span className="stat-number text-4xl font-bold text-cyan-400 block" data-count="2847">0</span>
+              <div className="stat-label text-white/90 text-sm mt-2">Active Shields</div>
             </div>
-            <div className="stat-item text-center p-6 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 scale-in" data-testid="stat-support">
-              <span className="stat-number text-4xl font-bold text-cyan-400 block" data-count="24">0</span>/7
-              <div className="stat-label text-white/70 text-sm mt-2">Support</div>
+            <div className="stat-item text-center p-6 bg-black/50 backdrop-blur-md rounded-2xl border border-red-500/30 shadow-2xl" data-testid="stat-threats-blocked">
+              <span className="stat-number text-4xl font-bold text-red-400 block" data-count="1254">0</span>
+              <div className="stat-label text-white/90 text-sm mt-2">Threats Blocked</div>
+            </div>
+            <div className="stat-item text-center p-6 bg-black/50 backdrop-blur-md rounded-2xl border border-yellow-500/30 shadow-2xl" data-testid="stat-monitoring">
+              <span className="stat-number text-4xl font-bold text-yellow-400 block" data-count="24">0</span>/7
+              <div className="stat-label text-white/90 text-sm mt-2">Monitoring</div>
             </div>
           </div>
         </div>
