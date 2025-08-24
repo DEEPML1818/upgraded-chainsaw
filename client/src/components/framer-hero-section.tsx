@@ -2,41 +2,41 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Shield, Lock, Eye, Zap, Activity, Code2, Terminal, Server } from 'lucide-react';
 
-const itServicesFeatures = [
+const securityFeatures = [
   {
-    icon: Server,
-    title: "Infrastructure Management",
-    description: "Complete server setup, maintenance, and cloud infrastructure management",
+    icon: Shield,
+    title: "Advanced Threat Protection",
+    description: "AI-powered threat detection with real-time security monitoring",
     color: "#00FF88"
   },
   {
-    icon: Code2,
-    title: "Software Development", 
-    description: "Custom application development and system integration solutions",
+    icon: Lock,
+    title: "Military-Grade Encryption", 
+    description: "AES-256 encryption for all data transactions and communications",
     color: "#6366F1"
   },
   {
-    icon: Shield,
-    title: "IT Support & Helpdesk",
-    description: "Technical support, troubleshooting, and user assistance services",
+    icon: Eye,
+    title: "Behavioral Analysis",
+    description: "Machine learning algorithms detect anomalies and suspicious patterns",
     color: "#06B6D4"
   },
   {
     icon: Terminal,
-    title: "System Administration",
-    description: "Server management, database administration, and system optimization",
+    title: "Live Code Analysis",
+    description: "Real-time code vulnerability scanning and secure development",
     color: "#10B981"
   },
   {
     icon: Activity,
-    title: "Network Solutions",
-    description: "Network design, implementation, and ongoing maintenance services",
+    title: "Network Monitoring",
+    description: "24/7 network surveillance with advanced intrusion detection",
     color: "#F59E0B"
   },
   {
-    icon: Zap,
-    title: "Digital Transformation",
-    description: "Modernizing business processes with cutting-edge technology solutions",
+    icon: Server,
+    title: "Infrastructure Security",
+    description: "Complete server hardening and infrastructure protection",
     color: "#EF4444"
   }
 ];
@@ -52,13 +52,38 @@ export function FramerHeroSection() {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-  // Simple stats without counters - no fake data
-  const businessStats = [
-    { label: 'Years Experience', value: '15+', color: '#00FF88' },
-    { label: 'Projects Completed', value: '500+', color: '#06B6D4' },
-    { label: 'Happy Clients', value: '200+', color: '#F59E0B' },
-    { label: 'Team Members', value: '25+', color: '#6366F1' }
-  ];
+  // Counter animation function
+  const useCounter = (end: number, duration: number = 2000, decimals: number = 0) => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      if (!statsInView || statsAnimated) return;
+
+      let startTime: number;
+      const animate = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        setCount(end * easeOutQuart);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setStatsAnimated(true);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    }, [statsInView, end, duration, statsAnimated]);
+
+    return decimals > 0 ? count.toFixed(decimals) : Math.round(count);
+  };
+
+  const threatDetection = useCounter(99.9, 2500, 1);
+  const activeShields = useCounter(2847, 2000);
+  const threatsBlocked = useCounter(1254, 1800);
+  const monitoring = useCounter(24, 1500);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -134,7 +159,7 @@ export function FramerHeroSection() {
               }}
             >
               <motion.span 
-                className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent"
+                className="block bg-gradient-to-r from-green-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent"
                 animate={{ 
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
                 }}
@@ -145,7 +170,7 @@ export function FramerHeroSection() {
                 }}
                 style={{ backgroundSize: '200% 200%' }}
               >
-                IT Solutions
+                Secure
               </motion.span>
               <motion.span 
                 className="block text-white"
@@ -153,7 +178,7 @@ export function FramerHeroSection() {
                 animate={isInView ? { x: 0, opacity: 1 } : { x: -100, opacity: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
               >
-                That Drive
+                Digital
               </motion.span>
               <motion.span 
                 className="block bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
@@ -161,7 +186,7 @@ export function FramerHeroSection() {
                 animate={isInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
               >
-                Success
+                Infrastructure
               </motion.span>
             </motion.h1>
             
@@ -191,15 +216,15 @@ export function FramerHeroSection() {
             className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed"
             variants={itemVariants}
           >
-            Transforming businesses through innovative technology solutions and expert IT services. 
+            Protecting your digital assets with enterprise-grade cybersecurity solutions. 
             <motion.span
               className="text-cyan-400"
               animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              {" Custom development"}
-            </motion.span>, infrastructure management, and digital transformation 
-            strategies tailored to your unique needs.
+              {" Advanced threat detection"}
+            </motion.span>, real-time monitoring, and AI-powered defense systems 
+            that evolve with the threat landscape.
           </motion.p>
           
           {/* CTA Buttons */}
@@ -221,8 +246,8 @@ export function FramerHeroSection() {
                 transition={{ duration: 0.3 }}
               />
               <span className="relative flex items-center gap-3">
-                <Code2 className="w-5 h-5" />
-                Get Started
+                <Shield className="w-5 h-5" />
+                Start Security Audit
                 <motion.div 
                   className="w-2 h-2 bg-green-400 rounded-full"
                   animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
@@ -240,8 +265,8 @@ export function FramerHeroSection() {
               transition={{ delay: 1.4, duration: 0.6 }}
             >
               <span className="flex items-center gap-3">
-                <Server className="w-5 h-5" />
-                View Services
+                <Eye className="w-5 h-5" />
+                Watch Demo
                 <motion.div
                   animate={{ rotate: [0, 12, -12, 0] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
@@ -252,7 +277,7 @@ export function FramerHeroSection() {
             </motion.button>
           </motion.div>
           
-          {/* Business Stats */}
+          {/* Security Stats */}
           <motion.div 
             className="grid grid-cols-2 md:grid-cols-4 gap-8" 
             ref={statsRef}
@@ -260,7 +285,12 @@ export function FramerHeroSection() {
             initial="hidden"
             animate={statsInView ? "visible" : "hidden"}
           >
-            {businessStats.map((stat, index) => (
+            {[
+              { value: `${threatDetection}%`, label: 'Threat Detection', color: '#00FF88' },
+              { value: activeShields, label: 'Active Shields', color: '#06B6D4' },
+              { value: threatsBlocked, label: 'Threats Blocked', color: '#F59E0B' },
+              { value: `${monitoring}/7`, label: 'Monitoring', color: '#6366F1' }
+            ].map((stat, index) => (
               <motion.div 
                 key={index}
                 className="relative overflow-hidden bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-6 group"
@@ -322,14 +352,14 @@ export function FramerHeroSection() {
           </motion.div>
         </motion.div>
         
-        {/* IT Services Grid */}
+        {/* Security Features Grid */}
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-20"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {itServicesFeatures.map((feature, index) => {
+          {securityFeatures.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
               <motion.div 
@@ -413,16 +443,16 @@ export function FramerHeroSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ delay: 2, duration: 0.8 }}
         >
-          <p className="text-gray-400 text-sm mb-6">Partnered with industry-leading technology providers</p>
+          <p className="text-gray-400 text-sm mb-6">Trusted by leading organizations worldwide</p>
           <motion.div 
             className="flex justify-center items-center gap-8 opacity-50"
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            {['Microsoft', 'AWS', 'Google Cloud', 'VMware'].map((partner, index) => (
+            {['ISO 27001', 'SOC 2', 'GDPR', 'PCI DSS'].map((cert, index) => (
               <motion.div 
-                key={partner}
+                key={cert}
                 className="text-xl font-mono text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
                 variants={itemVariants}
                 whileHover={{ 
@@ -430,7 +460,7 @@ export function FramerHeroSection() {
                   color: '#9CA3AF'
                 }}
               >
-                {partner}
+                {cert}
               </motion.div>
             ))}
           </motion.div>

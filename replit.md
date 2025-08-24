@@ -1,14 +1,14 @@
 # Overview
 
-FlowTech is now a professional IT services company website featuring Jeton.com-inspired design with GSAP ScrollSmoother for ultra-smooth scrolling and dynamic background transitions. The platform includes a raining code background similar to Jeton's aesthetic, with each section having unique themes: Hero (Jeton-style raining code), Services (digital particle network), Solutions (liquid code flow), Technology (neural network), and Contact (holographic interface). Each section smoothly transitions with scroll-triggered background changes, creating an immersive experience that demonstrates technical expertise.
+FlowTech is now a premium cybersecurity and programming-focused platform featuring live coding backgrounds and real-time security monitoring dashboards. The platform combines sophisticated GSAP animations with authentic cybersecurity themes, showcasing animated terminal windows running threat detection scripts, network monitoring panels, and matrix-style visual effects. Built with glass-morphism design and cutting-edge animation technology, it provides an immersive experience that appeals to cybersecurity professionals and developers with its authentic programming environment aesthetics.
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-Website Theme: IT services company with programming backgrounds and technical aesthetics.
-Visual Requirements: Jeton.com-inspired raining code background, GSAP ScrollSmoother for entire page, programming-focused scroll sections (Hero: live coding terminal, Services: CLI commands, Solutions: database queries, Technology: deployment scripts, Contact: API integration), parallax effects, smooth transitions.
-Target Audience: Business clients needing IT services, software development, infrastructure management.
-Brand Identity: Professional IT services company with authentic programming and technical expertise showcase.
+Website Theme: Cybersecurity and programming-focused with live coding backgrounds.
+Visual Requirements: Terminal windows, threat detection dashboards, matrix-style effects.
+Target Audience: Cybersecurity professionals, developers, IT security teams.
+Brand Identity: Professional cybersecurity platform with authentic programming visuals.
 
 # System Architecture
 

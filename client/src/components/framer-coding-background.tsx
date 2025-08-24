@@ -2,146 +2,102 @@ import { motion, useAnimation, useMotionValue, useTransform } from 'framer-motio
 import { useEffect, useRef, useState } from 'react';
 
 const codeSnippets = [
-  `# IT Infrastructure Management System
-import os
-import subprocess
-import logging
-from datetime import datetime
+  `# Threat Detection Engine
+import numpy as np
+from sklearn.ensemble import IsolationForest
 
-class ITServiceManager:
+class ThreatDetector:
     def __init__(self):
-        self.logger = logging.getLogger('ITServices')
-        self.services_status = {}
+        self.model = IsolationForest(contamination=0.1)
+        self.is_trained = False
+    
+    def analyze_traffic(self, network_data):
+        if not self.is_trained:
+            self.model.fit(network_data)
+            self.is_trained = True
         
-    def check_server_health(self):
-        print("Checking server infrastructure...")
-        servers = ['web-server-01', 'db-server-02', 'mail-server-03']
-        
-        for server in servers:
-            status = self.ping_server(server)
-            self.services_status[server] = status
-            print(f"Server {server}: {'ONLINE' if status else 'OFFLINE'}")
-            
-    def deploy_application(self, app_name, environment):
-        print(f"Deploying {app_name} to {environment}...")
-        deployment_steps = [
-            'Building application...',
-            'Running tests...',
-            'Creating backup...',
-            'Updating configuration...',
-            'Starting services...',
-            'Verifying deployment...'
-        ]
-        
-        for step in deployment_steps:
-            print(step)
-            # time.sleep(0.5)
-            
-        print(f"✓ {app_name} successfully deployed to {environment}")`,
+        anomalies = self.model.predict(network_data)
+        threats = network_data[anomalies == -1]
+        return threats`,
 
-  `// IT Support Ticketing System
-const ITSupportSystem = {
-    ticketQueue: [],
-    technicians: [],
+  `// Security Monitoring System
+const SecurityManager = {
+    activeConnections: 2847,
+    threatsDetected: 1254,
+    systemHealth: 99.9,
     
-    createTicket(request) {
-        const ticket = {
-            id: this.generateTicketId(),
-            title: request.subject,
-            description: request.description,
-            priority: request.priority || 'medium',
-            status: 'open',
-            assignee: null,
-            createdAt: new Date()
-        };
-        
-        this.ticketQueue.push(ticket);
-        this.assignTicket(ticket);
-        return ticket;
-    },
-    
-    assignTicket(ticket) {
-        const availableTech = this.technicians.find(tech => 
-            tech.available && tech.skills.includes(ticket.category)
-        );
-        
-        if (availableTech) {
-            ticket.assignee = availableTech.id;
-            availableTech.available = false;
-            this.notifyTechnician(availableTech, ticket);
+    async scanPorts(target) {
+        const openPorts = [];
+        for (let port = 1; port <= 65535; port++) {
+            const result = await this.checkPort(target, port);
+            if (result.isOpen) {
+                openPorts.push({
+                    port: port,
+                    service: result.service,
+                    vulnerability: result.checkVuln()
+                });
+            }
         }
+        return openPorts;
     }
 };`,
 
-  `# Network Configuration Manager
-import yaml
-import json
-from netmiko import ConnectHandler
+  `# Network Intrusion Detection
+import hashlib
+import socket
+from datetime import datetime
 
-def configure_network_infrastructure():
-    print("Starting network configuration deployment...")
+def monitor_network_traffic():
+    suspicious_ips = []
+    packet_count = 0
     
-    # Load network device configurations
-    with open('network_config.yaml', 'r') as f:
-        config = yaml.safe_load(f)
-    
-    devices = config['network_devices']
-    
-    for device in devices:
-        print(f"Configuring {device['hostname']}...")
+    while True:
+        packet = capture_packet()
+        packet_count += 1
         
-        connection = ConnectHandler(
-            device_type=device['device_type'],
-            host=device['ip_address'],
-            username=device['username'],
-            password=device['password']
-        )
-        
-        # Apply configurations
-        config_commands = device['commands']
-        output = connection.send_config_set(config_commands)
-        
-        print(f"Configuration applied to {device['hostname']}")
-        print("Saving configuration...")
-        connection.save_config()
-        connection.disconnect()
-        
-    print("Network infrastructure configured successfully")`,
+        if detect_anomaly(packet):
+            threat_level = analyze_threat(packet)
+            if threat_level > 0.7:
+                suspicious_ips.append({
+                    'ip': packet.source_ip,
+                    'timestamp': datetime.now(),
+                    'threat_score': threat_level
+                })
+                
+        if packet_count % 1000 == 0:
+            generate_report(suspicious_ips)`,
 
-  `/* Cloud Infrastructure Management */
-class CloudServicesManager {
+  `/* Cybersecurity Dashboard API */
+class CyberDefenseSystem {
     constructor() {
-        this.awsServices = [];
-        this.azureServices = [];
-        this.gcpServices = [];
+        this.alertLevel = 'GREEN';
+        this.activeThreatMonitoring = true;
+        this.firewallStatus = 'ACTIVE';
     }
     
-    async provisionInfrastructure(specs) {
-        console.log('Provisioning cloud infrastructure...');
+    async processSecurityEvent(event) {
+        const riskScore = await this.calculateRisk(event);
         
-        const resources = {
-            compute: specs.instances || [],
-            storage: specs.storage || [],
-            networking: specs.networking || [],
-            databases: specs.databases || []
-        };
-        
-        for (const [resourceType, configs] of Object.entries(resources)) {
-            console.log('Provisioning ' + resourceType + ' resources...');
-            
-            for (const config of configs) {
-                await this.createResource(resourceType, config);
-                console.log('✓ ' + config.name + ' created successfully');
-            }
+        if (riskScore > 8) {
+            this.alertLevel = 'RED';
+            await this.triggerIncidentResponse(event);
+        } else if (riskScore > 5) {
+            this.alertLevel = 'YELLOW';
+            await this.enhanceMonitoring(event.source);
         }
         
-        console.log('Infrastructure provisioning completed');
-        return this.generateInfrastructureReport();
+        return this.logSecurityEvent(event, riskScore);
     }
 }`
 ];
 
-
+const systemMetrics = [
+  { label: 'Active Connections', value: 2847, color: '#00FF88', increment: true },
+  { label: 'Threats Blocked', value: 1254, color: '#FF6B6B', increment: true },
+  { label: 'Data Processed', value: 2.3, unit: 'TB', color: '#4ECDC4', increment: false },
+  { label: 'System Uptime', value: 99.9, unit: '%', color: '#45B7D1', increment: false },
+  { label: 'Security Score', value: 98, unit: '/100', color: '#96CEB4', increment: false }
+];
 
 export function FramerCodingBackground() {
   const [currentSnippetIndex, setCurrentSnippetIndex] = useState(0);
@@ -234,12 +190,12 @@ export function FramerCodingBackground() {
         </motion.div>
       ))}
 
-      {/* Live coding terminal - Enlarged and centered */}
+      {/* Live coding terminal - Top Left */}
       <motion.div 
-        className="absolute top-16 left-1/2 transform -translate-x-1/2 w-[800px] h-[500px] bg-black/95 backdrop-blur-lg rounded-xl border border-green-500/40 overflow-hidden shadow-2xl shadow-green-500/20"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2, ease: 'easeOut' }}
+        className="absolute top-20 left-8 w-96 h-80 bg-black/90 backdrop-blur-lg rounded-xl border border-green-500/40 overflow-hidden shadow-2xl shadow-green-500/20"
+        initial={{ x: -400, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
       >
         {/* Terminal header */}
         <motion.div 
@@ -272,7 +228,7 @@ export function FramerCodingBackground() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
           >
-it-services-manager.py
+            security-monitor.py
           </motion.span>
         </motion.div>
 
@@ -290,7 +246,7 @@ it-services-manager.py
               animate={{ x: 0 }}
               transition={{ delay: 1.5 }}
             >
-              $ python it-services-manager.py --deploy
+              $ python security-monitor.py --live
             </motion.div>
             <div className="whitespace-pre-wrap">
               {currentText}
@@ -304,9 +260,146 @@ it-services-manager.py
         </div>
       </motion.div>
 
+      {/* Security Dashboard - Top Right */}
+      <motion.div 
+        className="absolute top-20 right-8 w-80 bg-black/90 backdrop-blur-lg rounded-xl border border-cyan-500/40 p-6 shadow-2xl shadow-cyan-500/20"
+        initial={{ x: 400, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
+      >
+        <motion.div 
+          className="text-cyan-300 font-mono text-sm mb-6 flex items-center gap-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3 }}
+        >
+          <motion.div 
+            className="w-3 h-3 bg-green-400 rounded-full"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.7, 1, 0.7]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          Security Dashboard
+        </motion.div>
 
+        <div className="space-y-4">
+          {systemMetrics.map((metric, index) => (
+            <motion.div 
+              key={index}
+              className="flex justify-between items-center text-xs"
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 1.5 + index * 0.1 }}
+            >
+              <span className="text-gray-300">{metric.label}:</span>
+              <motion.span 
+                className="font-mono font-bold"
+                style={{ color: metric.color }}
+                animate={metric.increment ? { 
+                  scale: [1, 1.05, 1]
+                } : {}}
+                transition={{ 
+                  duration: 3, 
+                  repeat: Infinity,
+                  delay: Math.random() * 2
+                }}
+              >
+                {metric.value}{metric.unit || ''}
+              </motion.span>
+            </motion.div>
+          ))}
+        </div>
 
+        {/* Network activity visualization */}
+        <motion.div 
+          className="mt-6 pt-4 border-t border-cyan-500/20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          <div className="text-cyan-300 font-mono text-xs mb-3">Network Activity</div>
+          <div className="space-y-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <motion.div key={i} className="flex items-center gap-2">
+                <motion.div 
+                  className="w-2 h-2 bg-green-400 rounded-full" 
+                  animate={{ 
+                    opacity: [0.3, 1, 0.3],
+                    scale: [0.8, 1.2, 0.8]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity,
+                    delay: i * 0.3
+                  }}
+                />
+                <motion.div 
+                  className="h-1 bg-gradient-to-r from-green-400/70 to-transparent rounded flex-1"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.random() * 80 + 20}%` }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    delay: i * 0.2
+                  }}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
 
+      {/* Bottom status bar */}
+      <motion.div 
+        className="absolute bottom-8 left-8 right-8 bg-black/70 backdrop-blur-lg rounded-xl border border-indigo-500/40 p-4 shadow-2xl shadow-indigo-500/10"
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeOut', delay: 0.6 }}
+      >
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-4 gap-6 text-xs font-mono text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6 }}
+        >
+          {[
+            { label: 'Active Sessions', value: '847', color: '#00FF88' },
+            { label: 'Threats Blocked', value: '23', color: '#FF6B6B' },
+            { label: 'Data Processed', value: '2.3TB', color: '#4ECDC4' },
+            { label: 'System Health', value: '99.9%', color: '#FFD93D' }
+          ].map((stat, index) => (
+            <motion.div 
+              key={index}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1.8 + index * 0.1 }}
+            >
+              <motion.div 
+                className="font-bold text-lg mb-1"
+                style={{ color: stat.color }}
+                animate={{ 
+                  textShadow: [
+                    `0 0 5px ${stat.color}40`,
+                    `0 0 15px ${stat.color}60`,
+                    `0 0 5px ${stat.color}40`
+                  ]
+                }}
+                transition={{ 
+                  duration: 3, 
+                  repeat: Infinity,
+                  delay: Math.random() * 2
+                }}
+              >
+                {stat.value}
+              </motion.div>
+              <div className="text-gray-400">{stat.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
 
       {/* Floating code elements */}
       <div className="absolute inset-0">

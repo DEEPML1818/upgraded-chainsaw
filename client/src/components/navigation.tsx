@@ -1,97 +1,68 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { useLenis } from '@/hooks/use-lenis';
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const { scrollTo } = useLenis();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
+    e.preventDefault();
+    const targetElement = document.getElementById(target);
+    if (targetElement) {
+      scrollTo(targetElement, { offset: -80 });
+    }
+    setMobileMenuOpen(false);
+  };
 
   return (
     <nav className="nav fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300 ease-in-out">
       <div className="max-w-6xl mx-auto px-8 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-gradient">
+        <div className="text-2xl font-bold text-gradient">
           Flow<span className="text-cyan-400">Tech</span>
-        </Link>
+        </div>
         
         <ul className={`nav-links hidden md:flex list-none gap-8 ${mobileMenuOpen ? 'nav-links-mobile' : ''}`}>
           <li>
-            <Link 
-              href="/about"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/about' ? 'text-cyan-400' : ''}`}
-              data-testid="nav-about"
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/services"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/services' ? 'text-cyan-400' : ''}`}
+            <a 
+              href="#services" 
+              onClick={(e) => handleNavClick(e, 'services')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5"
               data-testid="nav-services"
             >
               Services
-            </Link>
+            </a>
           </li>
           <li>
-            <Link 
-              href="/pricing"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/pricing' ? 'text-cyan-400' : ''}`}
-              data-testid="nav-pricing"
+            <a 
+              href="#solutions" 
+              onClick={(e) => handleNavClick(e, 'solutions')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5"
+              data-testid="nav-solutions"
             >
-              Pricing
-            </Link>
+              Solutions
+            </a>
           </li>
           <li>
-            <Link 
-              href="/security"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/security' ? 'text-cyan-400' : ''}`}
-              data-testid="nav-security"
+            <a 
+              href="#technology" 
+              onClick={(e) => handleNavClick(e, 'technology')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5"
+              data-testid="nav-technology"
             >
-              Security
-            </Link>
+              Technology
+            </a>
           </li>
           <li>
-            <Link 
-              href="/api"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/api' ? 'text-cyan-400' : ''}`}
-              data-testid="nav-api"
-            >
-              API
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/help"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/help' ? 'text-cyan-400' : ''}`}
-              data-testid="nav-help"
-            >
-              Help
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/contact"
-              className={`text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${location === '/contact' ? 'text-cyan-400' : ''}`}
+            <a 
+              href="#contact" 
+              onClick={(e) => handleNavClick(e, 'contact')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300 relative hover:-translate-y-0.5"
               data-testid="nav-contact"
             >
               Contact
-            </Link>
+            </a>
           </li>
         </ul>
-        
-        <div className="hidden md:flex items-center gap-4">
-          <Link 
-            href="/login"
-            className="text-white/70 hover:text-white font-medium transition-all duration-300"
-          >
-            Login
-          </Link>
-          <Link 
-            href="/dashboard"
-            className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
-          >
-            Dashboard
-          </Link>
-        </div>
         
         <div 
           className={`mobile-menu-btn md:hidden flex flex-col cursor-pointer gap-1 ${mobileMenuOpen ? 'active' : ''}`}
@@ -106,89 +77,48 @@ export function Navigation() {
       
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="nav-links-mobile md:hidden absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-sm border-t border-gray-700/50 p-6">
-          <ul className="space-y-4">
-            <li>
-              <Link 
-                href="/about"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/services"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/pricing"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pricing
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/security"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Security
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/api"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                API
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/help"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Help
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/contact"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contact
-              </Link>
-            </li>
-            <li className="border-t border-gray-700 pt-4 mt-4">
-              <Link 
-                href="/login"
-                className="block text-white/70 hover:text-white font-medium transition-all duration-300 mb-3"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Login
-              </Link>
-              <Link 
-                href="/dashboard"
-                className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg font-semibold text-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Dashboard
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <ul className="nav-links-mobile md:hidden">
+          <li className="mb-4">
+            <a 
+              href="#services" 
+              onClick={(e) => handleNavClick(e, 'services')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300"
+              data-testid="mobile-nav-services"
+            >
+              Services
+            </a>
+          </li>
+          <li className="mb-4">
+            <a 
+              href="#solutions" 
+              onClick={(e) => handleNavClick(e, 'solutions')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300"
+              data-testid="mobile-nav-solutions"
+            >
+              Solutions
+            </a>
+          </li>
+          <li className="mb-4">
+            <a 
+              href="#technology" 
+              onClick={(e) => handleNavClick(e, 'technology')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300"
+              data-testid="mobile-nav-technology"
+            >
+              Technology
+            </a>
+          </li>
+          <li>
+            <a 
+              href="#contact" 
+              onClick={(e) => handleNavClick(e, 'contact')}
+              className="text-white/70 hover:text-white font-medium transition-all duration-300"
+              data-testid="mobile-nav-contact"
+            >
+              Contact
+            </a>
+          </li>
+        </ul>
       )}
     </nav>
   );

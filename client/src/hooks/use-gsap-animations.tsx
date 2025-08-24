@@ -20,7 +20,7 @@ export function useGSAPAnimations() {
         backdropFilter: 'blur(20px)',
         background: 'rgba(15, 23, 42, 0.95)',
         scrollTrigger: {
-          trigger: '#hero',
+          trigger: '.hero',
           start: 'top -80px',
           toggleActions: 'play none none reverse'
         }
@@ -91,112 +91,72 @@ export function useGSAPAnimations() {
         );
       });
 
-      // Web3/FinTech specific animations for new content
-      gsap.utils.toArray('.liquid-card').forEach((card: any, index: number) => {
+      // Staggered animations for cards
+      gsap.utils.toArray('.services-grid .glass-card').forEach((card: any, index: number) => {
         gsap.fromTo(card,
-          { y: 80, opacity: 0, scale: 0.9, rotationY: -15 },
+          { y: 60, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            scale: 1,
-            rotationY: 0,
-            duration: 1.2,
-            delay: index * 0.15,
-            ease: 'back.out(1.7)',
+            duration: 0.8,
+            delay: index * 0.2,
             scrollTrigger: {
               trigger: card,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse',
-            }
-          }
-        );
-      });
-
-      gsap.utils.toArray('.liquid-feature').forEach((feature: any, index: number) => {
-        gsap.fromTo(feature,
-          { y: 60, opacity: 0, scale: 0.8 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 1,
-            delay: index * 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: feature,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse',
-            }
-          }
-        );
-      });
-
-      gsap.utils.toArray('.liquid-stat').forEach((stat: any, index: number) => {
-        gsap.fromTo(stat,
-          { y: 40, opacity: 0, scale: 0.7 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            delay: index * 0.1,
-            ease: 'bounce.out',
-            scrollTrigger: {
-              trigger: stat,
               start: 'top 90%',
-              toggleActions: 'play none none reverse',
             }
           }
         );
       });
 
-      // Enhanced slide-in-up animation for headers
-      gsap.utils.toArray('.slide-in-up').forEach((elem: any) => {
-        gsap.fromTo(elem,
-          { y: 100, opacity: 0, rotationX: 45 },
+      gsap.utils.toArray('.tech-cards .tech-card').forEach((card: any, index: number) => {
+        gsap.fromTo(card,
+          { y: 40, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            rotationX: 0,
-            duration: 1.5,
-            ease: 'power3.out',
+            duration: 0.6,
+            delay: index * 0.1,
             scrollTrigger: {
-              trigger: elem,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
+              trigger: card,
+              start: 'top 90%',
             }
           }
         );
       });
 
-      // Web3 section animations
-      gsap.utils.toArray('.liquid-section').forEach((section: any, index: number) => {
-        gsap.fromTo(section,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse',
-            }
-          }
-        );
-      });
-
-      // MetaMask button pulse effect
-      gsap.to('[data-metamask-button]', {
-        scale: 1.05,
-        duration: 2,
+      // Floating orbs continuous animation
+      gsap.to('.orb-1', {
+        x: 50,
+        y: -30,
+        duration: 8,
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1
       });
 
-      console.log('✅ Web3 GSAP animations loaded successfully!');
+      gsap.to('.orb-2', {
+        x: -40,
+        y: 40,
+        duration: 6,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1
+      });
+
+      gsap.to('.orb-3', {
+        x: -30,
+        y: -50,
+        duration: 10,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1
+      });
+
+      // Initial loading animation
+      gsap.fromTo('.hero-content', 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out', delay: 0.3 }
+      );
 
       return () => {
         ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());

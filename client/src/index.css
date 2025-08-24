@@ -3,110 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Jeton-inspired GSAP ScrollSmoother animations */
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-@keyframes liquidFlow {
-  0% { transform: translateY(0px) translateX(0px); }
-  25% { transform: translateY(-10px) translateX(5px); }
-  50% { transform: translateY(0px) translateX(10px); }
-  75% { transform: translateY(10px) translateX(5px); }
-  100% { transform: translateY(0px) translateX(0px); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { 
-    opacity: 0.5;
-    box-shadow: 0 0 5px currentColor;
-  }
-  50% { 
-    opacity: 1;
-    box-shadow: 0 0 25px currentColor, 0 0 50px currentColor;
-  }
-}
-
-.typing-animation {
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #22c55e;
-  animation: typing 2s steps(40) infinite;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-liquid-flow {
-  animation: liquidFlow 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
-}
-
-/* Jeton-style smooth scrolling container */
-#smooth-wrapper {
-  position: relative;
-  overflow: hidden;
-  height: 100vh;
-  width: 100%;
-}
-
-#smooth-content {
-  position: relative;
-  will-change: transform;
-  overflow: visible;
-}
-
-/* Enhanced parallax elements with Jeton-style effects */
-.parallax-bg {
-  will-change: transform;
-  transform-style: preserve-3d;
-}
-
-.parallax-mid {
-  will-change: transform;
-  transform-style: preserve-3d;
-}
-
-.parallax-front {
-  will-change: transform;
-  transform-style: preserve-3d;
-}
-
-/* Background layer transitions */
-.bg-layer {
-  transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  backdrop-filter: blur(0.5px);
-}
-
-/* Scroll section indicators */
-.scroll-section {
-  position: relative;
-  z-index: 10;
-}
-
-/* Ensure content is above backgrounds */
-.content-layer {
-  position: relative;
-  z-index: 100;
-}
-
-/* Force background elements to stay behind */
-.background-layer {
-  position: fixed;
-  z-index: 0;
-  pointer-events: none;
-}
-
 :root {
   --background: hsl(215, 27.9%, 16.9%);
   --foreground: hsl(0, 0%, 100%);
@@ -144,7 +40,7 @@
   --font-serif: Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 1rem;
-
+  
   /* FlowTech Custom Properties */
   --flowtech-primary: hsl(239, 84%, 67%);
   --flowtech-accent: hsl(188, 95%, 43%);
@@ -570,7 +466,7 @@
     0%, 100% { transform: translate(-50%, -50%) scale(1); }
     50% { transform: translate(-50%, -50%) scale(1.1); }
   }
-
+  
   .virus-emoji-overlay {
     pointer-events: none !important;
   }
@@ -629,16 +525,16 @@
     .flow-text {
       font-size: clamp(1.5rem, 5vw, 2.5rem);
     }
-
+    
     .floating-particle {
       animation-duration: 12s;
     }
-
+    
     .liquid-card {
       transform: none !important;
       perspective: none !important;
     }
-
+    
     /* Reduce motion for mobile */
     @media (prefers-reduced-motion: reduce) {
       .floating-particle,
@@ -662,7 +558,7 @@
     .flow-card:hover {
       transform: none;
     }
-
+    
     .liquid-card:hover {
       scale: 1.02;
       transition: scale 0.2s ease;
