@@ -2,30 +2,20 @@ import { useEffect } from 'react';
 import { FramerCodingBackground } from '@/components/framer-coding-background';
 import { FramerHeroSection } from '@/components/framer-hero-section';
 import { ServicesCybersec } from '@/components/services-cybersec';
-import { LiquidNavigation } from '@/components/liquid-navigation';
+import { Navigation } from '@/components/navigation';
+import { Footer } from '@/components/footer';
 import { LiquidSolutions } from '@/components/liquid-solutions';
 import { LiquidTechnology } from '@/components/liquid-technology';
 import { LiquidCTA } from '@/components/liquid-cta';
-import { WebGLParticleSystem } from '@/components/webgl-particle-system';
-import { CustomCursor } from '@/components/custom-cursor';
 import { DynamicCharts } from '@/components/dynamic-charts';
-import { PageTransition } from '@/components/page-transitions';
-import { ParticleBurst, useParticleBurst } from '@/components/particle-burst';
 import { useLenis } from '@/hooks/use-lenis';
 import { useLiquidAnimations } from '@/hooks/use-liquid-animations';
 import { useJetonAnimations } from '@/hooks/use-jeton-animations';
 
 export default function Home() {
-  const { burst, triggerBurst } = useParticleBurst();
   
-  useLenis();
-  useLiquidAnimations();
-  useJetonAnimations();
+  // Simplified animations for better performance
 
-  // Add click handler for particle bursts
-  const handleClick = (e: React.MouseEvent) => {
-    triggerBurst(e.clientX, e.clientY);
-  };
 
   useEffect(() => {
     // Performance monitoring for liquid animations
@@ -68,31 +58,16 @@ export default function Home() {
   }, []);
 
   return (
-    <PageTransition>
-      <div 
-        className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 relative overflow-hidden"
-        onClick={handleClick}
-      >
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 relative overflow-hidden flex flex-col">
         {/* Framer Motion coding background */}
         <FramerCodingBackground />
         
-        {/* Custom cursor for desktop */}
-        <CustomCursor />
-        
-        {/* Particle burst effects with Framer Motion */}
-        <ParticleBurst 
-          trigger={burst.trigger} 
-          x={burst.x} 
-          y={burst.y} 
-          color="#00ff88"
-          particleCount={12}
-        />
         
         {/* Navigation */}
-        <LiquidNavigation />
+        <Navigation />
         
         {/* Main content */}
-        <div id="smooth-content" className="relative z-20">
+        <div id="smooth-content" className="relative z-20 flex-1">
           <div className="flow-section">
             <FramerHeroSection />
           </div>
@@ -113,8 +88,7 @@ export default function Home() {
           </div>
         </div>
         
-
+        <Footer />
       </div>
-    </PageTransition>
   );
 }

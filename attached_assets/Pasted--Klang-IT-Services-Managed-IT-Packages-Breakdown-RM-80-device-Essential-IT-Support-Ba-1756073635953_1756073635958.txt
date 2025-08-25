@@ -1,0 +1,119 @@
+
+
+💻 Klang IT Services – Managed IT Packages Breakdown
+🟢 RM 80/device – Essential IT Support (Basic Plan)
+
+Target: Small businesses with limited IT needs, mostly requiring reactive support.
+
+✅ Inclusions
+
+Remote troubleshooting (via phone, email, remote access) – Unlimited
+
+OS-level support (Windows/Mac/Linux basic issues)
+
+Antivirus installation & updates
+
+Printer & peripheral support (basic setup/troubleshooting)
+
+Software installation (standard apps e.g., Office, browsers, PDF tools)
+
+Basic security patching (monthly)
+
+Email account setup & troubleshooting (Outlook, Gmail, etc.)
+
+SLA: Next Business Day response
+
+Monthly device health check report (basic)
+
+🚫 Limitations
+
+No 24/7 monitoring (business hours only)
+
+No proactive maintenance beyond OS updates
+
+Onsite support charged separately
+
+No advanced security (firewalls, endpoint protection suite)
+
+No backup solutions
+
+🟡 RM 120/device – Standard IT Support (SME Plan)
+
+Target: SMEs needing proactive monitoring, more reliability, and broader coverage.
+
+✅ Inclusions (everything in RM 80 + more)
+
+Unlimited remote troubleshooting
+
+Proactive monitoring of endpoints (using RMM tools)
+
+Endpoint patch management (OS + third-party apps like Chrome, Zoom, Adobe)
+
+Antivirus & endpoint protection suite (licensed software included)
+
+Printer/scanner advanced troubleshooting
+
+Cloud/email service integration support (Office 365, Google Workspace)
+
+SLA: 4-hour response time (business hours)
+
+Quarterly IT health & security report
+
+Limited onsite visits (e.g., 2 free visits per month)
+
+🚫 Limitations
+
+24/7 support not included (only business hours)
+
+Endpoint backup available as add-on
+
+Complex projects (network design, migrations) billed separately
+
+No dedicated account manager
+
+🔵 RM 180/device – Premium IT Support (Enterprise Plan)
+
+Target: Businesses requiring high availability, compliance, and enterprise-grade security.
+
+✅ Inclusions (everything in RM 120 + more)
+
+24/7 remote support coverage
+
+Advanced endpoint security (EDR/XDR where applicable)
+
+Endpoint backup included (daily file & folder backup to secure cloud)
+
+Firewall & network monitoring (if devices integrated with your NMS)
+
+SLA: 1-hour response time (priority support)
+
+Unlimited onsite support (within Klang Valley)
+
+Monthly IT health, security, and compliance report
+
+Vendor management (liaise with ISP, software vendors on client’s behalf)
+
+Preventive maintenance schedule (quarterly onsite checks)
+
+IT policy advisory (data protection, password policy, etc.)
+
+🚫 Limitations
+
+Large IT projects (cloud migration, ERP deployment, cabling) → quoted separately
+
+Hardware replacement costs not included
+
+Specialized enterprise software (SAP, Oracle) supported case-by-case
+
+📊 Side-by-Side Difference
+Feature	RM 80 (Essential)	RM 120 (Standard)	RM 180 (Premium)
+Remote Support	Unlimited	Unlimited	24/7 Unlimited
+Onsite Support	Chargeable	2 visits/month	Unlimited
+SLA Response	Next Business Day	4 hours (business hrs)	1 hour (24/7)
+Antivirus	Basic	Advanced suite	Advanced + EDR
+Patching	OS only	OS + 3rd Party Apps	OS + 3rd Party + Advanced
+Backup	❌	Add-on	✅ Included
+Monitoring	❌	Endpoint monitoring	Endpoint + Network
+Reports	Monthly (basic)	Quarterly (detailed)	Monthly (compliance-grade)
+Vendor Management	❌	❌	✅ Yes
+IT Policy Advisory	❌	❌	✅ Yes
