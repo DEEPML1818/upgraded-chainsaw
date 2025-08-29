@@ -1,38 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Shield, Lock, Eye, Zap, Activity, Code2 } from 'lucide-react';
 
-const securityFeatures = [
-  {
-    icon: Shield,
-    title: "Advanced Threat Protection",
-    description: "AI-powered threat detection and real-time security monitoring"
-  },
-  {
-    icon: Lock,
-    title: "End-to-End Encryption", 
-    description: "Military-grade AES-256 encryption for all data transactions"
-  },
-  {
-    icon: Eye,
-    title: "Behavioral Analysis",
-    description: "Machine learning algorithms detect anomalies and suspicious patterns"
-  },
-  {
-    icon: Zap,
-    title: "Real-time Response",
-    description: "Instant threat mitigation and automated security protocols"
-  },
-  {
-    icon: Activity,
-    title: "Network Monitoring",
-    description: "24/7 network surveillance with advanced intrusion detection"
-  },
-  {
-    icon: Code2,
-    title: "Secure Development",
-    description: "DevSecOps integration with continuous security validation"
-  }
-];
 
 export function CybersecurityHero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -69,11 +37,11 @@ export function CybersecurityHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-10">
+    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-5">
       <div className="container max-w-7xl mx-auto px-6">
         
         {/* Main Hero Content */}
-        <div className="text-center mb-16" ref={heroRef}>
+        <div className="text-center mb-12" ref={heroRef}>
           <div className="mb-8 relative">
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span className="text-gradient-hero block">Secure</span>
@@ -158,44 +126,6 @@ export function CybersecurityHero() {
           </div>
         </div>
         
-        {/* Security Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-20">
-          {securityFeatures.map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <div 
-                key={index}
-                className="glass-card group hover:scale-105 transition-all duration-500"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 p-3 rounded-lg border border-indigo-500/30 group-hover:border-cyan-400/50 transition-colors duration-300">
-                    <IconComponent className="w-6 h-6 text-indigo-400 group-hover:text-cyan-400 transition-colors duration-300" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
-                  </div>
-                </div>
-                
-                {/* Animated border effect */}
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-            );
-          })}
-        </div>
-        
-        {/* Trust Indicators */}
-        <div className="mt-20 text-center">
-          <p className="text-gray-400 text-sm mb-6">Trusted by leading organizations worldwide</p>
-          <div className="flex justify-center items-center gap-8 opacity-50">
-            {/* Placeholder for trust logos */}
-            <div className="text-2xl font-mono text-gray-600">ISO 27001</div>
-            <div className="text-2xl font-mono text-gray-600">SOC 2</div>
-            <div className="text-2xl font-mono text-gray-600">GDPR</div>
-            <div className="text-2xl font-mono text-gray-600">PCI DSS</div>
-          </div>
-        </div>
       </div>
       
       {/* Background security elements */}

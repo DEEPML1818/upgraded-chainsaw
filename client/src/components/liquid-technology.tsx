@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { GitBranch, Activity, Cpu, Zap } from 'lucide-react';
-import { EnhancedPhysicsPlayground } from '@/components/enhanced-physics-playground';
 
 export function LiquidTechnology() {
   const progressBarsRef = useRef<HTMLDivElement>(null);
@@ -91,10 +90,6 @@ export function LiquidTechnology() {
           </div>
         </div>
 
-        {/* Interactive Physics Playground */}
-        <div className="container max-w-4xl mx-auto px-8 mt-20">
-          <EnhancedPhysicsPlayground />
-        </div>
       </div>
     </section>
   );

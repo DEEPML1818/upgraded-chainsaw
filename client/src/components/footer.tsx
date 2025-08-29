@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Github, Linkedin, Twitter, Mail, MapPin, Phone, Globe } from 'lucide-react';
 
 export function Footer() {
   const [location] = useLocation();
@@ -9,108 +9,129 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#0A0A0A] text-[#CCCCCC] border-t border-gray-800">
-      <div className="max-w-6xl mx-auto px-8 py-12">
-        {/* Main Footer Content */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-8">
+    <footer className="bg-slate-950 text-gray-300 border-t border-gray-800">
+      <div className="max-w-7xl mx-auto px-8 py-16">
+        {/* Main Footer Content - GitHub Style */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           
-          {/* Company Logo - Left */}
-          <div className="flex-shrink-0">
+          {/* Company Info */}
+          <div className="space-y-4">
             <Link href="/">
-              <div className="text-2xl font-bold cursor-pointer transition-all duration-300 hover:scale-105">
+              <div className="text-2xl font-bold cursor-pointer transition-all duration-300 hover:text-white">
                 Flow<span className="text-cyan-400">Tech</span>
               </div>
             </Link>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Enterprise-grade cybersecurity solutions protecting your digital infrastructure with AI-powered threat detection.
+            </p>
+            <div className="flex items-center gap-2 text-gray-400 text-sm">
+              <MapPin size={16} />
+              <span>Klang, Malaysia</span>
+            </div>
           </div>
 
-          {/* Navigation Links - Center */}
-          <nav className="flex flex-wrap justify-center gap-8">
-            <Link 
-              href="/"
-              className={`font-medium transition-all duration-300 hover:text-white hover:scale-105 ${
-                isActive('/') 
-                  ? 'text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              data-testid="footer-home"
-            >
-              Home
-            </Link>
-            <Link 
-              href="/services"
-              className={`font-medium transition-all duration-300 hover:text-white hover:scale-105 ${
-                isActive('/services') 
-                  ? 'text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              data-testid="footer-services"
-            >
-              Services
-            </Link>
-            <Link 
-              href="/about"
-              className={`font-medium transition-all duration-300 hover:text-white hover:scale-105 ${
-                isActive('/about') 
-                  ? 'text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              data-testid="footer-about"
-            >
-              About
-            </Link>
-            <Link 
-              href="/contact"
-              className={`font-medium transition-all duration-300 hover:text-white hover:scale-105 ${
-                isActive('/contact') 
-                  ? 'text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-              data-testid="footer-contact"
-            >
-              Contact
-            </Link>
-          </nav>
+          {/* Services */}
+          <div className="space-y-4">
+            <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Services</h4>
+            <nav className="space-y-3">
+              <Link href="/services" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Managed IT Services
+              </Link>
+              <Link href="/services" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Cybersecurity Solutions
+              </Link>
+              <Link href="/services" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Cloud Infrastructure
+              </Link>
+              <Link href="/services" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                IT Consulting
+              </Link>
+            </nav>
+          </div>
 
-          {/* Social Media Icons - Right */}
+          {/* Solutions */}
+          <div className="space-y-4">
+            <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Solutions</h4>
+            <nav className="space-y-3">
+              <Link href="/solutions" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Network Security
+              </Link>
+              <Link href="/solutions" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Data Protection
+              </Link>
+              <Link href="/solutions" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Threat Detection
+              </Link>
+              <Link href="/solutions" className="block text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                Infrastructure Security
+              </Link>
+            </nav>
+          </div>
+
+          {/* Contact */}
+          <div className="space-y-4">
+            <h4 className="text-white font-semibold text-sm uppercase tracking-wider">Contact</h4>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-gray-400 text-sm">
+                <Phone size={16} />
+                <span>+60 3-3344-5566</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-400 text-sm">
+                <Mail size={16} />
+                <span>hello@flowtech.my</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-400 text-sm">
+                <Globe size={16} />
+                <span>www.flowtech.my</span>
+              </div>
+              <Link href="/contact" className="inline-block bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                Get Started
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-4">
+          <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-400">
+            <span>© 2025 FlowTech Solutions. All rights reserved.</span>
+            <div className="flex gap-6">
+              <Link href="/privacy" className="hover:text-white transition-colors duration-200">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors duration-200">Terms of Service</Link>
+              <Link href="/security" className="hover:text-white transition-colors duration-200">Security</Link>
+            </div>
+          </div>
+          
+          {/* Social Icons */}
           <div className="flex gap-4">
             <a 
-              href="https://linkedin.com" 
+              href="https://github.com/flowtech-my" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110"
-              data-testid="footer-linkedin"
+              className="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200"
+              aria-label="GitHub"
+            >
+              <Github size={20} />
+            </a>
+            <a 
+              href="https://linkedin.com/company/flowtech-my" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200"
               aria-label="LinkedIn"
             >
               <Linkedin size={20} />
             </a>
             <a 
-              href="https://twitter.com" 
+              href="https://twitter.com/flowtech_my" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white hover:bg-sky-500 transition-all duration-300 hover:scale-110"
-              data-testid="footer-twitter"
+              className="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200"
               aria-label="Twitter"
             >
               <Twitter size={20} />
             </a>
-            <a 
-              href="https://github.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-600 transition-all duration-300 hover:scale-110"
-              data-testid="footer-github"
-              aria-label="GitHub"
-            >
-              <Github size={20} />
-            </a>
           </div>
-        </div>
-
-        {/* Copyright Notice - Bottom Center */}
-        <div className="text-center pt-8 border-t border-gray-800">
-          <p className="text-gray-500 text-sm">
-            © 2025 FlowTech. All rights reserved.
-          </p>
         </div>
       </div>
     </footer>

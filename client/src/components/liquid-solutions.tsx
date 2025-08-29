@@ -1,5 +1,5 @@
 import { Network, Database, Cloud, Cpu, Layers, Activity } from 'lucide-react';
-import { EnhancedPhysicsPlayground } from './enhanced-physics-playground';
+import { CiscoPacketTracerBuilder } from './cisco-packet-tracer-builder';
 
 export function LiquidSolutions() {
   const solutions = [
@@ -49,9 +49,9 @@ export function LiquidSolutions() {
           ))}
         </div>
 
-        {/* Enhanced Physics Playground */}
-        <div className="liquid-card p-8 bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 max-w-6xl mx-auto">
-          <EnhancedPhysicsPlayground />
+        {/* Cisco Packet Tracer Builder */}
+        <div className="liquid-card bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 max-w-7xl mx-auto">
+          <CiscoPacketTracerBuilder />
         </div>
       </div>
     </section>
