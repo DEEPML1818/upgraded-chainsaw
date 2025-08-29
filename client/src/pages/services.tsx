@@ -1,5 +1,6 @@
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
+import { ServicesCyberBackground } from '@/components/services-cyber-background';
 import { useGSAPInit } from '@/hooks/use-gsap-init';
 import { useGSAPAnimations } from '@/hooks/use-gsap-animations';
 import { useGSAPScrollSmoother } from '@/hooks/use-gsap-scroll-smoother';
@@ -10,14 +11,15 @@ export default function Services() {
   useGSAPScrollSmoother();
 
   return (
-    <div id="smooth-wrapper" className="min-h-screen bg-slate-950 flex flex-col">
+    <div id="smooth-wrapper" className="min-h-screen bg-slate-950 flex flex-col relative">
+      <ServicesCyberBackground />
       <Navigation />
       
       <div id="smooth-content" className="flex-1">
         <main className="container mx-auto px-4">
           {/* Hero Section */}
           <section className="liquid-section min-h-screen flex items-center relative overflow-hidden pt-20 hero">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950/80 via-slate-900/60 to-red-950/40"></div>
           
           <div className="max-w-7xl mx-auto text-center relative z-10 hero-content">
             <h1 className="text-6xl md:text-8xl font-bold mb-8 text-white slide-in-up">

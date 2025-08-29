@@ -1,203 +1,285 @@
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
-import { EnhancedSectionBackgrounds } from '@/components/enhanced-section-backgrounds';
+import { SolutionsAutomationBackground } from '@/components/solutions-automation-background';
 import { useGSAPInit } from '@/hooks/use-gsap-init';
 import { useGSAPAnimations } from '@/hooks/use-gsap-animations';
-import { Shield, Monitor, Cloud, Database, Lock, Wifi, Server, Users, FileText, Smartphone, HardDrive, Zap } from 'lucide-react';
+import { useGSAPScrollSmoother } from '@/hooks/use-gsap-scroll-smoother';
+import { Search, Shield, Monitor, Cloud, Zap, Users, FileText, Bot, CheckCircle, Lock, Bell, Database, Server, Smartphone, HardDrive, Wifi } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Solutions() {
   useGSAPInit();
   useGSAPAnimations();
+  useGSAPScrollSmoother();
 
-  const extraServices = [
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const categories = [
+    'All',
+    'Business Automation',
+    'Security Automation',
+    'Cloud & Workflow',
+    'Monitoring & Reporting',
+    'Endpoint Management',
+    'Network & IoT',
+    'Customer Service'
+  ];
+
+  const automationSolutions = [
     {
-      icon: Cloud,
-      name: "Cloud Migration",
-      description: "Complete cloud infrastructure migration and optimization",
-      price: "From RM 500",
-      category: "Infrastructure"
-    },
-    {
-      icon: Shield,
-      name: "Advanced Security Audit",
-      description: "Comprehensive security assessment and vulnerability testing",
-      price: "RM 300/audit",
-      category: "Security"
-    },
-    {
-      icon: Database,
-      name: "Data Recovery",
-      description: "Professional data recovery and backup restoration services",
-      price: "RM 200/device",
-      category: "Recovery"
-    },
-    {
-      icon: Monitor,
-      name: "Network Infrastructure Setup",
-      description: "Complete network design, implementation and configuration",
-      price: "From RM 800",
-      category: "Networking"
-    },
-    {
-      icon: Server,
-      name: "Server Management",
-      description: "24/7 server monitoring, maintenance and optimization",
-      price: "RM 150/server/month",
-      category: "Infrastructure"
-    },
-    {
-      icon: Lock,
-      name: "Compliance Setup",
-      description: "GDPR, ISO 27001 and industry compliance implementation",
-      price: "From RM 1000",
-      category: "Compliance"
+      icon: Zap,
+      name: "Business Process Automation",
+      description: "Automate repetitive office tasks like report generation, invoice processing, and leave applications using tools like Power Automate and Zapier.",
+      category: "Business Automation",
+      tags: ["Power Automate", "Zapier", "Workflow"]
     },
     {
       icon: Users,
-      name: "IT Training",
-      description: "Staff training on cybersecurity best practices and tools",
-      price: "RM 100/person",
-      category: "Training"
+      name: "IT Helpdesk Automation",
+      description: "AI-driven ticket assignment, automated email confirmations, and self-service knowledge base with chatbot support.",
+      category: "Business Automation",
+      tags: ["AI", "Ticketing", "Chatbot"]
     },
     {
-      icon: Wifi,
-      name: "Network Security",
-      description: "Firewall setup, VPN configuration and network protection",
-      price: "From RM 400",
-      category: "Security"
+      icon: Monitor,
+      name: "Endpoint Management",
+      description: "Automatic OS patching, software updates, and policy-based deployment across all devices in your organization.",
+      category: "Endpoint Management",
+      tags: ["Patching", "Deployment", "Policy"]
     },
     {
-      icon: FileText,
-      name: "Documentation Services",
-      description: "IT policies, procedures and compliance documentation",
-      price: "RM 300/package",
-      category: "Documentation"
-    },
-    {
-      icon: Smartphone,
-      name: "Mobile Device Management",
-      description: "BYOD policies, mobile security and device management",
-      price: "RM 20/device/month",
-      category: "Mobile"
+      icon: Shield,
+      name: "Security Automation",
+      description: "Automated alerts for failed logins, endpoint quarantine scripts, and password expiry reminders.",
+      category: "Security Automation",
+      tags: ["Threat Detection", "Quarantine", "Alerts"]
     },
     {
       icon: HardDrive,
-      name: "Hardware Procurement",
-      description: "IT equipment sourcing, procurement and installation",
-      price: "Cost + 15% markup",
-      category: "Hardware"
+      name: "Backup & Recovery",
+      description: "Scheduled endpoint and server backups with auto-notifications and one-click restore capabilities.",
+      category: "Monitoring & Reporting",
+      tags: ["Backup", "Recovery", "Automation"]
     },
     {
-      icon: Zap,
-      name: "Emergency Support",
-      description: "After-hours emergency IT support and incident response",
-      price: "RM 250/hour",
-      category: "Emergency"
+      icon: Cloud,
+      name: "Cloud Workflow Automation",
+      description: "Microsoft 365 and Google Workspace automation for user provisioning, email setup, and access management.",
+      category: "Cloud & Workflow",
+      tags: ["Microsoft 365", "Google Workspace", "Provisioning"]
+    },
+    {
+      icon: Database,
+      name: "Monitoring & Reporting",
+      description: "24/7 device health monitoring with automated monthly IT reports and SLA compliance dashboards.",
+      category: "Monitoring & Reporting",
+      tags: ["24/7 Monitoring", "Reports", "SLA"]
+    },
+    {
+      icon: FileText,
+      name: "Office Integration",
+      description: "CRM, email, and WhatsApp integration with automated timesheets and inventory management systems.",
+      category: "Business Automation",
+      tags: ["CRM", "Integration", "Inventory"]
+    },
+    {
+      icon: Wifi,
+      name: "Network & IoT Automation",
+      description: "Scheduled Wi-Fi access codes, automated PC power management, and IoT sensor integration.",
+      category: "Network & IoT",
+      tags: ["Wi-Fi", "IoT", "Power Management"]
+    },
+    {
+      icon: Smartphone,
+      name: "Customer Service Automation",
+      description: "Website chatbots, automated appointment scheduling, and follow-up email campaigns.",
+      category: "Customer Service",
+      tags: ["Chatbot", "Scheduling", "Email Marketing"]
+    },
+    {
+      icon: Lock,
+      name: "Advanced Threat Protection",
+      description: "Real-time threat detection with automated incident response and compliance reporting.",
+      category: "Security Automation",
+      tags: ["EDR", "Incident Response", "Compliance"]
+    },
+    {
+      icon: Server,
+      name: "Infrastructure Monitoring",
+      description: "Automated server health checks, performance optimization, and predictive maintenance alerts.",
+      category: "Monitoring & Reporting",
+      tags: ["Server Monitoring", "Performance", "Predictive"]
     }
   ];
 
-  const categories = ["All", "Security", "Infrastructure", "Recovery", "Networking", "Compliance", "Training", "Documentation", "Mobile", "Hardware", "Emergency"];
+  // Assuming additionalServices should be defined and populated.
+  // For now, we'll keep it as an empty array to avoid further errors,
+  // but it needs to be defined based on the actual requirements.
+  const additionalServices = []; // Placeholder, needs actual definition
+
+  const filteredSolutions = automationSolutions.filter(solution => {
+    const matchesCategory = selectedCategory === 'All' || solution.category === selectedCategory;
+    const matchesSearch = solution.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         solution.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         solution.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
-      <EnhancedSectionBackgrounds />
+    <div id="smooth-wrapper" className="min-h-screen bg-slate-950 flex flex-col relative">
+      <SolutionsAutomationBackground />
       <Navigation />
-      
-      <main className="flex-1 container mx-auto px-4">
-        {/* Hero Section */}
-        <section id="hero" className="liquid-section min-h-screen flex items-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950"></div>
-          
-          <div className="max-w-7xl mx-auto text-center relative z-10">
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 text-white slide-in-up">
-              Extra <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Services</span>
-            </h1>
-            <p className="text-2xl text-gray-300 mb-12 leading-relaxed max-w-4xl mx-auto font-light fade-in">
-              Comprehensive IT solutions beyond our managed packages. Additional services to meet your specific business needs.
-            </p>
-          </div>
-        </section>
 
-        {/* Services Grid */}
-        <section className="liquid-section py-32 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-8 relative z-10">
-            
-            {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-3 mb-12 fade-in">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  className="px-4 py-2 rounded-full bg-slate-800/50 border border-gray-600/20 text-gray-300 hover:text-white hover:border-blue-500/40 transition-all duration-300 backdrop-blur-sm"
-                  data-testid={`filter-${category.toLowerCase()}`}
-                >
-                  {category}
-                </button>
-              ))}
+      <div id="smooth-content" className="flex-1">
+        <main className="pt-20">
+          {/* Hero Section */}
+          <section className="liquid-section min-h-screen flex items-center relative overflow-hidden pt-20 hero">
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-950/80 via-slate-900/60 to-purple-950/40"></div>
+
+            <div className="max-w-7xl mx-auto text-center relative z-10 hero-content">
+              <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white slide-in-up">
+                Smart IT & <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Automation Solutions</span>
+              </h1>
+              <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto fade-in">
+                Save time. Reduce errors. Let IT work for you automatically.
+              </p>
             </div>
+          </section>
 
-            {/* Services Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {extraServices.map((service, index) => {
-                const IconComponent = service.icon;
-                return (
-                  <div 
-                    key={index}
-                    className="liquid-card group"
-                    data-testid={`service-${service.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-2xl border border-gray-600/20 backdrop-blur-sm h-full transition-all duration-300 hover:border-blue-500/40 hover:-translate-y-1">
-                      
-                      {/* Category Badge */}
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="px-2 py-1 text-xs rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                          {service.category}
-                        </span>
-                        <IconComponent className="w-6 h-6 text-blue-400" />
-                      </div>
+          {/* Main Content Area */}
+          <section className="liquid-section px-4 pb-20">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex gap-8">
 
-                      {/* Service Info */}
-                      <h3 className="text-lg font-bold text-white mb-3 group-hover:text-blue-300 transition-colors">
-                        {service.name}
-                      </h3>
-                      
-                      <p className="text-gray-400 text-sm mb-4 leading-relaxed">
-                        {service.description}
-                      </p>
+                {/* Left Sidebar - Filters */}
+                <div className="w-64 flex-shrink-0">
+                  <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 sticky top-24 fade-in">
+                    <h3 className="text-lg font-semibold text-white mb-4">Filter</h3>
 
-                      {/* Pricing */}
-                      <div className="mt-auto">
-                        <div className="text-xl font-bold text-blue-400 mb-3">
-                          {service.price}
-                        </div>
-                        
-                        <button className="w-full bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/40 text-blue-300 hover:text-white py-2 rounded-lg transition-all duration-300 text-sm font-medium">
-                          Request Quote
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium text-gray-400 mb-3">Categories</h4>
+                      {categories.map((category) => (
+                        <button
+                          key={category}
+                          onClick={() => setSelectedCategory(category)}
+                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                            selectedCategory === category
+                              ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                              : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                          }`}
+                          data-testid={`filter-${category.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          {category}
                         </button>
-                      </div>
+                      ))}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
 
-            {/* Contact CTA */}
-            <div className="text-center mt-16 fade-in">
-              <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-purple-500/20 backdrop-blur-sm max-w-2xl mx-auto">
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  Need Something Custom?
-                </h3>
-                <p className="text-gray-300 mb-6">
-                  Can't find what you're looking for? Contact us for custom IT solutions tailored to your specific business requirements.
-                </p>
-                <button className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                  Contact Our Team
-                </button>
+                {/* Right Content Area */}
+                <div className="flex-1">
+
+                  {/* Search Bar */}
+                  <div className="flex items-center justify-between mb-8 fade-in">
+                    <div className="relative flex-1 max-w-md">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="text"
+                        placeholder="Search for a solution..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500/50 backdrop-blur-sm"
+                        data-testid="search-input"
+                      />
+                    </div>
+                    <div className="text-gray-400 text-sm ml-4">
+                      Show <span className="text-white font-medium">{filteredSolutions.length}</span> of {automationSolutions.length} results
+                    </div>
+                  </div>
+
+                  {/* Solutions Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 solutions-grid">
+                    {filteredSolutions.map((solution, index) => {
+                      const IconComponent = solution.icon;
+                      return (
+                        <div
+                          key={index}
+                          className="liquid-card bg-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 group"
+                          data-testid={`solution-${solution.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        >
+                          {/* Solution Header */}
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center border border-blue-500/30 flex-shrink-0">
+                              <IconComponent className="w-6 h-6 text-blue-400" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors">
+                                {solution.name}
+                              </h3>
+                              <div className="text-sm text-blue-400 font-medium">
+                                {solution.category}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Description */}
+                          <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                            {solution.description}
+                          </p>
+
+                          {/* Tags */}
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {solution.tags.slice(0, 3).map((tag, tagIndex) => (
+                              <span
+                                key={tagIndex}
+                                className="px-2 py-1 text-xs bg-slate-800/80 text-gray-300 rounded-md border border-gray-600/30"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* CTA */}
+                          <div className="pt-4 border-t border-gray-700/50">
+                            <button className="w-full px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-sm font-medium rounded-lg border border-blue-500/30 transition-colors" data-testid={`button-${solution.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                              Learn More
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* No Results */}
+                  {filteredSolutions.length === 0 && (
+                    <div className="text-center py-16">
+                      <div className="text-gray-400 text-lg mb-2">No solutions found</div>
+                      <div className="text-gray-500 text-sm">Try adjusting your search or filter criteria</div>
+                    </div>
+                  )}
+
+                  {/* Call to Action */}
+                  <div className="mt-16 text-center fade-in">
+                    <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-purple-500/20 backdrop-blur-sm max-w-2xl mx-auto">
+                      <h3 className="text-2xl font-bold text-white mb-4">
+                        Need Custom Automation?
+                      </h3>
+                      <p className="text-gray-300 mb-6">
+                        Looking for specific automation solutions? We create custom workflows tailored to your unique business requirements.
+                      </p>
+                      <button className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors" data-testid="button-custom-automation">
+                        Discuss Your Needs
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      </main>
-      
+          </section>
+        </main>
+      </div>
+
       <Footer />
     </div>
   );

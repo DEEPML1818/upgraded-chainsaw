@@ -41,15 +41,15 @@
   --font-mono: 'JetBrains Mono', monospace;
   --radius: 1rem;
   
-  /* FlowTech Custom Properties */
-  --flowtech-primary: hsl(239, 84%, 67%);
-  --flowtech-accent: hsl(188, 95%, 43%);
-  --flowtech-dark-bg: hsl(215, 27.9%, 16.9%);
-  --flowtech-glass-bg: hsla(215, 27.9%, 16.9%, 0.4);
-  --flowtech-glass-border: hsla(239, 84%, 67%, 0.1);
-  --flowtech-text-primary: hsl(0, 0%, 100%);
-  --flowtech-text-secondary: hsla(0, 0%, 100%, 0.7);
-  --flowtech-text-muted: hsla(0, 0%, 100%, 0.5);
+  /* klangIts Custom Properties */
+  --klang-primary: hsl(239, 84%, 67%);
+  --klang-accent: hsl(188, 95%, 43%);
+  --klang-dark-bg: hsl(215, 27.9%, 16.9%);
+  --klang-glass-bg: hsla(215, 27.9%, 16.9%, 0.4);
+  --klang-glass-border: hsla(239, 84%, 67%, 0.1);
+  --klang-text-primary: hsl(0, 0%, 100%);
+  --klang-text-secondary: hsla(0, 0%, 100%, 0.7);
+  --klang-text-muted: hsla(0, 0%, 100%, 0.5);
 }
 
 .dark {
@@ -81,8 +81,8 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    background: var(--flowtech-dark-bg);
-    color: var(--flowtech-text-primary);
+    background: var(--klang-dark-bg);
+    color: var(--klang-text-primary);
     overflow-x: hidden;
     line-height: 1.6;
   }
@@ -144,7 +144,7 @@
   .orb-1 {
     width: 200px;
     height: 200px;
-    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    background: linear-gradient(45deg, var(--klang-primary), var(--klang-accent));
     top: 10%;
     left: 10%;
     animation-delay: 0s;
@@ -153,7 +153,7 @@
   .orb-2 {
     width: 150px;
     height: 150px;
-    background: linear-gradient(135deg, var(--flowtech-accent), var(--flowtech-primary));
+    background: linear-gradient(135deg, var(--klang-accent), var(--klang-primary));
     top: 70%;
     right: 10%;
     animation-delay: -7s;
@@ -162,7 +162,7 @@
   .orb-3 {
     width: 100px;
     height: 100px;
-    background: linear-gradient(225deg, var(--flowtech-primary), transparent);
+    background: linear-gradient(225deg, var(--klang-primary), transparent);
     top: 40%;
     left: 80%;
     animation-delay: -14s;
@@ -176,9 +176,9 @@
 
   /* Glass Card Component */
   .glass-card {
-    background: var(--flowtech-glass-bg);
+    background: var(--klang-glass-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--flowtech-glass-border);
+    border: 1px solid var(--klang-glass-border);
     border-radius: 20px;
     padding: 2rem;
     transition: all 0.3s ease;
@@ -193,7 +193,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--flowtech-primary), transparent);
+    background: linear-gradient(90deg, transparent, var(--klang-primary), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -209,7 +209,7 @@
   }
 
   /* Button Styles */
-  .btn-flowtech {
+  .btn-klang {
     display: inline-block;
     padding: 1rem 2rem;
     border: none;
@@ -223,23 +223,23 @@
     font-size: 1rem;
   }
 
-  .btn-flowtech-primary {
-    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
-    color: var(--flowtech-text-primary);
+  .btn-klang-primary {
+    background: linear-gradient(45deg, var(--klang-primary), var(--klang-accent));
+    color: var(--klang-text-primary);
   }
 
-  .btn-flowtech-secondary {
+  .btn-klang-secondary {
     background: transparent;
-    color: var(--flowtech-text-primary);
-    border: 2px solid var(--flowtech-primary);
+    color: var(--klang-text-primary);
+    border: 2px solid var(--klang-primary);
   }
 
-  .btn-flowtech:hover {
+  .btn-klang:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 30px hsla(239, 84%, 67%, 0.3);
   }
 
-  .btn-flowtech::before {
+  .btn-klang::before {
     content: '';
     position: absolute;
     top: 0;
@@ -250,12 +250,12 @@
     transition: left 0.5s ease;
   }
 
-  .btn-flowtech:hover::before {
+  .btn-klang:hover::before {
     left: 100%;
   }
 
   /* Progress Bar Styles */
-  .progress-bar-flowtech {
+  .progress-bar-klang {
     width: 100%;
     height: 8px;
     background: hsla(239, 84%, 67%, 0.1);
@@ -263,9 +263,9 @@
     overflow: hidden;
   }
 
-  .progress-fill-flowtech {
+  .progress-fill-klang {
     height: 100%;
-    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    background: linear-gradient(45deg, var(--klang-primary), var(--klang-accent));
     border-radius: 4px;
     width: 0%;
     transition: width 1s ease;
@@ -284,7 +284,7 @@
     position: absolute;
     width: 4px;
     height: 4px;
-    background: var(--flowtech-accent);
+    background: var(--klang-accent);
     border-radius: 50%;
     opacity: 0.5;
     animation: particle-float 15s linear infinite;
@@ -455,7 +455,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(45deg, var(--flowtech-primary), var(--flowtech-accent));
+    background: linear-gradient(45deg, var(--klang-primary), var(--klang-accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -520,30 +520,60 @@
     50% { transform: translateY(-10px); }
   }
 
-  /* Mobile optimizations */
+  /* Aggressive mobile optimizations */
   @media (max-width: 768px) {
-    .flow-text {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    /* Disable heavy animations on mobile */
+    .floating-particle,
+    .liquid-hero,
+    .flow-card,
+    .flow-text,
+    .orb-1,
+    .orb-2,
+    .orb-3 {
+      animation: none !important;
+      transition: opacity 0.2s ease !important;
+      transform: none !important;
     }
     
-    .floating-particle {
-      animation-duration: 12s;
-    }
-    
+    /* Simplify cards for mobile */
     .liquid-card {
       transform: none !important;
       perspective: none !important;
+      will-change: auto !important;
+      backface-visibility: visible !important;
     }
     
-    /* Reduce motion for mobile */
-    @media (prefers-reduced-motion: reduce) {
-      .floating-particle,
-      .liquid-hero,
-      .flow-card,
-      .flow-text {
-        animation: none !important;
-        transition: none !important;
-      }
+    /* Reduce backdrop blur on mobile */
+    .backdrop-blur-xl,
+    .backdrop-blur-lg {
+      backdrop-filter: blur(8px) !important;
+    }
+    
+    /* Disable expensive effects */
+    .webgl-container,
+    .three-canvas,
+    .particle-system {
+      display: none !important;
+    }
+    
+    /* Optimize text rendering */
+    .flow-text {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      text-rendering: optimizeSpeed !important;
+    }
+    
+    /* Reduce motion for all mobile users */
+    * {
+      animation-duration: 0.3s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.2s !important;
+    }
+    
+    /* Hide decorative elements */
+    .floating-orb,
+    .background-particle,
+    .decorative-element {
+      display: none !important;
     }
   }
 
@@ -566,7 +596,7 @@
   }
 
   .text-gradient-hero {
-    background: linear-gradient(45deg, var(--flowtech-text-primary), var(--flowtech-accent));
+    background: linear-gradient(45deg, var(--klang-text-primary), var(--klang-accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

@@ -1,0 +1,38 @@
+Cannot convert object to primitive value
+The above error occurred in one of your React components:
+
+    at Lazy
+    at Suspense
+    at div
+    at Home (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/src/pages/home.tsx:37:35)
+    at Route (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=33889a27:323:16)
+    at Switch (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=33889a27:379:17)
+    at Suspense
+    at Router
+    at Provider (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-532U4VYK.js?v=33889a27:72:15)
+    at TooltipProvider (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=33889a27:2247:5)
+    at QueryClientProvider (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=33889a27:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+The above error occurred in one of your React components:
+
+    at Lazy
+    at Suspense
+    at div
+    at div
+    at div
+    at Home (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/src/pages/home.tsx:37:35)
+    at Route (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=33889a27:323:16)
+    at Switch (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=33889a27:379:17)
+    at Suspense
+    at Router
+    at Provider (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-532U4VYK.js?v=33889a27:72:15)
+    at TooltipProvider (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=33889a27:2247:5)
+    at QueryClientProvider (https://99e1c984-cf2e-4bbb-891e-be7997bccdc9-00-3lmelg1zalxgj.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=33889a27:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Cannot convert object to primitive value

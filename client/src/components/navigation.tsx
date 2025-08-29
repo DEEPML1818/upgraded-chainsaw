@@ -14,17 +14,17 @@ export function Navigation() {
       <div className="max-w-6xl mx-auto px-8 flex justify-between items-center">
         <Link href="/">
           <div className="text-2xl font-bold text-gradient cursor-pointer">
-            Flow<span className="text-cyan-400">Tech</span>
+            klang<span className="text-cyan-400">Its</span>
           </div>
         </Link>
-        
+
         <ul className={`nav-links hidden md:flex list-none gap-8 ${mobileMenuOpen ? 'nav-links-mobile' : ''}`}>
           <li>
-            <Link 
+            <Link
               href="/services"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
-                isActive('/services') 
-                  ? 'text-white border-b-2 border-cyan-400' 
+                isActive('/services')
+                  ? 'text-white border-b-2 border-cyan-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-services"
@@ -33,11 +33,11 @@ export function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
-              href="/solutions"
+            <Link
+              href="/solution"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
-                isActive('/solutions') 
-                  ? 'text-white border-b-2 border-blue-400' 
+                isActive('/solution')
+                  ? 'text-white border-b-2 border-blue-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-solutions"
@@ -46,11 +46,11 @@ export function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
+            <Link
               href="/about"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
-                isActive('/about') 
-                  ? 'text-white border-b-2 border-purple-400' 
+                isActive('/about')
+                  ? 'text-white border-b-2 border-purple-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-about"
@@ -59,11 +59,11 @@ export function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
+            <Link
               href="/contact"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
-                isActive('/contact') 
-                  ? 'text-white border-b-2 border-green-400' 
+                isActive('/contact')
+                  ? 'text-white border-b-2 border-green-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-contact"
@@ -72,28 +72,27 @@ export function Navigation() {
             </Link>
           </li>
         </ul>
-        
-        <div 
-          className={`mobile-menu-btn md:hidden flex flex-col cursor-pointer gap-1 ${mobileMenuOpen ? 'active' : ''}`}
+
+        {/* Mobile Menu button - Simplified */}
+        <button
+          className="md:hidden mobile-menu-btn p-2 text-white"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          data-testid="mobile-menu-toggle"
+          aria-label="Toggle menu"
         >
-          <span className="w-6 h-0.5 bg-white transition-all duration-300"></span>
-          <span className="w-6 h-0.5 bg-white transition-all duration-300"></span>
-          <span className="w-6 h-0.5 bg-white transition-all duration-300"></span>
-        </div>
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
       </div>
-      
+
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <ul className="nav-links-mobile md:hidden bg-slate-950/95 backdrop-blur-lg border-t border-gray-700/50 py-6 px-8">
           <li className="mb-4">
-            <Link 
+            <Link
               href="/services"
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
-                isActive('/services') 
-                  ? 'text-cyan-400' 
+                isActive('/services')
+                  ? 'text-cyan-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-services"
@@ -102,12 +101,12 @@ export function Navigation() {
             </Link>
           </li>
           <li className="mb-4">
-            <Link 
-              href="/solutions"
+            <Link
+              href="/solution"
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
-                isActive('/solutions') 
-                  ? 'text-blue-400' 
+                isActive('/solution')
+                  ? 'text-blue-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-solutions"
@@ -116,12 +115,12 @@ export function Navigation() {
             </Link>
           </li>
           <li className="mb-4">
-            <Link 
+            <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
-                isActive('/about') 
-                  ? 'text-purple-400' 
+                isActive('/about')
+                  ? 'text-purple-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-about"
@@ -130,12 +129,12 @@ export function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
+            <Link
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
-                isActive('/contact') 
-                  ? 'text-green-400' 
+                isActive('/contact')
+                  ? 'text-green-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-contact"
