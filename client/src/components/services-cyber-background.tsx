@@ -196,49 +196,6 @@ export function ServicesCyberBackground() {
         </div>
       </motion.div>
 
-      {/* Network Activity Visualization */}
-      <motion.div 
-        className="absolute bottom-6 left-6 right-6 bg-black/80 backdrop-blur-lg rounded-xl border border-cyan-500/40 p-4 shadow-2xl shadow-cyan-500/10"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: 'easeOut', delay: 0.6 }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs font-mono text-center">
-          {[
-            { label: 'Active Connections', value: '1,247', color: '#06b6d4', unit: '' },
-            { label: 'Threats Blocked', value: '89', color: '#ef4444', unit: '' },
-            { label: 'Data Protected', value: '4.7', color: '#10b981', unit: 'TB' },
-            { label: 'Security Score', value: '99.8', color: '#f59e0b', unit: '%' }
-          ].map((stat, index) => (
-            <motion.div 
-              key={index}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1.8 + index * 0.1 }}
-            >
-              <motion.div 
-                className="font-bold text-lg mb-1"
-                style={{ color: stat.color }}
-                animate={{ 
-                  textShadow: [
-                    `0 0 5px ${stat.color}40`,
-                    `0 0 15px ${stat.color}60`,
-                    `0 0 5px ${stat.color}40`
-                  ]
-                }}
-                transition={{ 
-                  duration: 3, 
-                  repeat: Infinity,
-                  delay: Math.random() * 2
-                }}
-              >
-                {stat.value}{stat.unit}
-              </motion.div>
-              <div className="text-gray-400">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
 
       {/* Binary Rain Effect */}
       <div className="absolute inset-0">

@@ -135,6 +135,32 @@ export default function Home() {
           <div className="liquid-section hero">
             <FramerHeroSection />
           </div>
+          
+          {/* Network Activity Statistics Banner */}
+          <div className="relative z-30 px-6 py-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="bg-black/80 backdrop-blur-lg rounded-xl border border-cyan-500/40 p-4 shadow-2xl shadow-cyan-500/10">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs font-mono text-center">
+                  {[
+                    { label: 'Active Connections', value: '1,247', color: '#06b6d4', unit: '' },
+                    { label: 'Threats Blocked', value: '89', color: '#ef4444', unit: '' },
+                    { label: 'Data Protected', value: '4.7', color: '#10b981', unit: 'TB' },
+                    { label: 'Security Score', value: '99.8', color: '#f59e0b', unit: '%' }
+                  ].map((stat, index) => (
+                    <div key={index}>
+                      <div 
+                        className="font-bold text-lg mb-1"
+                        style={{ color: stat.color }}
+                      >
+                        {stat.value}{stat.unit}
+                      </div>
+                      <div className="text-gray-400">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="liquid-section fade-in">
             <SecurityFeatures />
           </div>
