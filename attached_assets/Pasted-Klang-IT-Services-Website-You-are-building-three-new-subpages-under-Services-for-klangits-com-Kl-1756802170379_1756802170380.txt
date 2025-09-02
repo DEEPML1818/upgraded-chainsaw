@@ -1,0 +1,149 @@
+Klang IT Services Website
+
+You are building three new subpages under “Services” for klangits.com (Klang IT Services). Please generate clean, modern, professional website copy and structure based on the following requirements.
+
+The design theme should use blue (trust), white (clean), and grey (stability) with a corporate IT look. Fonts should be modern sans-serif (e.g., Open Sans, Inter, or Lato). Layouts should be grid-based, minimalist, and professional. Please include interactive components where relevant (pricing tables, FAQ accordions, interactive map). Add trust elements (certifications, client logos, testimonials) where possible.
+
+🔹 Page 1: IT Services
+
+This page is a service showcase, similar to “IT Solutions,” but focusing purely on listing IT services.
+
+Content requirements:
+
+Hero Section:
+
+Headline: “Our IT Services”
+
+Subheadline: “Comprehensive IT solutions to keep your business running securely and smoothly.”
+
+Call-to-action button: “Talk to Us Today”
+
+Services Grid (cards layout, 2–3 lines each):
+
+Managed IT Support
+
+Network & Infrastructure
+
+Cybersecurity Solutions
+
+Cloud & Email Services
+
+Backup & Disaster Recovery
+
+Automation & AI Solutions
+
+IT Consulting
+
+Bottom Call-to-Action:
+
+Text: “Looking for tailored IT solutions? Contact our team for a free consultation.”
+
+🔹 Page 2: Managed IT Services
+
+This page highlights all packages, feature comparisons, out-of-scope extras, supported area map, and FAQs.
+
+Content requirements:
+
+Hero Section:
+
+Headline: “Managed IT Services for Every Business”
+
+Subheadline: “Choose the plan that fits your needs – from free AI support to enterprise-level IT management.”
+
+Pricing Packages (use wide pricing cards and include feature comparison + extra services tables):
+
+Free: Klang AI (Powered by GPT Store) – AI assistant only.
+
+RM80/Device – Essential Care: Basic support, OS troubleshooting, printer/email help, monthly health checks.
+
+RM120/Device – Standard Care: Everything in Essential plus unlimited remote support, endpoint patching, asset/license management, faster SLA.
+
+RM180/Device – Premium Care: Everything in Standard plus 24/7 coverage, proactive monitoring, advanced security, backup & recovery, quarterly IT strategy review.
+
+Enterprise (Custom Pricing): Tailored solutions including domains, corporate email, cloud, servers, workflow automation, enterprise security, and custom SLA with account manager.
+
+Out-of-Scope & Extra Billable Services (modern table layout, full width). Use this table:
+
+Service	Description	Rate (RM)	Location Coverage
+Extra Remote Support Hours	Additional remote troubleshooting beyond plan limits	100/hr	Anywhere (remote)
+Onsite Troubleshooting Beyond Limit	Engineer dispatched for issues outside plan coverage	150/hr	Within 30km HQ
+After-Hours Incident Response	Support outside standard SLA (nights/weekends)	300/case	West Malaysia
+Break-Fix Hardware Replacement	Replace/repair failed hardware (labour only)	Quoted	Onsite
+Special Project Requests	Ad-hoc IT projects outside scope	Quoted	Case by case
+Server Support (Add-On)	Windows/Linux server maintenance not in package	300/server/month	Anywhere
+Backup & Disaster Recovery (Add-On)	Endpoint/server backup solutions	30–50/device/month	Anywhere
+Software Deployment Projects	Large-scale rollout of apps (e.g., Office, ERP)	Quoted	Anywhere
+IT Relocation Services	Moving IT infrastructure to new site	From 1,500/project	Onsite
+Cybersecurity Audit	Security assessment & compliance check	From 3,000/project	Anywhere
+Training & Workshops	Employee IT or cybersecurity training	1,000/session	Onsite/Virtual
+Procurement Services	Sourcing & installing new hardware/software	5–10% procurement fee	Anywhere
+
+Supported Area Section with Interactive Map:
+
+Default pin = HQ location.
+
+Search box for locations.
+
+Zones to show:
+
+Onsite Support: within 30km radius of HQ.
+
+Virtual Support: anywhere in West Malaysia (after 30km).
+
+Unsupported: outside West Malaysia (contact for enquiry).
+
+FAQ Section (10 Q&A):
+
+FAQ Content:
+
+What does “per device” mean? → Per device means each workstation, laptop, or endpoint covered by the plan. Servers are billed separately.
+
+Do you provide hardware replacements? → Hardware is not included. We can supply and install hardware at additional cost.
+
+Is support unlimited? → Remote support is unlimited within your plan. Onsite visits depend on your package tier.
+
+How fast will you respond to issues? → SLA depends on your plan: RM80 = next business day, RM120 = 4 hours (business hours), RM180 = 1 hour (24/7).
+
+What areas do you cover? → Onsite support is within 30km of HQ. Virtual support covers West Malaysia. Outside West Malaysia is by enquiry.
+
+Do you provide weekend or after-hours support? → RM180 plan includes 24/7 support. RM80 and RM120 plans can request after-hours support as a billable add-on.
+
+How does the Klang AI free tier work? → Klang AI is a free GPT-powered assistant for troubleshooting and FAQs. It does not replace human engineers.
+
+What’s included in backup support? → RM180 includes endpoint backup. RM120 can add it. RM80 does not include backup.
+
+Do you support servers as well as PCs? → Yes. Server support is available as an add-on or in Enterprise packages.
+
+Can services be customized for my business? → Yes, we can tailor services and create a custom SLA for your business.
+
+🔹 Page 3: Consulting
+
+This page should be based on the consulting-page-structure.pdf provided earlier.
+
+Content requirements:
+
+Hero Section: strong headline, background image, CTA button.
+
+About Consulting: why businesses need IT consulting, challenges we solve.
+
+Our Consulting Services (grid with icons): IT Strategy & Roadmap, Cloud & Infrastructure, Cybersecurity, Digital Transformation, Software Integration, IT Governance & Compliance.
+
+How We Work (timeline/steps): Discovery → Strategy → Implementation → Optimization.
+
+Why Choose Us: 3-column layout (Expertise, Tailored Solutions, End-to-End Support).
+
+Final CTA: “Schedule a Free Consultation with Klang IT Services.”
+
+🔹 CTA & Tagline Suggestions
+
+Please use these across the new pages where relevant:
+
+“Smarter IT. Smarter Business.”
+
+“Your IT, Our Expertise.”
+
+“Powering Business Growth with Reliable IT.”
+
+“AI + Human IT Support – The Future of Business IT.”
+
+“Klang IT Services – Your Trusted IT Partner.”

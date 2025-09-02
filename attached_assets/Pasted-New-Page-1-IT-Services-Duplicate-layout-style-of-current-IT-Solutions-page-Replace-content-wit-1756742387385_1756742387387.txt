@@ -1,0 +1,137 @@
+New Page 1: IT Services
+
+Duplicate layout style of current “IT Solutions” page.
+
+Replace content with list of IT Services only (no solutions wording).
+
+Sections:
+
+Hero Section:
+
+Title: “Our IT Services”
+
+Subtitle: “Reliable, affordable, and tailored IT services for SMEs & enterprises.”
+
+Services Grid (cards layout, 6–8 items):
+
+IT Support & Helpdesk
+
+Network Setup & Maintenance
+
+Hardware & Software Support
+
+Cybersecurity Essentials
+
+Cloud & Backup Services
+
+IT Asset & License Management
+
+Printer & Peripheral Setup
+
+Remote Monitoring & Maintenance
+
+New Page 2: Managed IT Services
+
+Hero Section
+
+Title: “Managed IT Services”
+
+Subtitle: “Flexible, scalable IT packages that fit your business.”
+
+IT Packages Section
+
+Show RM 80, RM 120, RM 180 packages in wider column layout.
+
+Include Feature Comparison Table (from our last comparison) → full width.
+
+Extra Services Section (Modern Table Layout)
+
+Title: “Extra Billable Services (After Quota / Out of Scope)”
+
+Table columns: Service | Included in Base | Extra Charges | Supported Locations
+
+Rows:
+
+Extra Onsite Support
+
+Extra Remote Troubleshooting (after-hours)
+
+Hardware Replacement Labour
+
+New User Onboarding (beyond quota)
+
+Specialized Software Installations
+
+ERP / Accounting Support
+
+Server & Firewall Management
+
+Backup Storage (extra GB)
+
+Cybersecurity (EDR, SOC)
+
+CCTV & Project Work
+
+Supported Areas Section (Interactive Map)
+
+Default pinned HQ location.
+
+Search bar for typing a location.
+
+Dynamic radius view:
+
+Onsite Support: within 30km from HQ.
+
+Virtual Support: anywhere in West Malaysia.
+
+Unsupported: Out of West Malaysia (show message: “Call for enquiry”).
+
+FAQ Section (10 questions)
+Example Q&A:
+
+What is included in each plan?
+
+Can I mix different packages for different staff?
+
+How do onsite visit quotas work?
+
+What if I need 24/7 support?
+
+Is server support included?
+
+What happens if I exceed backup storage?
+
+Do you support custom ERP software?
+
+What’s your response time SLA?
+
+How do you calculate distance for onsite support?
+
+Can I upgrade/downgrade my package anytime?
+
+New Page 3: Consulting
+
+(Follow uploaded doc [consulting-page-structure.pdf]
+)
+
+Sections:
+
+Hero Section → Background image, H1 + subheading + CTA.
+
+About Consulting → short intro about IT consulting & business challenges.
+
+Our Consulting Services → Grid/cards (IT Strategy, Cloud, Cybersecurity, Digital Transformation, Integration, Governance).
+
+How We Work → 4-step process (Discovery, Planning, Implementation, Optimization).
+
+Why Choose Us → 3-column differentiators (Expertise, Tailored Solutions, End-to-End Support).
+
+Call to Action → strong CTA at bottom (“Schedule a Free Consultation”).
+
+Design Recommendations:
+
+Tech illustrations or consulting team visuals.
+
+Consistent branding, fonts, colors with main site.
+
+Trust elements: certifications, partners, client logos.

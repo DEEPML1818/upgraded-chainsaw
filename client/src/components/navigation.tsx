@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
+import { ChevronDown } from 'lucide-react';
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [location] = useLocation();
 
   const isActive = (path: string) => {
     return location === path;
+  };
+
+  const isServicesActive = () => {
+    return isActive('/it-services') || isActive('/managed-it-services') || isActive('/consulting');
   };
 
   return (
@@ -18,26 +25,72 @@ export function Navigation() {
           </div>
         </Link>
 
-        <ul className={`nav-links hidden md:flex list-none gap-8 ${mobileMenuOpen ? 'nav-links-mobile' : ''}`}>
-          <li>
-            <Link
-              href="/services"
-              className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
-                isActive('/services')
-                  ? 'text-white border-b-2 border-cyan-400'
+        <ul className={`nav-links hidden md:flex list-none gap-6 ${mobileMenuOpen ? 'nav-links-mobile' : ''}`}>
+          {/* Services Dropdown */}
+          <li className="relative group">
+            <button
+              className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 flex items-center gap-1 ${
+                isServicesActive()
+                  ? 'text-white border-b-2 border-blue-400'
                   : 'text-white/70 hover:text-white'
               }`}
-              data-testid="nav-services"
+              data-testid="nav-services-dropdown"
+              onMouseEnter={() => setServicesDropdownOpen(true)}
+              onMouseLeave={() => setServicesDropdownOpen(false)}
             >
               Services
-            </Link>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Dropdown Menu */}
+            <div 
+              className={`absolute top-full left-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-lg border border-gray-700/50 rounded-xl shadow-2xl transition-all duration-200 ${
+                servicesDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+              }`}
+              onMouseEnter={() => setServicesDropdownOpen(true)}
+              onMouseLeave={() => setServicesDropdownOpen(false)}
+            >
+              <div className="py-2">
+                <Link
+                  href="/it-services"
+                  className={`block px-4 py-3 text-sm font-medium transition-colors hover:bg-slate-800/50 ${
+                    isActive('/it-services') ? 'text-blue-400 bg-slate-800/30' : 'text-gray-300 hover:text-white'
+                  }`}
+                  data-testid="dropdown-it-services"
+                >
+                  IT Services
+                  <div className="text-xs text-gray-500 mt-1">General IT support and services</div>
+                </Link>
+                <Link
+                  href="/managed-it-services"
+                  className={`block px-4 py-3 text-sm font-medium transition-colors hover:bg-slate-800/50 ${
+                    isActive('/managed-it-services') ? 'text-cyan-400 bg-slate-800/30' : 'text-gray-300 hover:text-white'
+                  }`}
+                  data-testid="dropdown-managed-services"
+                >
+                  Managed IT Services
+                  <div className="text-xs text-gray-500 mt-1">Complete IT support packages</div>
+                </Link>
+                <Link
+                  href="/consulting"
+                  className={`block px-4 py-3 text-sm font-medium transition-colors hover:bg-slate-800/50 ${
+                    isActive('/consulting') ? 'text-indigo-400 bg-slate-800/30' : 'text-gray-300 hover:text-white'
+                  }`}
+                  data-testid="dropdown-consulting"
+                >
+                  IT Consulting
+                  <div className="text-xs text-gray-500 mt-1">Strategic technology guidance</div>
+                </Link>
+              </div>
+            </div>
           </li>
+          
           <li>
             <Link
               href="/solution"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
                 isActive('/solution')
-                  ? 'text-white border-b-2 border-blue-400'
+                  ? 'text-white border-b-2 border-purple-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-solutions"
@@ -50,7 +103,7 @@ export function Navigation() {
               href="/about"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
                 isActive('/about')
-                  ? 'text-white border-b-2 border-purple-400'
+                  ? 'text-white border-b-2 border-green-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-about"
@@ -63,7 +116,7 @@ export function Navigation() {
               href="/contact"
               className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
                 isActive('/contact')
-                  ? 'text-white border-b-2 border-green-400'
+                  ? 'text-white border-b-2 border-orange-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="nav-contact"
@@ -86,27 +139,71 @@ export function Navigation() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <ul className="nav-links-mobile md:hidden bg-slate-950/95 backdrop-blur-lg border-t border-gray-700/50 py-6 px-8">
+          {/* Mobile Services Section */}
           <li className="mb-4">
-            <Link
-              href="/services"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`font-medium transition-all duration-300 ${
-                isActive('/services')
-                  ? 'text-cyan-400'
+            <button
+              onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+              className={`w-full flex items-center justify-between font-medium transition-all duration-300 ${
+                isServicesActive()
+                  ? 'text-blue-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-services"
             >
               Services
-            </Link>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Mobile Services Submenu */}
+            {mobileServicesOpen && (
+              <div className="mt-3 ml-4 space-y-3 border-l border-gray-700/50 pl-4">
+                <Link
+                  href="/it-services"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block font-medium transition-all duration-300 ${
+                    isActive('/it-services')
+                      ? 'text-blue-400'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  data-testid="mobile-nav-it-services"
+                >
+                  IT Services
+                </Link>
+                <Link
+                  href="/managed-it-services"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block font-medium transition-all duration-300 ${
+                    isActive('/managed-it-services')
+                      ? 'text-cyan-400'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  data-testid="mobile-nav-managed-services"
+                >
+                  Managed IT Services
+                </Link>
+                <Link
+                  href="/consulting"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block font-medium transition-all duration-300 ${
+                    isActive('/consulting')
+                      ? 'text-indigo-400'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  data-testid="mobile-nav-consulting"
+                >
+                  IT Consulting
+                </Link>
+              </div>
+            )}
           </li>
+          
           <li className="mb-4">
             <Link
               href="/solution"
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
                 isActive('/solution')
-                  ? 'text-blue-400'
+                  ? 'text-purple-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-solutions"
@@ -120,7 +217,7 @@ export function Navigation() {
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
                 isActive('/about')
-                  ? 'text-purple-400'
+                  ? 'text-green-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-about"
@@ -134,7 +231,7 @@ export function Navigation() {
               onClick={() => setMobileMenuOpen(false)}
               className={`font-medium transition-all duration-300 ${
                 isActive('/contact')
-                  ? 'text-green-400'
+                  ? 'text-orange-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-contact"
