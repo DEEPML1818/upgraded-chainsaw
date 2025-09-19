@@ -5,7 +5,9 @@ import { ChevronDown } from 'lucide-react';
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
   const [location] = useLocation();
 
   const isActive = (path: string) => {
@@ -14,6 +16,10 @@ export function Navigation() {
 
   const isServicesActive = () => {
     return isActive('/it-services') || isActive('/managed-it-services') || isActive('/consulting');
+  };
+
+  const isSolutionsActive = () => {
+    return isActive('/solution') || isActive('/business-solutions');
   };
 
   return (
@@ -85,18 +91,53 @@ export function Navigation() {
             </div>
           </li>
           
-          <li>
-            <Link
-              href="/solution"
-              className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 ${
-                isActive('/solution')
+          {/* Solutions Dropdown */}
+          <li className="relative group">
+            <button
+              className={`font-medium transition-all duration-300 relative hover:-translate-y-0.5 flex items-center gap-1 ${
+                isSolutionsActive()
                   ? 'text-white border-b-2 border-purple-400'
                   : 'text-white/70 hover:text-white'
               }`}
-              data-testid="nav-solutions"
+              data-testid="nav-solutions-dropdown"
+              onMouseEnter={() => setSolutionsDropdownOpen(true)}
+              onMouseLeave={() => setSolutionsDropdownOpen(false)}
             >
               Solutions
-            </Link>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${solutionsDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Solutions Dropdown Menu */}
+            <div 
+              className={`absolute top-full left-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-lg border border-gray-700/50 rounded-xl shadow-2xl transition-all duration-200 ${
+                solutionsDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+              }`}
+              onMouseEnter={() => setSolutionsDropdownOpen(true)}
+              onMouseLeave={() => setSolutionsDropdownOpen(false)}
+            >
+              <div className="py-2">
+                <Link
+                  href="/solution"
+                  className={`block px-4 py-3 text-sm font-medium transition-colors hover:bg-slate-800/50 ${
+                    isActive('/solution') ? 'text-purple-400 bg-slate-800/30' : 'text-gray-300 hover:text-white'
+                  }`}
+                  data-testid="dropdown-solutions"
+                >
+                  IT Solutions
+                  <div className="text-xs text-gray-500 mt-1">Automation and workflow solutions</div>
+                </Link>
+                <Link
+                  href="/business-solutions"
+                  className={`block px-4 py-3 text-sm font-medium transition-colors hover:bg-slate-800/50 ${
+                    isActive('/business-solutions') ? 'text-purple-400 bg-slate-800/30' : 'text-gray-300 hover:text-white'
+                  }`}
+                  data-testid="dropdown-business-solutions"
+                >
+                  Business Solutions
+                  <div className="text-xs text-gray-500 mt-1">Interactive workflow diagrams</div>
+                </Link>
+              </div>
+            </div>
           </li>
           <li>
             <Link
@@ -197,19 +238,50 @@ export function Navigation() {
             )}
           </li>
           
+          {/* Mobile Solutions Section */}
           <li className="mb-4">
-            <Link
-              href="/solution"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`font-medium transition-all duration-300 ${
-                isActive('/solution')
+            <button
+              onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
+              className={`w-full flex items-center justify-between font-medium transition-all duration-300 ${
+                isSolutionsActive()
                   ? 'text-purple-400'
                   : 'text-white/70 hover:text-white'
               }`}
               data-testid="mobile-nav-solutions"
             >
               Solutions
-            </Link>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileSolutionsOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Mobile Solutions Submenu */}
+            {mobileSolutionsOpen && (
+              <div className="mt-3 ml-4 space-y-3 border-l border-gray-700/50 pl-4">
+                <Link
+                  href="/solution"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block font-medium transition-all duration-300 ${
+                    isActive('/solution')
+                      ? 'text-purple-400'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  data-testid="mobile-nav-it-solutions"
+                >
+                  IT Solutions
+                </Link>
+                <Link
+                  href="/business-solutions"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block font-medium transition-all duration-300 ${
+                    isActive('/business-solutions')
+                      ? 'text-purple-400'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  data-testid="mobile-nav-business-solutions"
+                >
+                  Business Solutions
+                </Link>
+              </div>
+            )}
           </li>
           <li className="mb-4">
             <Link

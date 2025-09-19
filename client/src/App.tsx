@@ -11,6 +11,7 @@ const ITServices = lazy(() => import("@/pages/it-services"));
 const ManagedITServices = lazy(() => import("@/pages/managed-it-services"));
 const Consulting = lazy(() => import("@/pages/consulting"));
 const Solutions = lazy(() => import("@/pages/solutions"));
+const BusinessSolutions = lazy(() => import("@/pages/business-solutions"));
 const About = lazy(() => import("@/pages/about"));
 const Contact = lazy(() => import("@/pages/contact"));
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/managed-it-services" component={ManagedITServices}/>
         <Route path="/consulting" component={Consulting}/>
         <Route path="/solution" component={Solutions}/>
+        <Route path="/business-solutions" component={BusinessSolutions}/>
         <Route path="/about" component={About}/>
         <Route path="/contact" component={Contact}/>
         <Route component={NotFound} />

@@ -1,0 +1,125 @@
+Each of the 6 solutions should be represented as a cloud/infra-style topology diagram (not just icons). The diagrams must look professional, clean, and enterprise-friendly (like AWS/Azure architecture diagrams, or NIST security topology charts).
+
+Use standard IT symbols:
+
+Cloud = ☁️ / cloud icon
+
+Server racks = 🖥️ / stack rectangles
+
+VPCs / network segments = rounded boxes
+
+Firewalls = 🔥 or shield wall
+
+VPN/SD-WAN links = dotted/curved arrows
+
+Identity/SSO = 👤 key or lock
+
+Service Mesh = interconnected hexagons or arrows inside cluster
+
+Bastion = padlock + server icon
+
+DR = two sites mirrored with replication arrows
+
+🔹 Solution 1: Custom SaaS Platforms — Multi-Tenant VPC + Service Mesh
+
+Topology to Show:
+
+Multiple isolated tenant VPCs (boxes) inside one cloud region
+
+Kubernetes microservices inside each VPC
+
+Ingress gateway at the edge
+
+Service mesh interconnecting microservices
+
+Autoscaler icon
+
+🔹 Solution 2: Enterprise Portals — Hub-and-Spoke Hybrid Cloud
+
+Topology to Show:
+
+Central Hub: Identity + SSO + API Gateway in cloud
+
+Spokes: Branch offices + On-Prem apps
+
+Connections: VPN/SD-WAN tunnels (arrows)
+
+Users authenticate via central hub then connect to apps
+
+🔹 Solution 3: Compliance & Reporting Automation — Segmented DMZ + Data Lake Overlay
+
+Topology to Show:
+
+DMZ network layer for data ingestion
+
+VLANs for compliance segregation
+
+WORM (Write Once Read Many) storage node
+
+Data Lake overlay (isolated cluster)
+
+Audit/reporting engine with secure egress
+
+🔹 Solution 4: ITIL-Based ITSM Kits — Zero-Trust Access Fabric
+
+Topology to Show:
+
+Service Desk server cluster
+
+ZTNA gateway in front
+
+Bastion hosts for admin access
+
+Segmented LAN + out-of-band mgmt network
+
+Microsegmentation lines (per-user/per-service)
+
+🔹 Solution 5: Operational Playbooks & SOP Generators — Bastioned Workflow Cluster
+
+Topology to Show:
+
+CI/CD + Automation Controllers cluster
+
+Isolated “Management VPC”
+
+Bastion node separating management VPC from production VPC
+
+Role-based access lines between networks
+
+Workflow automation nodes connected downstream
+
+🔹 Solution 6: Enterprise Recovery Kits — Multi-Site Active/Passive DR with SD-WAN
+
+Topology to Show:
+
+Two sites (Primary + DR)
+
+Encrypted SD-WAN tunnel connecting them
+
+Replication VLAN with asynchronous arrows
+
+Failover orchestrator icon
+
+Users switch automatically to DR during outage
+
+🔹 Diagram Styling Instructions
+
+Use enterprise topology look (similar to AWS/Azure architecture diagrams).
+
+Keep blue/grey/white corporate palette.
+
+Use rounded rectangles for VPCs/networks, cylinders for storage, arrows for flows.
+
+Make all diagrams consistent in style so the six can be showcased in one section grid.
+
+Add labels under each diagram: solution name + 1-line caption.
+
+✅ Deliverable
+
+6 clean network topology diagrams (one per solution)
+
+Professional enterprise styling
+
+Consistent legend/icons across all six
+
+Ready for Section 1: General Business Solutions of Klang IT Services website
