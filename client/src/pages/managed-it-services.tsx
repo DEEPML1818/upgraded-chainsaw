@@ -195,6 +195,23 @@ export default function ManagedITServices() {
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto">
                   Choose the perfect IT support level for your business needs
                 </p>
+                {/* ↓ Pointing Arrow using inline SVG */}
+                <div className="flex justify-center mt-8">
+                  <svg
+                    className="w-8 h-8 text-cyan-400 animate-bounce"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 services-grid mb-20">
@@ -1466,7 +1483,7 @@ export default function ManagedITServices() {
                             design, VPN setup, SD-WAN implementation
                           </li>
                           <li>
-                            • <strong>Automation & AI:</strong> RPA
+                            ss� <strong>Automation & AI:</strong> RPA
                             implementation, workflow optimization, AI-driven
                             processes
                           </li>
