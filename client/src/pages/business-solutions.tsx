@@ -67,1323 +67,617 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
     switch (solutionId) {
       case 'custom-saas':
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            minHeight: '100vh',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <div style={{
-              color: 'white',
-              fontSize: '32px',
-              fontWeight: '700',
-              marginBottom: '30px',
-              textAlign: 'center',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              animation: 'titleGlow 3s ease-in-out infinite alternate'
-            }}>
-              Multi-tenant VPC + Service Mesh Network Topology
+          <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="dataFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
+                </marker>
+                <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.15)"/>
+                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+                </linearGradient>
+              </defs>
+              
+              {/* Primary Cloud Infrastructure */}
+              <ellipse cx="300" cy="180" rx="260" ry="150" fill="url(#cloudGradient)" stroke="#3B82F6" strokeWidth="2" opacity="0.8" filter="url(#nodeShadow)"/>
+              <text x="300" y="50" textAnchor="middle" fill="#60A5FA" fontSize="32" fontWeight="500">☁️</text>
+              <text x="300" y="75" textAnchor="middle" fill="#93C5FD" fontSize="13" fontWeight="600">Multi-Tenant Cloud Platform</text>
+              
+              {/* Tenant VPCs - Left to Right Layout */}
+              <g filter="url(#nodeShadow)">
+                <rect x="80" y="120" width="120" height="70" rx="16" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="140" y="145" textAnchor="middle" fill="#10B981" fontSize="24">👥</text>
+                <text x="140" y="170" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Tenant A</text>
+                <text x="140" y="185" textAnchor="middle" fill="#6EE7B7" fontSize="11">Isolated VPC</text>
+              </g>
+              
+              <g filter="url(#nodeShadow)">
+                <rect x="240" y="120" width="120" height="70" rx="16" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="300" y="145" textAnchor="middle" fill="#10B981" fontSize="24">👥</text>
+                <text x="300" y="170" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Tenant B</text>
+                <text x="300" y="185" textAnchor="middle" fill="#6EE7B7" fontSize="11">Isolated VPC</text>
+              </g>
+              
+              <g filter="url(#nodeShadow)">
+                <rect x="400" y="120" width="120" height="70" rx="16" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="460" y="145" textAnchor="middle" fill="#10B981" fontSize="24">👥</text>
+                <text x="460" y="170" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Tenant C</text>
+                <text x="460" y="185" textAnchor="middle" fill="#6EE7B7" fontSize="11">Isolated VPC</text>
+              </g>
+              
+              {/* Service Mesh Orchestration */}
+              <g filter="url(#nodeShadow)">
+                <rect x="200" y="230" width="200" height="50" rx="25" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="300" y="250" textAnchor="middle" fill="#9333EA" fontSize="24">🔄</text>
+                <text x="300" y="270" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Service Mesh Orchestration</text>
+              </g>
+              
+              {/* Security Gateway */}
+              <g filter="url(#nodeShadow)">
+                <rect x="150" y="300" width="140" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="220" y="325" textAnchor="middle" fill="#F59E0B" fontSize="20">🛡️</text>
+                <text x="280" y="325" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Gateway</text>
+              </g>
+              
+              {/* Auto-scaling Controller */}
+              <g filter="url(#nodeShadow)">
+                <rect x="360" y="300" width="140" height="40" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="430" y="325" textAnchor="middle" fill="#EF4444" fontSize="20">🔄</text>
+                <text x="480" y="325" textAnchor="middle" fill="#F87171" fontSize="12" fontWeight="600">Auto-scale</text>
+              </g>
+              
+              {/* Data Flow Connections */}
+              <path d="M140 190 Q200 210 240 230" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#dataFlow)" opacity="0.8"/>
+              <path d="M300 190 L300 230" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#dataFlow)" opacity="0.8"/>
+              <path d="M460 190 Q400 210 360 230" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#dataFlow)" opacity="0.8"/>
+              
+              <path d="M250 280 Q235 290 220 300" stroke="#3B82F6" strokeWidth="2" fill="none" markerEnd="url(#dataFlow)" opacity="0.6"/>
+              <path d="M350 280 Q365 290 380 300" stroke="#3B82F6" strokeWidth="2" fill="none" markerEnd="url(#dataFlow)" opacity="0.6"/>
+              
+              {/* Connection Labels */}
+              <text x="190" y="205" fill="#60A5FA" fontSize="10" fontWeight="500">Service Traffic</text>
+              <text x="410" y="205" fill="#60A5FA" fontSize="10" fontWeight="500">Service Traffic</text>
+              <text x="305" y="210" fill="#60A5FA" fontSize="10" fontWeight="500">Direct</text>
+            </svg>
+            <div className="mt-4 text-center">
+              <h4 className="text-lg font-semibold text-white">Multi-Tenant VPC + Service Mesh</h4>
+              <p className="text-sm text-gray-300">Isolated tenant environments with microservices orchestration</p>
             </div>
-            
-            <div style={{
-              width: '95vw',
-              height: '90vh',
-              position: 'relative',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(10px)',
-              overflow: 'hidden'
-            }}>
-              {/* Network Zones */}
-              <div style={{
-                position: 'absolute',
-                top: '2vh',
-                left: '2vw',
-                width: '18vw',
-                height: '12vh',
-                background: 'linear-gradient(135deg, rgba(255,193,7,0.1), rgba(255,152,0,0.1))',
-                border: '2px dashed #ff9800',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)',
-                transition: 'all 0.3s ease'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                  color: '#ff9800'
-                }}>
-                  INTERNET
-                </div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '16vh',
-                left: '2vw',
-                width: '30vw',
-                height: '25vh',
-                background: 'linear-gradient(135deg, rgba(63,81,181,0.1), rgba(57,73,171,0.1))',
-                border: '2px dashed #3f51b5',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#3f51b5'
-                }}>
-                  SERVICE MESH
-                </div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '16vh',
-                right: '2vw',
-                width: '25vw',
-                height: '25vh',
-                background: 'linear-gradient(135deg, rgba(0,150,136,0.1), rgba(0,121,107,0.1))',
-                border: '2px dashed #009688',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#009688'
-                }}>
-                  TENANT ISOLATION
-                </div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '45vh',
-                left: '2vw',
-                width: '50vw',
-                height: '18vh',
-                background: 'linear-gradient(135deg, rgba(96,125,139,0.1), rgba(84,110,122,0.1))',
-                border: '2px dashed #607d8b',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#607d8b'
-                }}>
-                  DATA LAYER
-                </div>
-              </div>
-
-              {/* Network Components */}
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '8vh',
-                top: '5vh',
-                left: '8vw',
-                background: 'white',
-                border: '3px solid #e67e22',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: '600',
-                fontSize: '11px',
-                textAlign: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                boxShadow: '0 5px 25px rgba(0,0,0,0.1)'
-              }}>
-                <div style={{ fontSize: '24px', marginBottom: '5px', animation: 'iconBounce 2s ease-in-out infinite' }}>🌐</div>
-                <div>Internet</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  boxShadow: '0 0 10px #4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '7vw',
-                height: '8vh',
-                top: '19vh',
-                left: '4vw',
-                background: 'white',
-                border: '3px solid #3f51b5',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: '600',
-                fontSize: '11px',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '24px', marginBottom: '5px', animation: 'iconBounce 2s ease-in-out infinite' }}>🔄</div>
-                <div>Service Mesh</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '30vh',
-                left: '13vw',
-                background: 'white',
-                border: '3px solid #ff9800',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>🛡️</div>
-                <div>Ingress</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '19vh',
-                right: '15vw',
-                background: 'white',
-                border: '3px solid #009688',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>👥</div>
-                <div>Tenant A</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '19vh',
-                right: '7vw',
-                background: 'white',
-                border: '3px solid #00bcd4',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>👥</div>
-                <div>Tenant B</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '28vh',
-                right: '11vw',
-                background: 'white',
-                border: '3px solid #4db6ac',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>👥</div>
-                <div>Tenant C</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '7vw',
-                height: '8vh',
-                top: '48vh',
-                left: '8vw',
-                background: 'white',
-                border: '3px solid #2196f3',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '24px', animation: 'iconBounce 2s ease-in-out infinite' }}>🗄️</div>
-                <div>Database</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '48vh',
-                left: '18vw',
-                background: 'white',
-                border: '3px solid #ff5722',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>⚡</div>
-                <div>Cache</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '7vw',
-                height: '8vh',
-                top: '48vh',
-                left: '27vw',
-                background: 'white',
-                border: '3px solid #9c27b0',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '24px', animation: 'iconBounce 2s ease-in-out infinite' }}>📬</div>
-                <div>Queue</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              {/* SVG Connections */}
-              <svg style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 10,
-                pointerEvents: 'none'
-              }} viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <style>{`
-                    @keyframes dataFlow {
-                      0%, 100% { stroke-dashoffset: 0; }
-                      50% { stroke-dashoffset: 20; }
-                    }
-                    @keyframes encryptedFlow {
-                      0% { stroke-dasharray: 8 4; stroke-dashoffset: 0; }
-                      100% { stroke-dasharray: 8 4; stroke-dashoffset: 12; }
-                    }
-                    @keyframes highTrafficFlow {
-                      0%, 100% { stroke-width: 5; }
-                      50% { stroke-width: 7; }
-                    }
-                  `}</style>
-                </defs>
-
-                {/* Standard connections (blue) */}
-                <path d="M 11,9 Q 15,12 20,15" stroke="#2196f3" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'dataFlow 3s ease-in-out infinite'}} />
-                <path d="M 7,23 Q 12,25 18,28" stroke="#2196f3" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'dataFlow 3s ease-in-out infinite'}} />
-
-                {/* Secure connections (green) */}
-                <path d="M 11,27 Q 25,35 35,42" stroke="#4caf50" strokeWidth="4" fill="none" vectorEffect="non-scaling-stroke" />
-                <path d="M 20,35 Q 25,40 30,45" stroke="#4caf50" strokeWidth="4" fill="none" vectorEffect="non-scaling-stroke" />
-
-                {/* Encrypted connections (orange dashed) */}
-                <path d="M 25,42 Q 35,35 45,30" stroke="#ff9800" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'encryptedFlow 2s linear infinite'}} />
-                <path d="M 45,35 Q 50,40 55,45" stroke="#ff9800" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'encryptedFlow 2s linear infinite'}} />
-
-                {/* High traffic connections (red thick) */}
-                <path d="M 11,52 Q 18,50 25,52" stroke="#f44336" strokeWidth="5" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'highTrafficFlow 1s ease-in-out infinite'}} />
-                <path d="M 27,52 Q 32,50 37,52" stroke="#f44336" strokeWidth="5" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'highTrafficFlow 1s ease-in-out infinite'}} />
-              </svg>
-
-              {/* Connection Mid-Point Labels */}
-              <div style={{
-                position: 'absolute',
-                top: '20vh',
-                left: '15vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #2196f3',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#2196f3',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                MESH
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '30vh',
-                left: '35vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #4caf50',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#4caf50',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                MTLS
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '25vh',
-                right: '20vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #ff9800',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#ff9800',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                VPC
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '50vh',
-                left: '20vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #f44336',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#f44336',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                DATA
-              </div>
-
-              {/* Legend */}
-              <div style={{
-                position: 'absolute',
-                bottom: '20px',
-                right: '20px',
-                background: 'rgba(255, 255, 255, 0.95)',
-                borderRadius: '15px',
-                padding: '15px',
-                backdropFilter: 'blur(10px)',
-                boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-              }}>
-                <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '10px', color: '#2c3e50' }}>Connection Types</div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <div style={{ width: '20px', height: '3px', background: '#2196f3', marginRight: '8px' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>Standard</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <div style={{ width: '20px', height: '4px', background: '#4caf50', marginRight: '8px' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>Secure</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <div style={{ width: '20px', height: '3px', background: '#ff9800', marginRight: '8px', borderStyle: 'dashed' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>Encrypted</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: '20px', height: '5px', background: '#f44336', marginRight: '8px' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>High Traffic</span>
-                </div>
-              </div>
-            </div>
-
-            <style>{`
-              @keyframes titleGlow {
-                from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-                to { text-shadow: 2px 2px 20px rgba(255,255,255,0.5); }
-              }
-              @keyframes iconBounce {
-                0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-                40% { transform: translateY(-5px); }
-                60% { transform: translateY(-3px); }
-              }
-              @keyframes statusPulse {
-                0%, 100% { opacity: 1; transform: scale(1); }
-                50% { opacity: 0.6; transform: scale(1.2); }
-              }
-              @keyframes labelGlow {
-                0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
-                50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
-              }
-            `}</style>
           </div>
         );
         
       case 'enterprise-portals':
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            minHeight: '100vh',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <div style={{
-              color: 'white',
-              fontSize: '32px',
-              fontWeight: '700',
-              marginBottom: '30px',
-              textAlign: 'center',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              animation: 'titleGlow 3s ease-in-out infinite alternate'
-            }}>
-              Hub-and-Spoke Hybrid Cloud Network Topology
-            </div>
-            
-            <div style={{
-              width: '95vw',
-              height: '90vh',
-              position: 'relative',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(10px)',
-              overflow: 'hidden'
-            }}>
-              {/* Network Zones */}
-              <div style={{
-                position: 'absolute',
-                top: '2vh',
-                left: '2vw',
-                width: '20vw',
-                height: '15vh',
-                background: 'linear-gradient(135deg, rgba(255,193,7,0.1), rgba(255,152,0,0.1))',
-                border: '2px dashed #ff9800',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#ff9800'
-                }}>
-                  BRANCH NETWORK
-                </div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '25vh',
-                left: '20vw',
-                width: '60vw',
-                height: '20vh',
-                background: 'linear-gradient(135deg, rgba(63,81,181,0.1), rgba(57,73,171,0.1))',
-                border: '2px dashed #3f51b5',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#3f51b5'
-                }}>
-                  HUB CLOUD REGION
-                </div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '50vh',
-                left: '2vw',
-                width: '45vw',
-                height: '18vh',
-                background: 'linear-gradient(135deg, rgba(0,150,136,0.1), rgba(0,121,107,0.1))',
-                border: '2px dashed #009688',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#009688'
-                }}>
-                  APPLICATION ZONE
-                </div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '50vh',
-                right: '2vw',
-                width: '45vw',
-                height: '18vh',
-                background: 'linear-gradient(135deg, rgba(96,125,139,0.1), rgba(84,110,122,0.1))',
-                border: '2px dashed #607d8b',
-                borderRadius: '15px',
-                backdropFilter: 'blur(5px)'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '15px',
-                  background: 'white',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  color: '#607d8b'
-                }}>
-                  DATA ZONE
-                </div>
-              </div>
-
-              {/* Network Components */}
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '8vh',
-                top: '5vh',
-                left: '6vw',
-                background: 'white',
-                border: '3px solid #9333EA',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>🏢</div>
-                <div>Branch A</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '8vh',
-                top: '5vh',
-                left: '14vw',
-                background: 'white',
-                border: '3px solid #9333EA',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>🏢</div>
-                <div>Branch B</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '8vw',
-                height: '10vh',
-                top: '28vh',
-                left: '25vw',
-                background: 'white',
-                border: '3px solid #3B82F6',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '24px', animation: 'iconBounce 2s ease-in-out infinite' }}>☁️</div>
-                <div>Identity Hub</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '30vh',
-                left: '40vw',
-                background: 'white',
-                border: '3px solid #ff9800',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>🛡️</div>
-                <div>SSO Gateway</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '7vw',
-                height: '8vh',
-                top: '30vh',
-                left: '55vw',
-                background: 'white',
-                border: '3px solid #e91e63',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '24px', animation: 'iconBounce 2s ease-in-out infinite' }}>🚪</div>
-                <div>API Gateway</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '7vw',
-                height: '8vh',
-                top: '53vh',
-                left: '8vw',
-                background: 'white',
-                border: '3px solid #009688',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '24px', animation: 'iconBounce 2s ease-in-out infinite' }}>⚡</div>
-                <div>Load Balancer</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '53vh',
-                left: '18vw',
-                background: 'white',
-                border: '3px solid #00bcd4',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>🖥️</div>
-                <div>App Server 1</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '53vh',
-                left: '27vw',
-                background: 'white',
-                border: '3px solid #4db6ac',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>🖥️</div>
-                <div>App Server 2</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '7vw',
-                height: '8vh',
-                top: '53vh',
-                right: '15vw',
-                background: 'white',
-                border: '3px solid #2196f3',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '24px', animation: 'iconBounce 2s ease-in-out infinite' }}>🗄️</div>
-                <div>Database</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                width: '6vw',
-                height: '7vh',
-                top: '53vh',
-                right: '6vw',
-                background: 'white',
-                border: '3px solid #9c27b0',
-                borderRadius: '15px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '11px'
-              }}>
-                <div style={{ fontSize: '20px', animation: 'iconBounce 2s ease-in-out infinite' }}>📊</div>
-                <div>Monitor Hub</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  background: '#4caf50',
-                  animation: 'statusPulse 2s ease-in-out infinite'
-                }}></div>
-              </div>
-
-              {/* SVG Connections */}
-              <svg style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 10,
-                pointerEvents: 'none'
-              }} viewBox="0 0 100 100" preserveAspectRatio="none">
-                {/* SD-WAN connections (encrypted orange) */}
-                <path d="M 9,13 Q 20,20 28,30" stroke="#ff9800" strokeWidth="4" fill="none" vectorEffect="non-scaling-stroke" strokeDasharray="8 4" style={{animation: 'encryptedFlow 2s linear infinite'}} />
-                <path d="M 17,13 Q 25,20 30,30" stroke="#ff9800" strokeWidth="4" fill="none" vectorEffect="non-scaling-stroke" strokeDasharray="8 4" style={{animation: 'encryptedFlow 2s linear infinite'}} />
-
-                {/* SSO flows (secure green) */}
-                <path d="M 32,35 Q 38,33 43,33" stroke="#4caf50" strokeWidth="4" fill="none" vectorEffect="non-scaling-stroke" />
-                <path d="M 48,35 Q 55,33 58,33" stroke="#4caf50" strokeWidth="4" fill="none" vectorEffect="non-scaling-stroke" />
-
-                {/* API calls (standard blue) */}
-                <path d="M 28,45 Q 30,48 32,55" stroke="#2196f3" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'dataFlow 3s ease-in-out infinite'}} />
-                <path d="M 35,45 Q 38,48 40,55" stroke="#2196f3" strokeWidth="3" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'dataFlow 3s ease-in-out infinite'}} />
-
-                {/* High traffic data flows (red) */}
-                <path d="M 11,55 Q 15,58 21,58" stroke="#f44336" strokeWidth="5" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'highTrafficFlow 1s ease-in-out infinite'}} />
-                <path d="M 21,58 Q 28,58 33,58" stroke="#f44336" strokeWidth="5" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'highTrafficFlow 1s ease-in-out infinite'}} />
-                <path d="M 70,58 Q 75,58 80,58" stroke="#f44336" strokeWidth="5" fill="none" vectorEffect="non-scaling-stroke" style={{animation: 'highTrafficFlow 1s ease-in-out infinite'}} />
-              </svg>
-
-              {/* Connection Mid-Point Labels */}
-              <div style={{
-                position: 'absolute',
-                top: '22vh',
-                left: '18vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #ff9800',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#ff9800',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                SDWAN
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '32vh',
-                left: '47vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #4caf50',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#4caf50',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                SSO
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '45vh',
-                left: '30vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #2196f3',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#2196f3',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                API
-              </div>
-
-              <div style={{
-                position: 'absolute',
-                top: '58vh',
-                left: '25vw',
-                transform: 'translateX(-50%) translateY(-50%)',
-                background: 'rgba(255,255,255,0.95)',
-                border: '2px solid #f44336',
-                borderRadius: '12px',
-                padding: '4px 8px',
-                fontSize: '10px',
-                fontWeight: '600',
-                color: '#f44336',
-                animation: 'labelGlow 3s ease-in-out infinite'
-              }}>
-                DATA
-              </div>
-
+          <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow2" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="secureFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <marker id="controlFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
+                </marker>
+                <radialGradient id="hubGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+                </radialGradient>
+              </defs>
+              
+              {/* Central Identity Hub - Primary Node */}
+              <g filter="url(#nodeShadow2)">
+                <ellipse cx="300" cy="180" rx="120" ry="70" fill="url(#hubGradient)" stroke="#3B82F6" strokeWidth="3"/>
+                <text x="300" y="155" textAnchor="middle" fill="#3B82F6" fontSize="28">☁️</text>
+                <text x="300" y="180" textAnchor="middle" fill="#3B82F6" fontSize="24">👤</text>
+                <text x="300" y="205" textAnchor="middle" fill="#60A5FA" fontSize="14" fontWeight="600">Identity Hub</text>
+                <text x="300" y="220" textAnchor="middle" fill="#93C5FD" fontSize="11">SSO + API Gateway</text>
+              </g>
+              
+              {/* Branch Offices - Distributed Layout */}
+              <g filter="url(#nodeShadow2)">
+                <rect x="60" y="60" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="110" y="85" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="110" y="105" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Branch A</text>
+                <text x="110" y="118" textAnchor="middle" fill="#C084FC" fontSize="10">Remote Office</text>
+              </g>
+              
+              <g filter="url(#nodeShadow2)">
+                <rect x="440" y="60" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="490" y="85" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="490" y="105" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Branch B</text>
+                <text x="490" y="118" textAnchor="middle" fill="#C084FC" fontSize="10">Remote Office</text>
+              </g>
+              
+              <g filter="url(#nodeShadow2)">
+                <rect x="60" y="270" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="110" y="295" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="110" y="315" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">On-Premise</text>
+                <text x="110" y="328" textAnchor="middle" fill="#C084FC" fontSize="10">Data Center</text>
+              </g>
+              
+              <g filter="url(#nodeShadow2)">
+                <rect x="440" y="270" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="490" y="295" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="490" y="315" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Remote Site</text>
+                <text x="490" y="328" textAnchor="middle" fill="#C084FC" fontSize="10">Field Office</text>
+              </g>
+              
+              {/* Security Gateways */}
+              <g filter="url(#nodeShadow2)">
+                <rect x="200" y="120" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="225" y="142" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
+              
+              <g filter="url(#nodeShadow2)">
+                <rect x="350" y="120" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="375" y="142" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
+              
+              <g filter="url(#nodeShadow2)">
+                <rect x="200" y="205" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="225" y="227" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
+              
+              <g filter="url(#nodeShadow2)">
+                <rect x="350" y="205" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="375" y="227" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
+              
+              {/* Encrypted VPN Connections */}
+              <path d="M160 90 Q180 105 200 125" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              <path d="M440 90 Q420 105 400 125" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              <path d="M160 300 Q180 255 200 230" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              <path d="M440 300 Q420 255 400 230" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              
+              {/* Hub Control Connections */}
+              <path d="M250 137 Q270 155 280 170" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              <path d="M350 137 Q330 155 320 170" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              <path d="M250 222 Q270 205 280 190" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              <path d="M350 222 Q330 205 320 190" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              
+              {/* Connection Labels */}
+              <text x="180" y="115" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 SD-WAN</text>
+              <text x="400" y="115" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 SD-WAN</text>
+              <text x="175" y="245" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 VPN</text>
+              <text x="405" y="245" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 VPN</text>
+              
               {/* Legend */}
-              <div style={{
-                position: 'absolute',
-                bottom: '20px',
-                right: '20px',
-                background: 'rgba(255, 255, 255, 0.95)',
-                borderRadius: '15px',
-                padding: '15px',
-                backdropFilter: 'blur(10px)',
-                boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-              }}>
-                <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '10px', color: '#2c3e50' }}>Connection Types</div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <div style={{ width: '20px', height: '3px', background: '#2196f3', marginRight: '8px' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>Standard</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <div style={{ width: '20px', height: '4px', background: '#4caf50', marginRight: '8px' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>Secure</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <div style={{ width: '20px', height: '3px', background: '#ff9800', marginRight: '8px', borderStyle: 'dashed' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>Encrypted</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: '20px', height: '5px', background: '#f44336', marginRight: '8px' }}></div>
-                  <span style={{ fontSize: '10px', color: '#2c3e50' }}>High Traffic</span>
-                </div>
-              </div>
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="140" height="55" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Network Types</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" strokeWidth="3" strokeDasharray="6,3"/>
+                <text x="35" y="28" fill="#FBBF24" fontSize="9">Encrypted</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#3B82F6" strokeWidth="2"/>
+                <text x="35" y="43" fill="#60A5FA" fontSize="9">Control</text>
+              </g>
+            </svg>
+            <div className="mt-4 text-center">
+              <h4 className="text-lg font-semibold text-white">Hub-and-Spoke Hybrid Cloud</h4>
+              <p className="text-sm text-gray-300">Centralized identity with distributed branch connectivity</p>
             </div>
-
-            <style>{`
-              @keyframes titleGlow {
-                from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-                to { text-shadow: 2px 2px 20px rgba(255,255,255,0.5); }
-              }
-              @keyframes iconBounce {
-                0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-                40% { transform: translateY(-5px); }
-                60% { transform: translateY(-3px); }
-              }
-              @keyframes statusPulse {
-                0%, 100% { opacity: 1; transform: scale(1); }
-                50% { opacity: 0.6; transform: scale(1.2); }
-              }
-              @keyframes labelGlow {
-                0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
-                50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
-              }
-              @keyframes dataFlow {
-                0%, 100% { stroke-dashoffset: 0; }
-                50% { stroke-dashoffset: 20; }
-              }
-              @keyframes encryptedFlow {
-                0% { stroke-dasharray: 8 4; stroke-dashoffset: 0; }
-                100% { stroke-dasharray: 8 4; stroke-dashoffset: 12; }
-              }
-              @keyframes highTrafficFlow {
-                0%, 100% { stroke-width: 5; }
-                50% { stroke-width: 7; }
-              }
-            `}</style>
           </div>
         );
         
       case 'compliance-reporting':
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            minHeight: '100vh',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <div style={{
-              color: 'white',
-              fontSize: '32px',
-              fontWeight: '700',
-              marginBottom: '30px',
-              textAlign: 'center',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              animation: 'titleGlow 3s ease-in-out infinite alternate'
-            }}>
-              Segmented DMZ + Data Lake Overlay Network Topology
-            </div>
-            
-            <div style={{
-              width: '95vw',
-              height: '90vh',
-              position: 'relative',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(10px)',
-              overflow: 'hidden'
-            }}>
-              {/* Return simple placeholder for now */}
-              <div style={{ padding: '20px', color: '#333' }}>Compliance & Reporting Topology Implementation</div>
+          <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow3" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="complianceFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
+                </marker>
+                <linearGradient id="dmzGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(239, 68, 68, 0.15)"/>
+                  <stop offset="100%" stopColor="rgba(239, 68, 68, 0.05)"/>
+                </linearGradient>
+              </defs>
+              
+              {/* DMZ Security Layer */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="40" y="40" width="520" height="80" rx="20" fill="url(#dmzGradient)" stroke="#EF4444" strokeWidth="3"/>
+                <text x="300" y="70" textAnchor="middle" fill="#EF4444" fontSize="24">🛡️</text>
+                <text x="300" y="95" textAnchor="middle" fill="#F87171" fontSize="14" fontWeight="600">DMZ Data Ingestion Layer</text>
+                <text x="300" y="110" textAnchor="middle" fill="#FCA5A5" fontSize="11">Secure External Entry Point</text>
+              </g>
+              
+              {/* Compliance Processing VLAN */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="80" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="150" y="175" textAnchor="middle" fill="#9333EA" fontSize="24">📑</text>
+                <text x="150" y="195" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Compliance VLAN</text>
+                <text x="150" y="208" textAnchor="middle" fill="#C084FC" fontSize="10">Policy Enforcement</text>
+              </g>
+              
+              {/* Audit Processing VLAN */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="250" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="320" y="175" textAnchor="middle" fill="#9333EA" fontSize="24">🔄</text>
+                <text x="320" y="195" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Audit VLAN</text>
+                <text x="320" y="208" textAnchor="middle" fill="#C084FC" fontSize="10">Log Processing</text>
+              </g>
+              
+              {/* Archive VLAN */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="420" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="490" y="175" textAnchor="middle" fill="#9333EA" fontSize="24">🗂️</text>
+                <text x="490" y="195" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Archive VLAN</text>
+                <text x="490" y="208" textAnchor="middle" fill="#C084FC" fontSize="10">Long-term Storage</text>
+              </g>
+              
+              {/* WORM Storage Database (Cylinder) */}
+              <g filter="url(#nodeShadow3)">
+                <ellipse cx="150" cy="250" rx="50" ry="18" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" strokeWidth="2"/>
+                <rect x="100" y="250" width="100" height="40" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" strokeWidth="2"/>
+                <ellipse cx="150" cy="290" rx="50" ry="18" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" strokeWidth="2"/>
+                <text x="150" y="275" textAnchor="middle" fill="#10B981" fontSize="20">🔒</text>
+                <text x="150" y="315" textAnchor="middle" fill="#34D399" fontSize="12" fontWeight="600">WORM Storage</text>
+                <text x="150" y="330" textAnchor="middle" fill="#6EE7B7" fontSize="10">Immutable Records</text>
+              </g>
+              
+              {/* Data Lake Cloud */}
+              <g filter="url(#nodeShadow3)">
+                <ellipse cx="450" cy="270" rx="90" ry="55" fill="rgba(59, 130, 246, 0.12)" stroke="#3B82F6" strokeWidth="3"/>
+                <text x="450" y="255" textAnchor="middle" fill="#3B82F6" fontSize="28">☁️</text>
+                <text x="450" y="285" textAnchor="middle" fill="#60A5FA" fontSize="14" fontWeight="600">Analytics Data Lake</text>
+                <text x="450" y="300" textAnchor="middle" fill="#93C5FD" fontSize="11">Big Data Processing</text>
+              </g>
+              
+              {/* Audit Engine */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="250" y="320" width="140" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="320" y="345" textAnchor="middle" fill="#F59E0B" fontSize="20">🔄</text>
+                <text x="380" y="345" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Audit Engine</text>
+              </g>
+              
+              {/* Data Flow Connections */}
+              <path d="M300 120 Q200 135 150 150" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M300 120 L320 150" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M300 120 Q400 135 490 150" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              
+              <path d="M150 210 L150 232" stroke="#10B981" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M490 210 Q470 230 450 240" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M320 210 L320 320" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              
+              {/* Connection Labels */}
+              <text x="225" y="135" fill="#60A5FA" fontSize="10" fontWeight="500">Compliance Data</text>
+              <text x="325" y="135" fill="#60A5FA" fontSize="10" fontWeight="500">Audit Logs</text>
+              <text x="395" y="135" fill="#60A5FA" fontSize="10" fontWeight="500">Archive Data</text>
+            </svg>
+            <div className="mt-4 text-center">
+              <h4 className="text-lg font-semibold text-white">Segmented DMZ + Data Lake Overlay</h4>
+              <p className="text-sm text-gray-300">Compliance-focused data segregation with audit trail</p>
             </div>
           </div>
         );
         
       case 'itil-itsm':
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            minHeight: '100vh',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <div style={{
-              color: 'white',
-              fontSize: '32px',
-              fontWeight: '700',
-              marginBottom: '30px',
-              textAlign: 'center',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              animation: 'titleGlow 3s ease-in-out infinite alternate'
-            }}>
-              Zero-Trust Access Fabric Network Topology
-            </div>
-            
-            <div style={{
-              width: '95vw',
-              height: '90vh',
-              position: 'relative',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(10px)',
-              overflow: 'hidden'
-            }}>
-              <div style={{ padding: '20px', color: '#333' }}>ITIL-Based ITSM Zero-Trust Topology Implementation</div>
+          <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow4" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="zeroTrustFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#EF4444"/>
+                </marker>
+                <marker id="bastionFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <radialGradient id="serviceDeskGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+                </radialGradient>
+              </defs>
+              
+              {/* Zero Trust Network Access Gateway */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="220" y="30" width="160" height="45" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="3"/>
+                <text x="300" y="55" textAnchor="middle" fill="#EF4444" fontSize="24">🛡️</text>
+                <text x="300" y="75" textAnchor="middle" fill="#F87171" fontSize="14" fontWeight="600">ZTNA Gateway</text>
+              </g>
+              
+              {/* ITIL Service Desk Cluster - Primary */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="180" y="100" width="240" height="80" rx="20" fill="url(#serviceDeskGradient)" stroke="#3B82F6" strokeWidth="3"/>
+                <text x="300" y="125" textAnchor="middle" fill="#3B82F6" fontSize="24">👤</text>
+                <text x="300" y="150" textAnchor="middle" fill="#3B82F6" fontSize="24">🔄</text>
+                <text x="300" y="175" textAnchor="middle" fill="#60A5FA" fontSize="14" fontWeight="600">ITIL Service Desk</text>
+              </g>
+              
+              {/* Bastion Jump Hosts */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="80" y="210" width="120" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="140" y="235" textAnchor="middle" fill="#F59E0B" fontSize="20">🔑</text>
+                <text x="170" y="235" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Bastion</text>
+                <text x="140" y="250" textAnchor="middle" fill="#FCD34D" fontSize="10">Jump Host</text>
+              </g>
+              
+              <g filter="url(#nodeShadow4)">
+                <rect x="400" y="210" width="120" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="460" y="235" textAnchor="middle" fill="#F59E0B" fontSize="20">🔑</text>
+                <text x="490" y="235" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Bastion</text>
+                <text x="460" y="250" textAnchor="middle" fill="#FCD34D" fontSize="10">Jump Host</text>
+              </g>
+              
+              {/* Microsegmented Networks */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="60" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="130" y="305" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="130" y="325" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Production LAN</text>
+                <text x="130" y="338" textAnchor="middle" fill="#C084FC" fontSize="10">Critical Systems</text>
+              </g>
+              
+              <g filter="url(#nodeShadow4)">
+                <rect x="230" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="300" y="305" textAnchor="middle" fill="#9333EA" fontSize="22">🔄</text>
+                <text x="300" y="325" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Management</text>
+                <text x="300" y="338" textAnchor="middle" fill="#C084FC" fontSize="10">Admin Network</text>
+              </g>
+              
+              <g filter="url(#nodeShadow4)">
+                <rect x="400" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="470" y="305" textAnchor="middle" fill="#9333EA" fontSize="22">👤</text>
+                <text x="470" y="325" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Out-of-Band</text>
+                <text x="470" y="338" textAnchor="middle" fill="#C084FC" fontSize="10">Emergency Access</text>
+              </g>
+              
+              {/* Zero Trust Control Flow */}
+              <path d="M300 75 L300 100" stroke="#EF4444" strokeWidth="4" fill="none" markerEnd="url(#zeroTrustFlow)" opacity="0.9"/>
+              
+              {/* Bastion Access Control */}
+              <path d="M140 250 L130 280" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#bastionFlow)" opacity="0.8"/>
+              <path d="M460 250 L470 280" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#bastionFlow)" opacity="0.8"/>
+              
+              {/* Service Desk to Bastions */}
+              <path d="M220 160 Q150 185 140 210" stroke="#3B82F6" strokeWidth="2" fill="none" strokeDasharray="8,4" opacity="0.7"/>
+              <path d="M380 160 Q450 185 460 210" stroke="#3B82F6" strokeWidth="2" fill="none" strokeDasharray="8,4" opacity="0.7"/>
+              
+              {/* Connection Labels */}
+              <text x="320" y="90" fill="#EF4444" fontSize="11" fontWeight="500">Zero Trust Policy</text>
+              <text x="120" y="270" fill="#F59E0B" fontSize="10" fontWeight="500">Controlled Access</text>
+              <text x="440" y="270" fill="#F59E0B" fontSize="10" fontWeight="500">Controlled Access</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="160" height="70" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Access Control</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#EF4444" strokeWidth="3"/>
+                <text x="35" y="28" fill="#F87171" fontSize="9">Zero Trust</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="35" y="43" fill="#FBBF24" fontSize="9">Bastion Control</text>
+                <line x1="10" y1="55" x2="30" y2="55" stroke="#3B82F6" strokeWidth="2" strokeDasharray="4,2"/>
+                <text x="35" y="58" fill="#60A5FA" fontSize="9">Service Mgmt</text>
+              </g>
+            </svg>
+            <div className="mt-4 text-center">
+              <h4 className="text-lg font-semibold text-white">Zero-Trust Access Fabric</h4>
+              <p className="text-sm text-gray-300">Microsegmented ITSM with bastion-controlled access</p>
             </div>
           </div>
         );
         
       case 'operational-playbooks':
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            minHeight: '100vh',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <div style={{
-              color: 'white',
-              fontSize: '32px',
-              fontWeight: '700',
-              marginBottom: '30px',
-              textAlign: 'center',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              animation: 'titleGlow 3s ease-in-out infinite alternate'
-            }}>
-              Bastioned Workflow Cluster Network Topology
-            </div>
-            
-            <div style={{
-              width: '95vw',
-              height: '90vh',
-              position: 'relative',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(10px)',
-              overflow: 'hidden'
-            }}>
-              <div style={{ padding: '20px', color: '#333' }}>Operational Playbooks Bastioned Workflow Topology Implementation</div>
+          <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-80">
+            <svg viewBox="0 0 500 340" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow5" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="workflowFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#9333EA"/>
+                </marker>
+                <marker id="secureAccess" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <radialGradient id="managementGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(245, 158, 11, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(245, 158, 11, 0.05)"/>
+                </radialGradient>
+                <radialGradient id="productionGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(16, 185, 129, 0.05)"/>
+                </radialGradient>
+              </defs>
+              
+              {/* Management VPC - CI/CD Platform */}
+              <g filter="url(#nodeShadow5)">
+                <ellipse cx="130" cy="100" rx="80" ry="60" fill="url(#managementGradient)" stroke="#F59E0B" strokeWidth="3"/>
+                <text x="130" y="80" textAnchor="middle" fill="#F59E0B" fontSize="24">☁️</text>
+                <text x="130" y="105" textAnchor="middle" fill="#F59E0B" fontSize="20">📘</text>
+                <text x="130" y="130" textAnchor="middle" fill="#FBBF24" fontSize="13" fontWeight="600">CI/CD Management</text>
+                <text x="130" y="145" textAnchor="middle" fill="#FCD34D" fontSize="10">DevOps Orchestration</text>
+              </g>
+              
+              {/* Bastion Security Gateway */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="240" y="110" width="60" height="40" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="3"/>
+                <text x="270" y="135" textAnchor="middle" fill="#EF4444" fontSize="20">🔑</text>
+                <text x="270" y="155" textAnchor="middle" fill="#F87171" fontSize="11" fontWeight="600">Gateway</text>
+              </g>
+              
+              {/* Production VPC */}
+              <g filter="url(#nodeShadow5)">
+                <ellipse cx="370" cy="100" rx="80" ry="60" fill="url(#productionGradient)" stroke="#10B981" strokeWidth="3"/>
+                <text x="370" y="80" textAnchor="middle" fill="#10B981" fontSize="24">☁️</text>
+                <text x="370" y="105" textAnchor="middle" fill="#10B981" fontSize="20">🔄</text>
+                <text x="370" y="130" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Production Cluster</text>
+                <text x="370" y="145" textAnchor="middle" fill="#6EE7B7" fontSize="10">Live Workloads</text>
+              </g>
+              
+              {/* Automated Workflow Controllers */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="150" y="210" width="200" height="60" rx="20" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="200" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">📖</text>
+                <text x="300" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="255" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Workflow Orchestration</text>
+                <text x="250" y="270" textAnchor="middle" fill="#C084FC" fontSize="10">Automated Playbooks</text>
+              </g>
+              
+              {/* Role-based Access Control */}
+              <path d="M210 100 Q225 105 240 125" stroke="#F59E0B" strokeWidth="3" strokeDasharray="8,4" fill="none" markerEnd="url(#secureAccess)" opacity="0.9"/>
+              <path d="M300 125 Q335 115 340 100" stroke="#10B981" strokeWidth="3" strokeDasharray="8,4" fill="none" markerEnd="url(#secureAccess)" opacity="0.9"/>
+              <path d="M270 150 L250 210" stroke="#9333EA" strokeWidth="3" fill="none" markerEnd="url(#workflowFlow)" opacity="0.8"/>
+              
+              {/* Policy Management */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="40" y="290" width="120" height="30" rx="15" fill="rgba(148, 163, 184, 0.12)" stroke="#64748B" strokeWidth="2"/>
+                <text x="70" y="310" textAnchor="middle" fill="#64748B" fontSize="16">🛡️</text>
+                <text x="130" y="310" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600">Policy Engine</text>
+              </g>
+              
+              {/* Monitoring & Logging */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="340" y="290" width="120" height="30" rx="15" fill="rgba(148, 163, 184, 0.12)" stroke="#64748B" strokeWidth="2"/>
+                <text x="370" y="310" textAnchor="middle" fill="#64748B" fontSize="16">📖</text>
+                <text x="430" y="310" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600">Audit Logs</text>
+              </g>
+              
+              {/* Connection Labels */}
+              <text x="210" y="95" fill="#F59E0B" fontSize="10" fontWeight="500">Secure CI/CD</text>
+              <text x="320" y="95" fill="#10B981" fontSize="10" fontWeight="500">Deploy</text>
+              <text x="275" y="185" fill="#9333EA" fontSize="10" fontWeight="500">Orchestrate</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="150" height="55" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Access Control</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" strokeWidth="3" strokeDasharray="4,2"/>
+                <text x="35" y="28" fill="#FBBF24" fontSize="9">Secure</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#9333EA" strokeWidth="2"/>
+                <text x="35" y="43" fill="#A855F7" fontSize="9">Workflow</text>
+              </g>
+            </svg>
+            <div className="mt-4 text-center">
+              <h4 className="text-sm font-semibold text-white">Bastioned Workflow Cluster</h4>
+              <p className="text-xs text-gray-400">Secure CI/CD with role-based network access control</p>
             </div>
           </div>
         );
         
       case 'enterprise-recovery':
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            minHeight: '100vh',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <div style={{
-              color: 'white',
-              fontSize: '32px',
-              fontWeight: '700',
-              marginBottom: '30px',
-              textAlign: 'center',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-              animation: 'titleGlow 3s ease-in-out infinite alternate'
-            }}>
-              Multi-Site Active/Passive DR with SD-WAN Network Topology
-            </div>
-            
-            <div style={{
-              width: '95vw',
-              height: '90vh',
-              position: 'relative',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              backdropFilter: 'blur(10px)',
-              overflow: 'hidden'
-            }}>
-              <div style={{ padding: '20px', color: '#333' }}>Enterprise Recovery Multi-Site DR Topology Implementation</div>
+          <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-80">
+            <svg viewBox="0 0 500 340" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow6" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="replicationFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#9333EA"/>
+                </marker>
+                <marker id="failoverFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <linearGradient id="activeSiteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(16, 185, 129, 0.05)"/>
+                </linearGradient>
+                <linearGradient id="drSiteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(239, 68, 68, 0.15)"/>
+                  <stop offset="100%" stopColor="rgba(239, 68, 68, 0.03)"/>
+                </linearGradient>
+              </defs>
+              
+              {/* Active Primary Site */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="50" y="60" width="140" height="120" rx="20" fill="url(#activeSiteGradient)" stroke="#10B981" strokeWidth="3"/>
+                <text x="120" y="90" textAnchor="middle" fill="#10B981" fontSize="24">🔄</text>
+                <text x="120" y="120" textAnchor="middle" fill="#10B981" fontSize="20">👥</text>
+                <text x="120" y="145" textAnchor="middle" fill="#34D399" fontSize="14" fontWeight="600">Primary Site</text>
+                <text x="120" y="165" textAnchor="middle" fill="#6EE7B7" fontSize="11">Active Production</text>
+              </g>
+              
+              {/* Disaster Recovery Site */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="310" y="60" width="140" height="120" rx="20" fill="url(#drSiteGradient)" stroke="#EF4444" strokeWidth="3" strokeDasharray="12,6"/>
+                <text x="380" y="90" textAnchor="middle" fill="rgba(239, 68, 68, 0.8)" fontSize="24">🔄</text>
+                <text x="380" y="120" textAnchor="middle" fill="rgba(239, 68, 68, 0.8)" fontSize="20">👥</text>
+                <text x="380" y="145" textAnchor="middle" fill="rgba(248, 113, 113, 0.9)" fontSize="14" fontWeight="600">DR Site</text>
+                <text x="380" y="165" textAnchor="middle" fill="rgba(252, 165, 165, 0.8)" fontSize="11">Passive Standby</text>
+              </g>
+              
+              {/* Encrypted SD-WAN Tunnel */}
+              <g filter="url(#nodeShadow6)">
+                <path d="M190 120 Q250 80 310 120" stroke="#F59E0B" strokeWidth="5" strokeDasharray="12,6" fill="none" opacity="0.9"/>
+                <ellipse cx="250" cy="95" rx="25" ry="15" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="250" y="100" textAnchor="middle" fill="#F59E0B" fontSize="16">🔒</text>
+                <text x="250" y="50" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Encrypted SD-WAN</text>
+                <text x="250" y="65" textAnchor="middle" fill="#FCD34D" fontSize="10">Multi-Protocol Link</text>
+              </g>
+              
+              {/* Asynchronous Replication Layer */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="150" y="210" width="200" height="50" rx="25" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="190" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">📑</text>
+                <text x="310" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="255" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Async Replication VLAN</text>
+              </g>
+              
+              {/* Automated Failover Orchestrator */}
+              <g filter="url(#nodeShadow6)">
+                <ellipse cx="250" cy="300" rx="50" ry="30" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="3"/>
+                <text x="250" y="290" textAnchor="middle" fill="#F59E0B" fontSize="20">🛠️</text>
+                <text x="250" y="310" textAnchor="middle" fill="#F59E0B" fontSize="20">🔄</text>
+                <text x="250" y="330" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Failover Orchestrator</text>
+              </g>
+              
+              {/* Health Monitoring */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="20" y="250" width="80" height="30" rx="15" fill="rgba(34, 197, 94, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="60" y="270" textAnchor="middle" fill="#10B981" fontSize="16">🔄</text>
+                <text x="85" y="270" textAnchor="middle" fill="#34D399" fontSize="10" fontWeight="600">Monitor</text>
+              </g>
+              
+              <g filter="url(#nodeShadow6)">
+                <rect x="400" y="250" width="80" height="30" rx="15" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="440" y="270" textAnchor="middle" fill="#EF4444" fontSize="16">🔄</text>
+                <text x="465" y="270" textAnchor="middle" fill="#F87171" fontSize="10" fontWeight="600">Standby</text>
+              </g>
+              
+              {/* Data Replication Flows */}
+              <path d="M120 180 Q150 195 170 210" stroke="#9333EA" strokeWidth="3" fill="none" markerEnd="url(#replicationFlow)" opacity="0.8"/>
+              <path d="M380 180 Q350 195 330 210" stroke="#9333EA" strokeWidth="3" fill="none" markerEnd="url(#replicationFlow)" opacity="0.8"/>
+              
+              {/* Orchestrator Control */}
+              <path d="M250 260 L250 270" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#failoverFlow)" opacity="0.8"/>
+              
+              {/* Health Check Connections */}
+              <path d="M100 250 Q175 235 200 210" stroke="#10B981" strokeWidth="2" fill="none" strokeDasharray="6,3" opacity="0.6"/>
+              <path d="M400 250 Q325 235 300 210" stroke="#EF4444" strokeWidth="2" fill="none" strokeDasharray="6,3" opacity="0.6"/>
+              
+              {/* Connection Labels */}
+              <text x="200" y="25" fill="#F59E0B" fontSize="11" fontWeight="500">Primary Connection</text>
+              <text x="135" y="195" fill="#9333EA" fontSize="10" fontWeight="500">Data Sync</text>
+              <text x="345" y="195" fill="#9333EA" fontSize="10" fontWeight="500">Data Sync</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="160" height="70" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Recovery Types</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" strokeWidth="3" strokeDasharray="6,3"/>
+                <text x="35" y="28" fill="#FBBF24" fontSize="9">Encrypted</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#9333EA" strokeWidth="2"/>
+                <text x="35" y="43" fill="#A855F7" fontSize="9">Replication</text>
+                <line x1="10" y1="55" x2="30" y2="55" stroke="#10B981" strokeWidth="2" strokeDasharray="3,2"/>
+                <text x="35" y="58" fill="#34D399" fontSize="9">Health Check</text>
+              </g>
+            </svg>
+            <div className="mt-4 text-center">
+              <h4 className="text-sm font-semibold text-white">Multi-Site Active/Passive DR with SD-WAN</h4>
+              <p className="text-xs text-gray-400">Automated failover orchestration with encrypted replication</p>
             </div>
           </div>
         );
