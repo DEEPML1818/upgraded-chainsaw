@@ -1,0 +1,142 @@
+# AI Agent Prompt: Create Interactive Network Topology
+
+You are an expert network architect and web developer. I need you to create an interactive network topology visualization using HTML, CSS, and SVG. Follow these EXACT specifications:
+
+## ARCHITECTURE TO BUILD:
+**[INSERT SPECIFIC ARCHITECTURE HERE - e.g., "Hub-and-Spoke Hybrid Cloud"]**
+
+## MANDATORY DESIGN REQUIREMENTS:
+
+### VISUAL STYLE:
+- Purple-blue gradient background: `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`
+- White topology container with `backdrop-filter: blur(10px)` and `border-radius: 20px`
+- Animated glowing title with `animation: titleGlow 3s ease-in-out infinite alternate`
+- Glass morphism effect on all containers with transparency
+
+### RESPONSIVE LAYOUT:
+- Use viewport units (vw/vh) for ALL positioning - NO fixed pixels
+- Container: `width: 95vw; height: 90vh`
+- Components: sizes like `width: 6vw; height: 8vh`
+- SVG with `viewBox="0 0 100 100"` and `preserveAspectRatio="none"`
+- Connection coordinates in percentages (0-100) with `vector-effect="non-scaling-stroke"`
+
+### NETWORK ZONES (5-7 zones required):
+Each zone must have:
+- Dashed colored borders with `border-radius: 15px`
+- Gradient backgrounds with 10% opacity
+- Zone labels positioned at `top: -12px; left: 15px`
+- Hover effects with `transform: scale(1.02)`
+
+### NETWORK COMPONENTS (10-15 components required):
+Each component must have:
+- White background with colored borders (3px solid)
+- Gradient backgrounds matching component type
+- Emoji icons with `animation: iconBounce 2s ease-in-out infinite`
+- Green pulsing status dots with `animation: statusPulse 2s ease-in-out infinite`
+- Hover effects: `transform: translateY(-8px) scale(1.05)`
+
+### CONNECTION SYSTEM (CRITICAL):
+Create 4 connection types with SVG paths:
+
+1. **STANDARD**: `stroke: #2196f3; stroke-width: 3;`
+2. **SECURE**: `stroke: #4caf50; stroke-width: 4;`
+3. **ENCRYPTED**: `stroke: #ff9800; stroke-dasharray: 8 4;`
+4. **HIGH TRAFFIC**: `stroke: #f44336; stroke-width: 5;`
+
+### CONNECTION MID-POINT LABELS (MANDATORY):
+Add small labels at connection midpoints showing protocols:
+- VPN, AUTH, API, DATA, CACHE, PROXY, LB, MESH, FILTER, ROUTE, QUEUE, SYNC
+- Position with `transform: translateX(-50%) translateY(-50%)`
+- Glowing animation: `animation: labelGlow 3s ease-in-out infinite`
+
+### REQUIRED ANIMATIONS:
+```css
+@keyframes titleGlow {
+    from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    to { text-shadow: 2px 2px 20px rgba(255,255,255,0.5); }
+}
+
+@keyframes iconBounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-5px); }
+    60% { transform: translateY(-3px); }
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+@keyframes dataFlow {
+    0%, 100% { stroke-dashoffset: 0; }
+    50% { stroke-dashoffset: 20; }
+}
+```
+
+### LEGEND (Required):
+Bottom-right corner with:
+- 4 connection type examples with colored lines
+- Glass effect background
+- Hover effects on legend items
+
+## SPECIFIC NETWORK ARCHITECTURE REQUIREMENTS:
+
+### FOR HUB-AND-SPOKE HYBRID CLOUD:
+**Components**: Internet, Branch Offices (3x), On-Premise DC, Hub VPC, Identity Provider, SSO Gateway, API Gateway, SD-WAN Controller, Load Balancer, Application Servers (2x), Database Cluster, Monitoring Hub
+
+**Zones**: Internet, Branch Network, Hub Cloud Region, Identity Zone, Application Zone, Data Zone, Management Network
+
+**Connections**: VPN tunnels (encrypted orange), SD-WAN links (high-traffic red), SSO flows (secure green), API calls (standard blue)
+
+**Mid-Labels**: VPN, SDWAN, SSO, AUTH, API, SYNC, DATA, MGMT
+
+### FOR SEGMENTED DMZ + DATA LAKE:
+**Components**: External Sources, DMZ Firewall, Ingestion Gateway, Transform Engine, Compliance VLAN, WORM Storage, Data Lake, Audit Server, ETL Pipeline, Reporting Engine, Dashboard, Egress Controller
+
+**Zones**: External Network, DMZ Ingestion, Transformation Zone, Compliance VLAN, Data Lake Overlay, Audit Network, Reporting Zone
+
+**Connections**: Data ingestion (high-traffic red), transformation (encrypted orange), compliance (secure green), reporting (standard blue)
+
+**Mid-Labels**: INGEST, TRANSFORM, COMPLY, AUDIT, REPORT, ARCHIVE
+
+### FOR ZERO-TRUST ACCESS FABRIC:
+**Components**: User Endpoints, Identity Broker, ZTNA Gateway, Service Desk, ITSM Platform, Admin Bastion, OOB Management, Asset Database, Monitoring System, Ticketing Engine
+
+**Zones**: User Access, Identity Layer, Zero-Trust Fabric, Service Desk Segment, Admin Network, OOB Management, Data Repository
+
+**Connections**: Identity verification (encrypted orange), micro-tunnels (secure green), admin access (encrypted orange), OOB (secure green)
+
+**Mid-Labels**: ZTNA, AUTH, MICRO, ADMIN, OOB, ITSM
+
+### FOR BASTIONED WORKFLOW CLUSTER:
+**Components**: Developer Workstations, Git Repository, CI/CD Pipeline, Bastion Host, Orchestration Cluster, Workflow Engine, Automation Controllers, Policy Engine, Production Gateway, Artifact Registry
+
+**Zones**: Development Network, CI/CD Zone, Management VPC, Orchestration Cluster, Production Boundary, Monitoring Layer
+
+**Connections**: Git operations (encrypted orange), CI/CD (high-traffic red), bastion access (secure green), orchestration (encrypted orange)
+
+**Mid-Labels**: GIT, CICD, BASTION, DEPLOY, POLICY, MONITOR
+
+### FOR MULTI-SITE DR WITH SD-WAN:
+**Components**: Primary Site, DR Site, SD-WAN Hub, Replication Gateway, Primary Database, DR Database, Storage Arrays, Orchestration Engine, Failover Controller, Health Monitors
+
+**Zones**: Primary Site, DR Site, SD-WAN Backbone, Replication Network, Storage Layer, Orchestration Layer, Monitoring Zone
+
+**Connections**: SD-WAN tunnels (encrypted orange), replication (high-traffic red), failover (secure green), health checks (standard blue)
+
+**Mid-Labels**: SDWAN, REPLICATE, FAILOVER, SYNC, BACKUP, HEALTH
+
+## CRITICAL SUCCESS CRITERIA:
+1. ✅ Must use viewport units (vw/vh) for responsive design
+2. ✅ Must include all 4 connection types with proper SVG animations  
+3. ✅ Must have mid-point labels on every connection
+4. ✅ Must include 5+ animated elements (title, icons, status, connections, labels)
+5. ✅ Must work perfectly on desktop, tablet, and mobile
+6. ✅ Must follow exact color scheme and styling
+7. ✅ Must include proper network zones with security boundaries
+8. ✅ Must have interactive hover effects on all components
+
+## OUTPUT FORMAT:
+Provide complete HTML file with embedded CSS and SVG. No external dependencies except emojis for icons.
+
+**BUILD THE [ARCHITECTURE NAME] NETWORK TOPOLOGY NOW.**

@@ -1,0 +1,742 @@
+# Advanced Network Topology Visualization: Complete Implementation Guide
+
+## 🎯 **Mission Critical Requirements**
+
+You are tasked with creating a **production-grade, enterprise-level network topology visualization** that demonstrates deep understanding of network architecture, data flow patterns, security boundaries, and modern web development practices. This is not a simple diagram—it's a **comprehensive network documentation tool** that must be:
+
+- **Architecturally Accurate**: Every connection must represent real network protocols and data flows
+- **Visually Sophisticated**: Modern, animated, responsive design with attention to detail
+- **Technically Sound**: Proper network segmentation, security zones, and traffic patterns
+- **Performance Optimized**: Smooth animations, efficient rendering, scalable architecture
+
+---
+
+## 🏗️ **CRITICAL: Network Architecture Foundation**
+
+### **Network Segmentation Strategy**
+Your topology MUST demonstrate proper network segmentation following industry best practices:
+
+#### **Layer 1: Perimeter Security Zone**
+- **External Network**: Internet-facing components, edge devices
+- **DMZ (Demilitarized Zone)**: Publicly accessible services with controlled access
+- **Border Gateway**: Entry/exit points with routing and NAT capabilities
+
+#### **Layer 2: Security Enforcement Zone** 
+- **Firewall Segments**: Stateful inspection, application-layer filtering
+- **IDS/IPS Networks**: Intrusion detection and prevention systems
+- **VPN Terminators**: Encrypted tunnel endpoints
+
+#### **Layer 3: Service Orchestration Zone**
+- **Load Balancer Networks**: Traffic distribution and health checking
+- **Service Mesh**: Microservice communication fabric
+- **API Gateway Segment**: Request routing, rate limiting, authentication
+
+#### **Layer 4: Application Execution Zone**
+- **Compute Networks**: Virtual machines, containers, serverless functions
+- **Tenant Isolation**: Multi-tenant separation and resource allocation
+- **Inter-Service Communication**: East-west traffic patterns
+
+#### **Layer 5: Data Persistence Zone**
+- **Database Networks**: Transactional and analytical data stores
+- **Storage Networks**: Block, file, and object storage systems
+- **Backup/Replication**: Data protection and disaster recovery
+
+#### **Layer 6: Management and Monitoring Zone**
+- **Administrative Networks**: Out-of-band management
+- **Monitoring Systems**: Telemetry collection and analysis
+- **Logging Infrastructure**: Centralized log aggregation
+
+---
+
+## 🔗 **CONNECTION ARCHITECTURE: The Heart of Network Flow**
+
+### **Connection Types with Technical Specifications**
+
+#### **1. STANDARD CONNECTIONS (`connection-line standard`)**
+```css
+stroke: #2196f3;
+stroke-width: 3;
+animation: dataFlow 3s ease-in-out infinite;
+```
+**Use Cases**: Regular application traffic, routine data queries, standard API calls
+**Protocols**: HTTP/HTTPS, REST APIs, standard TCP connections
+**Visual Pattern**: Solid blue lines with subtle flow animation
+**Network Behavior**: Normal priority traffic, standard routing, no special handling
+
+#### **2. SECURE CONNECTIONS (`connection-line secure`)**
+```css
+stroke: #4caf50;
+stroke-width: 4;
+animation: secureFlow 2s linear infinite;
+```
+**Use Cases**: Encrypted communications, authenticated channels, privileged access
+**Protocols**: TLS/SSL, SSH, IPSec VPN, mutual TLS (mTLS)
+**Visual Pattern**: Thicker green lines with steady flow animation
+**Network Behavior**: Encrypted in transit, certificate-based authentication, higher priority
+
+#### **3. ENCRYPTED CHANNELS (`connection-line encrypted`)**
+```css
+stroke: #ff9800;
+stroke-dasharray: 8 4;
+animation: encryptedFlow 2s linear infinite;
+```
+**Use Cases**: End-to-end encryption, zero-trust communications, service mesh security
+**Protocols**: gRPC with TLS, service mesh mTLS, encrypted message queues
+**Visual Pattern**: Dashed orange lines with animated dash movement
+**Network Behavior**: Application-layer encryption, identity-based routing, microsegmentation
+
+#### **4. HIGH TRAFFIC FLOWS (`connection-line high-traffic`)**
+```css
+stroke: #f44336;
+stroke-width: 5;
+animation: highTrafficFlow 1s ease-in-out infinite;
+```
+**Use Cases**: Bulk data transfers, streaming, high-volume API calls, database replication
+**Protocols**: TCP with large windows, UDP streams, dedicated circuits
+**Visual Pattern**: Thick red lines with pulsing width animation
+**Network Behavior**: Traffic shaping, QoS prioritization, dedicated bandwidth allocation
+
+### **Advanced Connection Implementation**
+
+#### **SVG Path Construction for Network Realism**
+```html
+<!-- Realistic network routing with multiple hops -->
+<path class="connection-line secure" 
+      d="M startX,startY 
+         Q controlX1,controlY1 midX,midY 
+         Q controlX2,controlY2 endX,endY" 
+      vector-effect="non-scaling-stroke">
+  <animate attributeName="stroke-dasharray" 
+           values="0,100;50,50;100,0" 
+           dur="3s" 
+           repeatCount="indefinite"/>
+</path>
+```
+
+#### **Connection Mid-Point Labels with Network Intelligence**
+```css
+.connection-mid-label {
+    /* Position at connection midpoint */
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    
+    /* Network protocol indication */
+    background: rgba(255,255,255,0.95);
+    border: 2px solid var(--protocol-color);
+    
+    /* Interactive feedback */
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: help;
+}
+
+.connection-mid-label:hover {
+    transform: translateX(-50%) translateY(-50%) scale(1.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+```
+
+**Label Content Strategy**:
+- **VPN**: Virtual Private Network tunnel establishment
+- **AUTH**: Authentication and authorization checkpoint
+- **PROXY**: Application proxy with protocol translation
+- **LB**: Load balancing with health check integration
+- **MESH**: Service mesh sidecar communication
+- **CACHE**: Caching layer with TTL management
+- **REPLICATE**: Data replication with consistency guarantees
+- **QUEUE**: Asynchronous message processing
+- **FILTER**: Security policy enforcement point
+- **ROUTE**: Dynamic routing decision point
+
+---
+
+## 🎨 **VISUAL DESIGN SYSTEM: Enterprise-Grade Aesthetics**
+
+### **Color Psychology and Network Mapping**
+```css
+:root {
+    /* Network Security Hierarchy */
+    --perimeter-color: #ff9800;     /* External/DMZ - Warning Orange */
+    --security-color: #f44336;      /* Security Layer - Alert Red */
+    --service-color: #3f51b5;       /* Service Layer - Professional Blue */
+    --application-color: #009688;   /* Application Layer - Reliable Teal */
+    --data-color: #607d8b;          /* Data Layer - Stable Blue-Grey */
+    --management-color: #9e9e9e;    /* Management - Neutral Grey */
+    
+    /* Connection Security Levels */
+    --insecure: #f44336;            /* Unencrypted/High Risk */
+    --standard: #2196f3;            /* Standard Security */
+    --secure: #4caf50;              /* Encrypted/Authenticated */
+    --critical: #9c27b0;            /* Mission Critical */
+}
+```
+
+### **Component Design with Network Context**
+```css
+.network-component {
+    /* Base component styling */
+    position: absolute;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: 3px solid var(--component-type-color);
+    border-radius: 15px;
+    
+    /* Network equipment visual metaphor */
+    box-shadow: 
+        0 5px 15px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
+    
+    /* Interactive network device behavior */
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.network-component:hover {
+    /* Network device activation state */
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 
+        0 15px 40px rgba(0,0,0,0.2),
+        0 0 20px var(--component-type-color);
+    border-width: 4px;
+}
+
+/* Network device status indicators */
+.status-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    
+    /* Operational status colors */
+    background: var(--status-color, #4caf50); /* Default: Operational */
+    box-shadow: 0 0 10px var(--status-color, #4caf50);
+    
+    /* Network heartbeat animation */
+    animation: networkHeartbeat 2s ease-in-out infinite;
+}
+
+@keyframes networkHeartbeat {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    25% { 
+        opacity: 0.8; 
+        transform: scale(0.9);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2);
+        box-shadow: 0 0 20px var(--status-color, #4caf50);
+    }
+    75% { 
+        opacity: 0.9; 
+        transform: scale(1.1);
+    }
+}
+```
+
+### **Zone Design with Security Boundaries**
+```css
+.network-zone {
+    position: absolute;
+    border-radius: 20px;
+    border: 3px dashed var(--zone-security-level);
+    background: var(--zone-background);
+    backdrop-filter: blur(10px);
+    
+    /* Security boundary visualization */
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
+    
+    /* Zone activation states */
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.network-zone::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 22px;
+    background: linear-gradient(45deg, 
+        transparent 30%, 
+        var(--zone-security-level) 50%, 
+        transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.network-zone:hover::before {
+    opacity: 0.3;
+    animation: securityScan 2s linear infinite;
+}
+
+@keyframes securityScan {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+}
+```
+
+---
+
+## 📐 **RESPONSIVE ARCHITECTURE: Multi-Device Network Visualization**
+
+### **Viewport-Based Scaling Strategy**
+```css
+/* Container scaling with network aspect ratio preservation */
+.topology-container {
+    width: 98vw;
+    height: 95vh;
+    max-width: none;
+    max-height: none;
+    
+    /* Network diagram viewport scaling */
+    transform-origin: center center;
+    display: grid;
+    grid-template-areas: 
+        "zones zones zones"
+        "components connections labels"
+        "legend legend legend";
+    
+    /* Responsive breakpoint adaptation */
+    container-type: inline-size;
+    container-name: topology;
+}
+
+/* Component positioning with network topology logic */
+@container topology (min-width: 1400px) {
+    .network-component {
+        /* Full desktop network view */
+        min-width: 6vw;
+        min-height: 8vh;
+        font-size: calc(0.5vw + 0.5vh);
+    }
+}
+
+@container topology (max-width: 1399px) and (min-width: 1000px) {
+    .network-component {
+        /* Laptop/tablet network view */
+        min-width: 8vw;
+        min-height: 10vh;
+        font-size: calc(0.7vw + 0.7vh);
+    }
+}
+
+@container topology (max-width: 999px) {
+    .network-component {
+        /* Mobile network view */
+        min-width: 12vw;
+        min-height: 12vh;
+        font-size: calc(1vw + 1vh);
+    }
+    
+    /* Simplified mobile connections */
+    .connection-line {
+        stroke-width: 4;
+    }
+    
+    .connection-mid-label {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+}
+```
+
+### **SVG Responsive Connection System**
+```html
+<svg class="connection-overlay" 
+     width="100%" 
+     height="100%" 
+     viewBox="0 0 100 100" 
+     preserveAspectRatio="none"
+     style="position: absolute; top: 0; left: 0; z-index: 15;">
+    
+    <!-- Network connection with responsive coordinates -->
+    <path class="connection-line secure"
+          d="M 8,12 
+             Q 15,8 25,10
+             Q 35,12 42,15
+             Q 50,18 58,20
+             Q 68,22 75,25
+             Q 85,28 92,30"
+          vector-effect="non-scaling-stroke"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+        
+        <!-- Connection flow animation -->
+        <animate attributeName="stroke-dasharray"
+                 values="0 100;25 75;50 50;75 25;100 0;0 100"
+                 dur="4s"
+                 repeatCount="indefinite"/>
+        
+        <!-- Connection security pulse -->
+        <animate attributeName="stroke-width"
+                 values="3;4;5;4;3"
+                 dur="2s"
+                 repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Connection metadata overlay -->
+    <circle cx="50" cy="16" r="2" fill="var(--connection-color)" opacity="0.8">
+        <animate attributeName="r" values="2;4;2" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+    </circle>
+</svg>
+```
+
+---
+
+## 🔧 **ADVANCED IMPLEMENTATION REQUIREMENTS**
+
+### **Network Flow Logic Implementation**
+```javascript
+// CSS-only implementation using custom properties
+:root {
+    --flow-speed: 3s;
+    --security-level: normal;
+    --traffic-volume: medium;
+    --protocol-overhead: 0.1;
+}
+
+/* Dynamic connection styling based on network conditions */
+.connection-line {
+    stroke-width: calc(2px + var(--traffic-volume, 0) * 3px);
+    animation-duration: calc(var(--flow-speed) * (1 + var(--protocol-overhead)));
+    opacity: calc(0.8 + var(--security-level, 0) * 0.2);
+}
+
+/* Network congestion visualization */
+@keyframes networkCongestion {
+    0% { stroke-dasharray: 10 5; }
+    50% { stroke-dasharray: 5 10; }
+    100% { stroke-dasharray: 2 15; }
+}
+
+.connection-line.congested {
+    animation: networkCongestion 1s ease-in-out infinite;
+    stroke: #ff5722;
+}
+```
+
+### **Component Interaction States**
+```css
+/* Network device operational states */
+.network-component[data-state="active"] {
+    border-color: #4caf50;
+    background: linear-gradient(145deg, #e8f5e8, #ffffff);
+}
+
+.network-component[data-state="warning"] {
+    border-color: #ff9800;
+    background: linear-gradient(145deg, #fff3e0, #ffffff);
+    animation: warningPulse 2s ease-in-out infinite;
+}
+
+.network-component[data-state="critical"] {
+    border-color: #f44336;
+    background: linear-gradient(145deg, #ffebee, #ffffff);
+    animation: criticalAlert 1s ease-in-out infinite;
+}
+
+.network-component[data-state="maintenance"] {
+    border-color: #9e9e9e;
+    background: linear-gradient(145deg, #f5f5f5, #ffffff);
+    opacity: 0.7;
+    filter: grayscale(50%);
+}
+
+/* Network traffic flow indicators */
+@keyframes dataPacketFlow {
+    0% { 
+        stroke-dashoffset: 0;
+        stroke: var(--connection-color);
+    }
+    25% { 
+        stroke: color-mix(in srgb, var(--connection-color) 70%, white 30%);
+    }
+    50% { 
+        stroke-dashoffset: 50;
+        stroke: var(--connection-color);
+    }
+    75% { 
+        stroke: color-mix(in srgb, var(--connection-color) 70%, white 30%);
+    }
+    100% { 
+        stroke-dashoffset: 100;
+        stroke: var(--connection-color);
+    }
+}
+```
+
+### **Network Security Zone Implementation**
+```css
+/* Security zone hierarchy with visual depth */
+.security-zone {
+    --zone-depth: 0;
+    transform: translateZ(calc(var(--zone-depth) * 10px));
+    box-shadow: 
+        0 calc(5px + var(--zone-depth) * 2px) calc(15px + var(--zone-depth) * 5px) rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.security-zone[data-level="dmz"] {
+    --zone-depth: 1;
+    --zone-security-level: #ff9800;
+    background: radial-gradient(ellipse at center, 
+        rgba(255, 152, 0, 0.1) 0%, 
+        rgba(255, 152, 0, 0.05) 70%, 
+        transparent 100%);
+}
+
+.security-zone[data-level="internal"] {
+    --zone-depth: 2;
+    --zone-security-level: #2196f3;
+    background: radial-gradient(ellipse at center, 
+        rgba(33, 150, 243, 0.1) 0%, 
+        rgba(33, 150, 243, 0.05) 70%, 
+        transparent 100%);
+}
+
+.security-zone[data-level="restricted"] {
+    --zone-depth: 3;
+    --zone-security-level: #f44336;
+    background: radial-gradient(ellipse at center, 
+        rgba(244, 67, 54, 0.1) 0%, 
+        rgba(244, 67, 54, 0.05) 70%, 
+        transparent 100%);
+}
+
+/* Security boundary crossings */
+.security-crossing {
+    position: relative;
+    overflow: visible;
+}
+
+.security-crossing::after {
+    content: '🔒';
+    position: absolute;
+    font-size: 12px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 2px 4px;
+    transform: translateX(-50%) translateY(-50%);
+    animation: securityCheck 4s ease-in-out infinite;
+}
+
+@keyframes securityCheck {
+    0%, 90% { opacity: 0.7; }
+    45% { opacity: 1; transform: translateX(-50%) translateY(-50%) scale(1.1); }
+}
+```
+
+---
+
+## 📊 **NETWORK MONITORING AND TELEMETRY VISUALIZATION**
+
+### **Real-time Network Metrics Display**
+```css
+/* Network performance indicators */
+.performance-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.8);
+    color: #00ff00;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    z-index: 1000;
+}
+
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px 0;
+    min-width: 200px;
+}
+
+.metric-value {
+    color: #00ff41;
+    animation: metricUpdate 5s ease-in-out infinite;
+}
+
+.metric-value.warning { color: #ffaa00; }
+.metric-value.critical { color: #ff4444; }
+
+@keyframes metricUpdate {
+    0%, 95% { opacity: 1; }
+    97.5% { opacity: 0.5; }
+}
+
+/* Network latency visualization */
+.latency-indicator {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #00ff41;
+    border-radius: 50%;
+    animation: latencyPulse var(--latency-ms, 100ms) ease-in-out infinite;
+}
+
+@keyframes latencyPulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+```
+
+### **Connection Quality Indicators**
+```css
+/* Connection health visualization */
+.connection-health {
+    position: relative;
+}
+
+.connection-health::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--health-color) 50%, 
+        transparent 100%);
+    opacity: var(--health-opacity);
+    animation: healthCheck calc(var(--check-interval, 5s)) linear infinite;
+}
+
+@keyframes healthCheck {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Packet loss visualization */
+.packet-loss {
+    stroke-dasharray: calc(100 - var(--loss-percentage, 0)) calc(var(--loss-percentage, 0));
+    animation: packetDrop calc(var(--rtt, 100ms) * 10) linear infinite;
+}
+
+@keyframes packetDrop {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    95% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+```
+
+---
+
+## 🎯 **ARCHITECTURE-SPECIFIC IMPLEMENTATION TEMPLATES**
+
+### **Template Structure for Each Network Type**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ARCHITECTURE_NAME] - Enterprise Network Topology</title>
+    <style>
+        /* Include complete CSS framework above */
+    </style>
+</head>
+<body>
+    <div class="title">[ARCHITECTURE_NAME] Network Topology</div>
+    
+    <!-- Performance monitoring overlay -->
+    <div class="performance-overlay">
+        <div class="metric-row">
+            <span>Network Latency:</span>
+            <span class="metric-value">[DYNAMIC]ms</span>
+        </div>
+        <div class="metric-row">
+            <span>Throughput:</span>
+            <span class="metric-value">[DYNAMIC] Gbps</span>
+        </div>
+        <div class="metric-row">
+            <span>Active Connections:</span>
+            <span class="metric-value">[DYNAMIC]</span>
+        </div>
+        <div class="metric-row">
+            <span>Security Events:</span>
+            <span class="metric-value">[DYNAMIC]</span>
+        </div>
+    </div>
+    
+    <div class="topology-container">
+        <!-- [ARCHITECTURE_SPECIFIC_ZONES] -->
+        <!-- [ARCHITECTURE_SPECIFIC_COMPONENTS] -->
+        <!-- [ARCHITECTURE_SPECIFIC_CONNECTIONS] -->
+        <!-- [ARCHITECTURE_SPECIFIC_LABELS] -->
+        
+        <!-- Legend with detailed connection information -->
+        <div class="legend">
+            <div class="legend-title">Network Connections & Protocols</div>
+            <div class="legend-section">
+                <div class="legend-item">
+                    <div class="legend-line standard"></div>
+                    <div class="legend-details">
+                        <span>Standard TCP/HTTP</span>
+                        <small>Regular application traffic</small>
+                    </div>
+                </div>
+                <!-- [MORE_DETAILED_LEGEND_ITEMS] -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+```
+
+---
+
+## ✅ **COMPREHENSIVE QUALITY ASSURANCE CHECKLIST**
+
+### **Network Architecture Accuracy**
+- [ ] **Proper Network Segmentation**: DMZ, internal, management zones correctly isolated
+- [ ] **Security Boundaries**: Clear separation between trust zones
+- [ ] **Traffic Flow Logic**: Realistic routing paths and protocol usage
+- [ ] **Component Relationships**: Accurate service dependencies and communication patterns
+- [ ] **Protocol Accuracy**: Correct protocol selection for each connection type
+- [ ] **Security Controls**: Appropriate placement of firewalls, gateways, and inspection points
+
+### **Visual Design Excellence**
+- [ ] **Consistent Color Scheme**: Security-based color coding throughout
+- [ ] **Responsive Layout**: Perfect scaling across all device sizes
+- [ ] **Animation Quality**: Smooth, purposeful animations that enhance understanding
+- [ ] **Typography Hierarchy**: Clear, readable labels and component names
+- [ ] **Visual Hierarchy**: Important components and connections stand out appropriately
+- [ ] **Accessibility**: Proper contrast ratios and readable fonts
+
+### **Technical Implementation**
+- [ ] **SVG Optimization**: Efficient path rendering and animation performance
+- [ ] **CSS Architecture**: Maintainable, scalable stylesheets
+- [ ] **Responsive Design**: Viewport-based units and container queries
+- [ ] **Performance**: Smooth 60fps animations without jank
+- [ ] **Cross-browser Compatibility**: Works in all modern browsers
+- [ ] **Code Quality**: Clean, well-commented, semantic HTML/CSS
+
+### **Network Documentation Value**
+- [ ] **Educational Value**: Clear understanding of network flow and architecture
+- [ ] **Technical Accuracy**: Correct representation of network protocols and security
+- [ ] **Professional Presentation**: Enterprise-grade visual quality
+- [ ] **Comprehensive Coverage**: All major network components and connections represented
+- [ ] **Troubleshooting Aid**: Visual layout helps identify potential issues
+- [ ] **Scalability Planning**: Shows growth paths and capacity considerations
+
+---
+
+## 🚀 **READY-TO-USE IMPLEMENTATION PROMPTS**
+
+Now use this comprehensive guide with the specific architecture requirements for each of your 6 network topologies. Each implementation must meet ALL the technical, visual, and architectural requirements outlined above.
+
+**This is not just a visualization—it's a complete network architecture documentation and analysis tool.**

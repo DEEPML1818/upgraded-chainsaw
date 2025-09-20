@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-tenant VPC + Service Mesh Network Topology</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .title {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+            to { text-shadow: 2px 2px 20px rgba(255,255,255,0.5); }
+        }
+
+        .topology-container {
+            width: 100vw;
+            max-width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            transform-origin: center;
+        }
+
+        @media (min-width: 1200px) {
+            .topology-container {
+                width: 95vw;
+                height: 90vh;
+            }
+        }
+
+        /* Network Zones - Using viewport units for responsiveness */
+        .network-zone {
+            position: absolute;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        .network-zone:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .internet-zone {
+            top: 2vh;
+            left: 2vw;
+            width: 18vw;
+            height: 12vh;
+            background: linear-gradient(135deg, rgba(255,193,7,0.1), rgba(255,152,0,0.1));
+            border-color: #ff9800;
+        }
+
+        .gateway-zone {
+            top: 2vh;
+            right: 2vw;
+            width: 18vw;
+            height: 12vh;
+            background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(139,195,74,0.1));
+            border-color: #4caf50;
+        }
+
+        .private-dmz-zone {
+            top: 16vh;
+            left: 2vw;
+            width: 25vw;
+            height: 18vh;
+            background: linear-gradient(135deg, rgba(33,150,243,0.1), rgba(30,136,229,0.1));
+            border-color: #2196f3;
+        }
+
+        .public-dmz-zone {
+            top: 16vh;
+            right: 2vw;
+            width: 25vw;
+            height: 18vh;
+            background: linear-gradient(135deg, rgba(156,39,176,0.1), rgba(142,36,170,0.1));
+            border-color: #9c27b0;
+        }
+
+        .service-mesh-zone {
+            top: 36vh;
+            left: 2vw;
+            width: 30vw;
+            height: 18vh;
+            background: linear-gradient(135deg, rgba(63,81,181,0.1), rgba(57,73,171,0.1));
+            border-color: #3f51b5;
+        }
+
+        .tenant-zone {
+            top: 36vh;
+            right: 2vw;
+            width: 25vw;
+            height: 18vh;
+            background: linear-gradient(135deg, rgba(0,150,136,0.1), rgba(0,121,107,0.1));
+            border-color: #009688;
+        }
+
+        .data-zone {
+            top: 56vh;
+            left: 2vw;
+            width: 50vw;
+            height: 18vh;
+            background: linear-gradient(135deg, rgba(96,125,139,0.1), rgba(84,110,122,0.1));
+            border-color: #607d8b;
+        }
+
+        .virtual-network-zone {
+            top: 76vh;
+            left: 2vw;
+            width: 96vw;
+            height: 4vh;
+            background: linear-gradient(90deg, rgba(158,158,158,0.1), rgba(97,97,97,0.1));
+            border-color: #9e9e9e;
+            border-style: dotted;
+        }
+
+        /* Zone Labels */
+        .zone-label {
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: labelPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes labelPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .internet-zone .zone-label { color: #ff9800; }
+        .gateway-zone .zone-label { color: #4caf50; }
+        .private-dmz-zone .zone-label { color: #2196f3; }
+        .public-dmz-zone .zone-label { color: #9c27b0; }
+        .service-mesh-zone .zone-label { color: #3f51b5; }
+        .tenant-zone .zone-label { color: #009688; }
+        .data-zone .zone-label { color: #607d8b; }
+        .virtual-network-zone .zone-label { color: #9e9e9e; }
+
+        /* Network Components */
+        .network-component {
+            position: absolute;
+            background: white;
+            border: 3px solid #34495e;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .network-component:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border-width: 4px;
+        }
+
+        .network-component .icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        /* Component Styles - Using viewport units for responsive positioning */
+        .internet {
+            width: 6vw;
+            height: 8vh;
+            top: 5vh;
+            left: 8vw;
+            border-color: #e67e22;
+            background: linear-gradient(135deg, #fff8f0, #ffeaa7);
+        }
+
+        .on-premise {
+            width: 6vw;
+            height: 8vh;
+            top: 5vh;
+            left: 3vw;
+            border-color: #95a5a6;
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+        }
+
+        .gateway {
+            width: 6vw;
+            height: 8vh;
+            top: 5vh;
+            right: 8vw;
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #d5f4e6, #81ecec);
+        }
+
+        .udr {
+            width: 5vw;
+            height: 6vh;
+            top: 5vh;
+            right: 3vw;
+            border-color: #3498db;
+            background: linear-gradient(135deg, #dbeafe, #93c5fd);
+        }
+
+        .nsg-private {
+            width: 5vw;
+            height: 6vh;
+            top: 19vh;
+            left: 4vw;
+            border-color: #2196f3;
+            background: linear-gradient(135deg, #e3f2fd, #90caf9);
+        }
+
+        .nva-private {
+            width: 6vw;
+            height: 7vh;
+            top: 21vh;
+            left: 11vw;
+            border-color: #1976d2;
+            background: linear-gradient(135deg, #e1f5fe, #4fc3f7);
+        }
+
+        .availability-set-private {
+            width: 8vw;
+            height: 5vh;
+            top: 27vh;
+            left: 19vw;
+            border-color: #0d47a1;
+            background: linear-gradient(135deg, #e8eaf6, #9fa8da);
+        }
+
+        .nsg-public {
+            width: 5vw;
+            height: 6vh;
+            top: 19vh;
+            right: 4vw;
+            border-color: #9c27b0;
+            background: linear-gradient(135deg, #f3e5f5, #ce93d8);
+        }
+
+        .nva-public {
+            width: 6vw;
+            height: 7vh;
+            top: 21vh;
+            right: 11vw;
+            border-color: #7b1fa2;
+            background: linear-gradient(135deg, #fce4ec, #f48fb1);
+        }
+
+        .availability-set-public {
+            width: 8vw;
+            height: 5vh;
+            top: 27vh;
+            right: 19vw;
+            border-color: #4a148c;
+            background: linear-gradient(135deg, #f3e5f5, #ba68c8);
+        }
+
+        .jumpbox {
+            width: 5vw;
+            height: 7vh;
+            top: 26vh;
+            left: 35vw;
+            border-color: #ff5722;
+            background: linear-gradient(135deg, #fbe9e7, #ffab91);
+        }
+
+        .service-mesh {
+            width: 7vw;
+            height: 8vh;
+            top: 39vh;
+            left: 4vw;
+            border-color: #3f51b5;
+            background: linear-gradient(135deg, #e8eaf6, #9fa8da);
+        }
+
+        .auth-service {
+            width: 6vw;
+            height: 7vh;
+            top: 39vh;
+            left: 13vw;
+            border-color: #ff9800;
+            background: linear-gradient(135deg, #fff3e0, #ffcc02);
+        }
+
+        .api-gateway {
+            width: 6vw;
+            height: 7vh;
+            top: 46vh;
+            left: 22vw;
+            border-color: #e91e63;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+        }
+
+        .tenant-a {
+            width: 6vw;
+            height: 7vh;
+            top: 39vh;
+            right: 4vw;
+            border-color: #009688;
+            background: linear-gradient(135deg, #e0f2f1, #80cbc4);
+        }
+
+        .tenant-b {
+            width: 6vw;
+            height: 7vh;
+            top: 46vh;
+            right: 11vw;
+            border-color: #00bcd4;
+            background: linear-gradient(135deg, #e0f7fa, #4dd0e1);
+        }
+
+        .tenant-c {
+            width: 6vw;
+            height: 7vh;
+            top: 39vh;
+            right: 11vw;
+            border-color: #4db6ac;
+            background: linear-gradient(135deg, #f4fffd, #a7ffeb);
+        }
+
+        .database {
+            width: 7vw;
+            height: 8vh;
+            top: 59vh;
+            left: 8vw;
+            border-color: #2196f3;
+            background: linear-gradient(135deg, #e3f2fd, #64b5f6);
+        }
+
+        .cache {
+            width: 6vw;
+            height: 7vh;
+            top: 59vh;
+            left: 18vw;
+            border-color: #ff5722;
+            background: linear-gradient(135deg, #fbe9e7, #ff8a65);
+        }
+
+        .storage {
+            width: 6vw;
+            height: 7vh;
+            top: 59vh;
+            left: 27vw;
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #f1f8e9, #aed581);
+        }
+
+        .message-queue {
+            width: 7vw;
+            height: 8vh;
+            top: 59vh;
+            left: 36vw;
+            border-color: #9c27b0;
+            background: linear-gradient(135deg, #f3e5f5, #ce93d8);
+        }
+
+        /* Connection Lines */
+        .connection {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .connection-line {
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 0;
+            animation: dataFlow 3s ease-in-out infinite;
+        }
+
+        .connection-line.encrypted {
+            stroke: #ff9800;
+            stroke-dasharray: 8 4;
+            animation: encryptedFlow 2s linear infinite;
+        }
+
+        .connection-line.secure {
+            stroke: #4caf50;
+            stroke-width: 4;
+        }
+
+        .connection-line.high-traffic {
+            stroke: #f44336;
+            stroke-width: 5;
+            animation: highTrafficFlow 1s ease-in-out infinite;
+        }
+
+        .connection-line.standard {
+            stroke: #2196f3;
+        }
+
+        @keyframes dataFlow {
+            0%, 100% { stroke-dashoffset: 0; }
+            50% { stroke-dashoffset: 20; }
+        }
+
+        @keyframes encryptedFlow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 24; }
+        }
+
+        @keyframes highTrafficFlow {
+            0%, 100% { stroke-width: 5; }
+            50% { stroke-width: 7; }
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4caf50;
+            box-shadow: 0 0 10px #4caf50;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.6; 
+                transform: scale(1.2);
+            }
+        }
+
+        /* Connection Mid-Point Labels */
+        .connection-mid-label {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 8px;
+            font-weight: 700;
+            z-index: 25;
+            backdrop-filter: blur(3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            animation: labelGlow 3s ease-in-out infinite;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        @keyframes labelGlow {
+            0%, 100% { 
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transform: translateX(-50%) translateY(-50%) scale(1);
+            }
+            50% { 
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                transform: translateX(-50%) translateY(-50%) scale(1.05);
+            }
+        }
+
+        /* Mid-point label colors and positions */
+        .mid-vpn {
+            color: #4caf50;
+            border-color: #4caf50;
+            top: 9vh;
+            left: 40vw;
+        }
+
+        .mid-route {
+            color: #2196f3;
+            border-color: #2196f3;
+            top: 9vh;
+            right: 8vw;
+        }
+
+        .mid-filter-private {
+            color: #ff9800;
+            border-color: #ff9800;
+            top: 22vh;
+            left: 9vw;
+        }
+
+        .mid-filter-public {
+            color: #ff9800;
+            border-color: #ff9800;
+            top: 22vh;
+            right: 9vw;
+        }
+
+        .mid-proxy {
+            color: #e91e63;
+            border-color: #e91e63;
+            top: 35vh;
+            left: 20vw;
+        }
+
+        .mid-auth {
+            color: #9c27b0;
+            border-color: #9c27b0;
+            top: 42vh;
+            left: 14vw;
+        }
+
+        .mid-api {
+            color: #ff5722;
+            border-color: #ff5722;
+            top: 48vh;
+            left: 17vw;
+        }
+
+        .mid-lb {
+            color: #607d8b;
+            border-color: #607d8b;
+            top: 45vh;
+            right: 30vw;
+        }
+
+        .mid-data {
+            color: #795548;
+            border-color: #795548;
+            top: 55vh;
+            left: 50vw;
+        }
+
+        .mid-cache {
+            color: #ff7043;
+            border-color: #ff7043;
+            top: 63vh;
+            left: 17vw;
+        }
+
+        .mid-storage {
+            color: #66bb6a;
+            border-color: #66bb6a;
+            top: 63vh;
+            left: 24vw;
+        }
+
+        .mid-queue {
+            color: #ba68c8;
+            border-color: #ba68c8;
+            top: 63vh;
+            left: 31vw;
+        }
+
+        .mid-async {
+            color: #8d6e63;
+            border-color: #8d6e63;
+            top: 55vh;
+            left: 25vw;
+        }
+
+        .mid-event {
+            color: #78909c;
+            border-color: #78909c;
+            top: 50vh;
+            left: 25vw;
+        }
+
+        .mid-mesh {
+            color: #5e35b1;
+            border-color: #5e35b1;
+            top: 42vh;
+            right: 50vw;
+        }
+
+        /* Responsive adjustments for mid-labels */
+        @media (max-width: 1000px) {
+            .connection-mid-label {
+                font-size: 7px;
+                padding: 1px 4px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .connection-mid-label {
+                font-size: 6px;
+                padding: 1px 3px;
+            }
+        }
+
+        .label-https { 
+            color: #4caf50; 
+            border-color: #4caf50;
+            top: 8vh; 
+            left: 25vw; 
+        }
+
+        .label-tcp { 
+            color: #2196f3; 
+            border-color: #2196f3;
+            top: 15vh; 
+            right: 25vw; 
+        }
+
+        .label-grpc { 
+            color: #ff9800; 
+            border-color: #ff9800;
+            top: 25vh; 
+            left: 8vw; 
+        }
+
+        .label-sql { 
+            color: #673ab7; 
+            border-color: #673ab7;
+            top: 54vh; 
+            left: 25vw; 
+        }
+
+        .label-mgmt {
+            color: #e91e63;
+            border-color: #e91e63;
+            top: 32vh;
+            left: 28vw;
+        }
+
+        .label-async {
+            color: #795548;
+            border-color: #795548;
+            top: 52vh;
+            right: 15vw;
+        }
+
+        /* Legend - Responsive positioning */
+        .legend {
+            position: absolute;
+            bottom: 2vh;
+            right: 2vw;
+            background: rgba(255,255,255,0.95);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5vh 1vw;
+            font-size: 0.8vw;
+            width: 15vw;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .legend-title {
+            font-weight: 700;
+            margin-bottom: 1vh;
+            color: #2c3e50;
+            font-size: 1vw;
+            text-align: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0.8vh 0;
+            transition: all 0.3s ease;
+        }
+
+        .legend-item:hover {
+            transform: translateX(0.3vw);
+        }
+
+        .legend-line {
+            width: 2vw;
+            height: 0.4vh;
+            margin-right: 0.8vw;
+            border-radius: 2px;
+        }
+
+        /* Responsive text sizing */
+        @media (max-width: 1400px) {
+            .legend {
+                font-size: 11px;
+                width: 200px;
+            }
+            .legend-title {
+                font-size: 13px;
+            }
+            .legend-line {
+                width: 25px;
+                height: 4px;
+                margin-right: 10px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .network-component {
+                font-size: 10px;
+            }
+            .zone-label {
+                font-size: 10px;
+            }
+            .connection-label {
+                font-size: 8px;
+                padding: 2px 4px;
+            }
+        }
+
+        /* Ensure minimum sizes on very small screens */
+        @media (max-width: 800px) {
+            .network-component {
+                min-width: 60px;
+                min-height: 50px;
+                font-size: 9px;
+            }
+            .legend {
+                width: 150px;
+                font-size: 9px;
+            }
+            .legend-title {
+                font-size: 11px;
+            }
+        }
+
+        .leg-standard { background: #2196f3; }
+        .leg-secure { background: #4caf50; }
+        .leg-encrypted { 
+            background: repeating-linear-gradient(90deg, 
+                #ff9800 0px, #ff9800 6px, 
+                transparent 6px, transparent 12px); 
+        }
+        .leg-high-traffic { background: #f44336; }
+
+        /* Floating particles effect */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #64b5f6;
+            border-radius: 50%;
+            animation: particleFloat 8s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { 
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateY(-20px) translateX(10px) scale(1.2);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Multi-tenant VPC + Service Mesh Network Topology</div>
+    
+    <div class="topology-container">
+        <!-- Floating particles for ambience -->
+        <div class="particle" style="top: 200px; left: 300px; animation-delay: 0s;"></div>
+        <div class="particle" style="top: 400px; left: 600px; animation-delay: 2s;"></div>
+        <div class="particle" style="top: 600px; left: 900px; animation-delay: 4s;"></div>
+        <div class="particle" style="top: 300px; left: 1200px; animation-delay: 6s;"></div>
+
+        <!-- Network Zones -->
+        <div class="network-zone internet-zone">
+            <div class="zone-label">Internet</div>
+        </div>
+        <div class="network-zone gateway-zone">
+            <div class="zone-label">Gateway Subnet</div>
+        </div>
+        <div class="network-zone private-dmz-zone">
+            <div class="zone-label">Private DMZ In</div>
+        </div>
+        <div class="network-zone public-dmz-zone">
+            <div class="zone-label">Public DMZ Out</div>
+        </div>
+        <div class="network-zone service-mesh-zone">
+            <div class="zone-label">Service Mesh Layer</div>
+        </div>
+        <div class="network-zone tenant-zone">
+            <div class="zone-label">Tenant Applications</div>
+        </div>
+        <div class="network-zone data-zone">
+            <div class="zone-label">Data & Storage Layer</div>
+        </div>
+        <div class="network-zone virtual-network-zone">
+            <div class="zone-label">Virtual Network</div>
+        </div>
+
+        <!-- Network Components -->
+        <div class="network-component internet">
+            <div class="icon">🌐</div>
+            <div>Internet</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component on-premise">
+            <div class="icon">🏢</div>
+            <div>On-Premise</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component gateway">
+            <div class="icon">🚪</div>
+            <div>Gateway</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component udr">
+            <div class="icon">📍</div>
+            <div>UDR</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component nsg-private">
+            <div class="icon">🛡️</div>
+            <div>NSG</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component nva-private">
+            <div class="icon">🔒</div>
+            <div>NVA</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component availability-set-private">
+            <div class="icon">⚡</div>
+            <div>Availability Set</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component nsg-public">
+            <div class="icon">🛡️</div>
+            <div>NSG</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component nva-public">
+            <div class="icon">🔒</div>
+            <div>NVA</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component availability-set-public">
+            <div class="icon">⚡</div>
+            <div>Availability Set</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component jumpbox">
+            <div class="icon">🔧</div>
+            <div>Jumpbox</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component service-mesh">
+            <div class="icon">🕸️</div>
+            <div>Service Mesh</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component auth-service">
+            <div class="icon">🔐</div>
+            <div>Auth Service</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component api-gateway">
+            <div class="icon">🚪</div>
+            <div>API Gateway</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component tenant-a">
+            <div class="icon">🏢</div>
+            <div>Tenant A</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component tenant-b">
+            <div class="icon">🏢</div>
+            <div>Tenant B</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component tenant-c">
+            <div class="icon">🏢</div>
+            <div>Tenant C</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component database">
+            <div class="icon">🗄️</div>
+            <div>PostgreSQL</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component cache">
+            <div class="icon">⚡</div>
+            <div>Redis Cache</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component storage">
+            <div class="icon">📁</div>
+            <div>File Storage</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="network-component message-queue">
+            <div class="icon">📬</div>
+            <div>Message Queue</div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <!-- SVG Connections with Responsive Coordinates -->
+        <svg class="connection" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- On-premise to Gateway -->
+            <path class="connection-line secure" d="M 9,9 Q 20,8 76,9" vector-effect="non-scaling-stroke" />
+            
+            <!-- Internet to Gateway -->
+            <path class="connection-line secure" d="M 14,9 Q 30,8 76,9" vector-effect="non-scaling-stroke" />
+            
+            <!-- Gateway to UDR -->
+            <path class="connection-line standard" d="M 82,9 L 87,9" vector-effect="non-scaling-stroke" />
+            
+            <!-- UDR to NSGs -->
+            <path class="connection-line standard" d="M 89,13 Q 85,17 6.5,22" vector-effect="non-scaling-stroke" />
+            <path class="connection-line standard" d="M 89,13 Q 92,17 93.5,22" vector-effect="non-scaling-stroke" />
+            
+            <!-- NSG Private to NVA Private -->
+            <path class="connection-line encrypted" d="M 6.5,25 L 14,24" vector-effect="non-scaling-stroke" />
+            
+            <!-- NSG Public to NVA Public -->
+            <path class="connection-line encrypted" d="M 93.5,25 L 86,24" vector-effect="non-scaling-stroke" />
+            
+            <!-- NVA Private to Availability Set Private -->
+            <path class="connection-line standard" d="M 17,28 L 23,30" vector-effect="non-scaling-stroke" />
+            
+            <!-- NVA Public to Availability Set Public -->
+            <path class="connection-line standard" d="M 83,28 L 77,30" vector-effect="non-scaling-stroke" />
+            
+            <!-- NVAs to Service Mesh (main data flow) -->
+            <path class="connection-line high-traffic" d="M 14,28 Q 10,35 7.5,42" vector-effect="non-scaling-stroke" />
+            <path class="connection-line encrypted" d="M 86,28 Q 50,35 7.5,42" vector-effect="non-scaling-stroke" />
+            
+            <!-- Service Mesh to Auth Service -->
+            <path class="connection-line encrypted" d="M 11,42 L 16,42" vector-effect="non-scaling-stroke" />
+            
+            <!-- Auth Service to API Gateway -->
+            <path class="connection-line secure" d="M 19,45 Q 22,48 25,49" vector-effect="non-scaling-stroke" />
+            
+            <!-- Service Mesh to API Gateway (direct) -->
+            <path class="connection-line high-traffic" d="M 7.5,47 Q 15,50 25,49" vector-effect="non-scaling-stroke" />
+            
+            <!-- API Gateway to all Tenants -->
+            <path class="connection-line standard" d="M 28,49 Q 50,45 94,42" vector-effect="non-scaling-stroke" />
+            <path class="connection-line standard" d="M 28,49 Q 60,47 94,42" vector-effect="non-scaling-stroke" />
+            <path class="connection-line standard" d="M 28,49 Q 50,49 86,49" vector-effect="non-scaling-stroke" />
+            
+            <!-- Jumpbox to Service Mesh (management) -->
+            <path class="connection-line secure" d="M 37.5,29 Q 25,35 7.5,42" vector-effect="non-scaling-stroke" />
+            
+            <!-- Jumpbox to all NVAs (management) -->
+            <path class="connection-line secure" d="M 37.5,29 Q 25,26 17,25" vector-effect="non-scaling-stroke" />
+            <path class="connection-line secure" d="M 37.5,29 Q 60,26 83,25" vector-effect="non-scaling-stroke" />
+            
+            <!-- All Tenants to Database (data persistence) -->
+            <path class="connection-line secure" d="M 94,45 Q 60,55 11.5,63" vector-effect="non-scaling-stroke" />
+            <path class="connection-line secure" d="M 94,45 Q 70,55 11.5,63" vector-effect="non-scaling-stroke" />
+            <path class="connection-line secure" d="M 86,52 Q 50,58 11.5,63" vector-effect="non-scaling-stroke" />
+            
+            <!-- Database to Cache (caching layer) -->
+            <path class="connection-line standard" d="M 15,63 L 21,63" vector-effect="non-scaling-stroke" />
+            
+            <!-- Cache to Storage (file operations) -->
+            <path class="connection-line standard" d="M 24,63 L 30,63" vector-effect="non-scaling-stroke" />
+            
+            <!-- Storage to Message Queue (async processing) -->
+            <path class="connection-line encrypted" d="M 33,63 L 39.5,63" vector-effect="non-scaling-stroke" />
+            
+            <!-- Service Mesh to Message Queue (async communication) -->
+            <path class="connection-line encrypted" d="M 7.5,47 Q 25,55 39.5,63" vector-effect="non-scaling-stroke" />
+            
+            <!-- Message Queue back to Service Mesh (event handling) -->
+            <path class="connection-line encrypted" d="M 39.5,59 Q 25,52 7.5,47" stroke-dasharray="0.5,0.5" vector-effect="non-scaling-stroke" />
+            
+            <!-- Tenants inter-communication via Service Mesh -->
+            <path class="connection-line standard" d="M 94,42 Q 50,41 7.5,42" vector-effect="non-scaling-stroke" />
+            <path class="connection-line standard" d="M 94,42 Q 60,41 7.5,42" vector-effect="non-scaling-stroke" />
+            <path class="connection-line standard" d="M 86,49 Q 50,45 7.5,42" vector-effect="non-scaling-stroke" />
+        </svg> secure" d="M 720,590 Q 500,700 270,750" />
+            <path class="connection-line secure" d="M 780,590 Q 550,700 270,750" />
+            <path class="connection-line secure" d="M 720,660 Q 450,720 270,750" />
+            
+            <!-- Database to Cache (caching layer) -->
+            <path class="connection-line standard" d="M 270,795 L 320,795" />
+            
+            <!-- Cache to Storage (file operations) -->
+            <path class="connection-line standard" d="M 420,795 L 480,795" />
+            
+            <!-- Storage to Message Queue (async processing) -->
+            <path class="connection-line encrypted" d="M 580,795 L 640,795" />
+            
+            <!-- Service Mesh to Message Queue (async communication) -->
+            <path class="connection-line encrypted" d="M 200,570 Q 400,650 640,750" />
+            
+            <!-- Message Queue back to Service Mesh (event handling) -->
+            <path class="connection-line encrypted" d="M 700,750 Q 500,650 200,570" stroke-dasharray="5,5" />
+            
+            <!-- Tenants inter-communication via Service Mesh -->
+            <path class="connection-line standard" d="M 720,550 Q 400,520 200,555" />
+            <path class="connection-line standard" d="M 780,550 Q 450,520 200,555" />
+            <path class="connection-line standard" d="M 720,620 Q 450,580 200,555" />
+        </svg>
+
+        <!-- Connection Labels -->
+        <div class="connection-label label-https">HTTPS</div>
+        <div class="connection-label label-tcp">TCP/443</div>
+        <div class="connection-label label-grpc">gRPC</div>
+        <div class="connection-label label-sql">SQL/TLS</div>
+        <div class="connection-label label-mgmt">SSH/MGMT</div>
+        <div class="connection-label label-async">ASYNC/MQ</div>
+
+        <!-- Mid-Point Connection Labels -->
+        <div class="connection-mid-label mid-vpn">VPN</div>
+        <div class="connection-mid-label mid-route">ROUTE</div>
+        <div class="connection-mid-label mid-filter-private">FILTER</div>
+        <div class="connection-mid-label mid-filter-public">FILTER</div>
+        <div class="connection-mid-label mid-proxy">PROXY</div>
+        <div class="connection-mid-label mid-auth">AUTH</div>
+        <div class="connection-mid-label mid-api">API</div>
+        <div class="connection-mid-label mid-lb">LB</div>
+        <div class="connection-mid-label mid-data">DATA</div>
+        <div class="connection-mid-label mid-cache">CACHE</div>
+        <div class="connection-mid-label mid-storage">STORE</div>
+        <div class="connection-mid-label mid-queue">QUEUE</div>
+        <div class="connection-mid-label mid-async">ASYNC</div>
+        <div class="connection-mid-label mid-event">EVENT</div>
+        <div class="connection-mid-label mid-mesh">MESH</div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-title">Connection Types</div>
+            <div class="legend-item">
+                <div class="legend-line leg-standard"></div>
+                <span>Standard Connection</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line leg-secure"></div>
+                <span>Secure Connection</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line leg-encrypted"></div>
+                <span>Encrypted Channel</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line leg-high-traffic"></div>
+                <span>High Traffic Flow</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+# AI Agent Prompt: Interactive Network Topology Creator
+
+## 🎯 **Objective**
+Create a stunning, interactive HTML network topology visualization following the exact style and functionality of the provided reference design. Build a fully responsive, animated network diagram that shows clear data flow, connection types, and architectural components.
+
+## 🎨 **Design Requirements**
+
+### **Visual Style Standards:**
+- **Modern Gradient Background**: Purple-blue gradient (`linear-gradient(135deg, #667eea 0%, #764ba2 100%)`)
+- **Glass Morphism**: White containers with `backdrop-filter: blur(10px)` and transparency
+- **Animated Title**: Large, glowing title with `titleGlow` animation
+- **Rounded Corners**: 15-20px border radius on all containers
+- **Shadow Effects**: `box-shadow: 0 20px 60px rgba(0,0,0,0.2)` on main container
+
+### **Component Styling:**
+- **Network Zones**: Color-coded zones with dashed borders and gradient backgrounds
+- **Network Components**: White rounded rectangles with colored borders and icons
+- **Status Indicators**: Green pulsing dots on each component
+- **Hover Effects**: Components lift up with `transform: translateY(-8px) scale(1.05)`
+- **Icon Animation**: Bouncing icons with `iconBounce` keyframe
+
+### **Connection System:**
+- **SVG Paths**: Curved connections using `<path>` elements with quadratic curves
+- **Connection Types**: 4 distinct line styles:
+  - 🔵 **Standard**: Solid blue lines (`#2196f3`)
+  - 🟢 **Secure**: Solid green lines (`#4caf50`) 
+  - 🟠 **Encrypted**: Dashed orange lines (`#ff9800`)
+  - 🔴 **High Traffic**: Thick red lines (`#f44336`)
+- **Mid-Point Labels**: Small labeled badges showing protocol/function at connection midpoints
+- **Flow Animation**: Animated stroke-dasharray for data flow visualization
+
+## 📐 **Responsive Architecture**
+
+### **Viewport-Based Sizing:**
+```css
+- Container: 95vw × 90vh (full viewport scaling)
+- Zones: Position using vh/vw units (e.g., top: 16vh, left: 2vw)
+- Components: Size using vw/vh (e.g., width: 6vw, height: 8vh)
+- SVG: viewBox="0 0 100 100" with preserveAspectRatio="none"
+- Connections: Percentage coordinates (0-100) with vector-effect="non-scaling-stroke"
+```
+
+### **Media Queries:**
+- **Large (1400px+)**: Full detailed view
+- **Medium (1000-1400px)**: Proportional scaling
+- **Small (800-1000px)**: Compact layout
+- **Mobile (<800px)**: Minimum viable sizes
+
+## 🏗️ **Architecture-Specific Instructions**
+
+### **For Each Network Architecture, Include:**
+
+#### **1. Network Zones (5-8 zones per diagram):**
+- Use descriptive zone labels matching the architecture
+- Color-code by function (security, data, management, etc.)
+- Position logically from external → internal → data layers
+
+#### **2. Network Components (10-15 components):**
+- Include relevant icons (🌐🔒🏢⚡📊🗄️📬🚪etc.)
+- Match component names to architecture terminology
+- Size components by importance/traffic volume
+
+#### **3. Connection Flow Logic:**
+```
+External Entry → Security Layer → Service Layer → Application Layer → Data Layer
+```
+
+#### **4. Mid-Point Labels:**
+- Add descriptive 3-6 letter labels (VPN, AUTH, API, DATA, etc.)
+- Position at connection midpoints with appropriate colors
+- Show protocol or function being performed
+
+## 🔧 **Technical Implementation**
+
+### **HTML Structure:**
+```html
+<body>
+  <div class="title">[Architecture Name] Network Topology</div>
+  <div class="topology-container">
+    <!-- Network Zones -->
+    <div class="network-zone [zone-type]">
+      <div class="zone-label">[Zone Name]</div>
+    </div>
+    
+    <!-- Network Components -->
+    <div class="network-component [component-type]">
+      <div class="icon">[Emoji]</div>
+      <div>[Component Name]</div>
+      <div class="status-indicator"></div>
+    </div>
+    
+    <!-- SVG Connections -->
+    <svg class="connection" width="100%" height="100%" viewBox="0 0 100 100">
+      <path class="connection-line [connection-type]" d="M x1,y1 Q mx,my x2,y2" />
+    </svg>
+    
+    <!-- Labels -->
+    <div class="connection-mid-label [label-type]">[PROTOCOL]</div>
+    
+    <!-- Legend -->
+    <div class="legend">...</div>
+  </div>
+</body>
+```
+
+### **CSS Animation Requirements:**
+- **titleGlow**: Text shadow animation (3s infinite alternate)
+- **iconBounce**: Component icon bouncing (2s infinite)
+- **statusPulse**: Status indicator pulsing (2s infinite)
+- **dataFlow**: Connection line animation (3s infinite)
+- **labelFloat**: Label floating animation (3s infinite)
+- **particleFloat**: Background particles (8s infinite)
+
+### **JavaScript Functionality:**
+- No localStorage/sessionStorage (not supported)
+- Use CSS animations only
+- Ensure all interactions are CSS-based
+
+## 📋 **Architecture-Specific Prompts**
+
+### **Template for Each Architecture:**
+```
+Create an interactive network topology for: [ARCHITECTURE NAME]
+
+Key Components to Include:
+- [List 8-12 specific network components]
+- [Specify security elements]
+- [Define data flow elements]
+
+Network Zones:
+- [List 5-7 network zones with descriptions]
+
+Connection Types:
+- [Define what each connection type represents]
+- [Specify protocols used]
+
+Follow the exact visual style, responsive design, and animation patterns from the reference Multi-tenant VPC + Service Mesh topology.
+```
+
+---
+
+## 🚀 **Specific Architecture Prompts**
+
+### **2. Enterprise Portals — Hub-and-Spoke Hybrid Cloud**
+```
+Create a Hub-and-Spoke Hybrid Cloud network topology with:
+
+Components: Internet, Branch Offices (3x), On-Premise DC, Hub VPC, Identity Provider, SSO Gateway, API Gateway, Branch VPN Gateways, SD-WAN Controller, Load Balancer, Application Servers (2x), Database Cluster, Monitoring Hub
+
+Zones: Internet, Branch Network, Hub Cloud Region, Identity Zone, Application Zone, Data Zone, Management Network
+
+Connections: VPN tunnels (encrypted), SD-WAN links (high-traffic), SSO auth flows (secure), API calls (standard), database queries (secure)
+
+Mid-point labels: VPN, SDWAN, SSO, AUTH, API, SYNC, DATA, MGMT
+```
+
+### **3. Compliance & Reporting — Segmented DMZ + Data Lake**
+```
+Create a Segmented DMZ + Data Lake network topology with:
+
+Components: External Sources, DMZ Firewall, Ingestion Gateway, Transform Engine, Compliance VLAN, WORM Storage, Data Lake, Audit Server, ETL Pipeline, Reporting Engine, Dashboard, Egress Controller, Archive Storage
+
+Zones: External Network, DMZ Ingestion, Transformation Zone, Compliance VLAN, Data Lake Overlay, Audit Network, Reporting Zone
+
+Connections: Ingestion (high-traffic), transformation (encrypted), compliance (secure), audit trails (secure), reporting (standard)
+
+Mid-point labels: INGEST, TRANSFORM, COMPLY, AUDIT, REPORT, ARCHIVE
+```
+
+### **4. ITIL ITSM — Zero-Trust Access Fabric**
+```
+Create a Zero-Trust Access Fabric network topology with:
+
+Components: User Endpoints, Identity Broker, ZTNA Gateway, Service Desk, ITSM Platform, Admin Bastion, Out-of-Band Management, Asset Database, Monitoring System, Ticketing Engine, Knowledge Base, Change Management
+
+Zones: User Access, Identity Layer, Zero-Trust Fabric, Service Desk Segment, Admin Network, OOB Management, Data Repository
+
+Connections: Identity verification (encrypted), zero-trust micro-tunnels (secure), admin access (encrypted), OOB management (secure)
+
+Mid-point labels: ZTNA, AUTH, MICRO, ADMIN, OOB, ITSM
+```
+
+### **5. Operational Playbooks — Bastioned Workflow Cluster**
+```
+Create a Bastioned Workflow Cluster topology with:
+
+Components: Developer Workstations, Git Repository, CI/CD Pipeline, Bastion Host, Orchestration Cluster, Workflow Engine, Automation Controllers, Policy Engine, Production Gateway, Monitoring Stack, Artifact Registry, Secret Manager
+
+Zones: Development Network, CI/CD Zone, Management VPC, Orchestration Cluster, Production Boundary, Monitoring Layer
+
+Connections: Git operations (encrypted), CI/CD pipelines (high-traffic), bastion access (secure), orchestration (encrypted), production deployment (secure)
+
+Mid-point labels: GIT, CICD, BASTION, DEPLOY, POLICY, MONITOR
+```
+
+### **6. Enterprise Recovery — Multi-Site DR with SD-WAN**
+```
+Create a Multi-Site Active/Passive DR topology with:
+
+Components: Primary Site, DR Site, SD-WAN Hub, Replication Gateway, Primary Database, DR Database, Storage Arrays, Orchestration Engine, Failover Controller, Health Monitors, Backup Systems, Network Controllers
+
+Zones: Primary Site, DR Site, SD-WAN Backbone, Replication Network, Storage Layer, Orchestration Layer, Monitoring Zone
+
+Connections: SD-WAN tunnels (encrypted), async replication (high-traffic), failover triggers (secure), health checks (standard)
+
+Mid-point labels: SDWAN, REPLICATE, FAILOVER, SYNC, BACKUP, HEALTH
+```
+
+---
+
+## ✅ **Quality Checklist**
+- [ ] Responsive design with viewport units
+- [ ] All 6 animation types implemented
+- [ ] 4 distinct connection line styles
+- [ ] Mid-point connection labels
+- [ ] Color-coded network zones
+- [ ] Status indicators on all components
+- [ ] Hover effects on all interactive elements
+- [ ] Legend with connection types
+- [ ] Glass morphism styling
+- [ ] Proper network flow logic
+
+Use this prompt template and customize it for each of your 6 network architectures!
