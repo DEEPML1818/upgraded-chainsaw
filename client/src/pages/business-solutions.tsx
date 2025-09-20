@@ -68,64 +68,80 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       case 'custom-saas':
         return (
           <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
-            <svg viewBox="0 0 500 320" className="w-full h-full">
-              {/* Cloud Region */}
-              <rect x="20" y="20" width="460" height="280" rx="15" fill="rgba(59, 130, 246, 0.1)" stroke="rgba(59, 130, 246, 0.4)" strokeWidth="3"/>
-              <text x="40" y="45" fill="rgb(147, 197, 253)" fontSize="16" fontWeight="bold">CLOUD REGION</text>
-              
-              {/* Tenant VPCs */}
-              <rect x="40" y="60" width="120" height="90" rx="8" fill="rgba(34, 197, 94, 0.15)" stroke="rgba(34, 197, 94, 0.6)" strokeWidth="2"/>
-              <text x="70" y="80" fill="rgb(134, 239, 172)" fontSize="12" fontWeight="600">TENANT A VPC</text>
-              
-              <rect x="190" y="60" width="120" height="90" rx="8" fill="rgba(34, 197, 94, 0.15)" stroke="rgba(34, 197, 94, 0.6)" strokeWidth="2"/>
-              <text x="220" y="80" fill="rgb(134, 239, 172)" fontSize="12" fontWeight="600">TENANT B VPC</text>
-              
-              <rect x="340" y="60" width="120" height="90" rx="8" fill="rgba(34, 197, 94, 0.15)" stroke="rgba(34, 197, 94, 0.6)" strokeWidth="2"/>
-              <text x="370" y="80" fill="rgb(134, 239, 172)" fontSize="12" fontWeight="600">TENANT C VPC</text>
-              
-              {/* Microservices */}
-              <rect x="60" y="100" width="25" height="15" rx="3" fill="rgba(168, 85, 247, 0.4)" stroke="rgb(168, 85, 247)" strokeWidth="1.5"/>
-              <text x="65" y="110" fill="rgb(168, 85, 247)" fontSize="8" fontWeight="500">MS1</text>
-              
-              <rect x="115" y="100" width="25" height="15" rx="3" fill="rgba(168, 85, 247, 0.4)" stroke="rgb(168, 85, 247)" strokeWidth="1.5"/>
-              <text x="120" y="110" fill="rgb(168, 85, 247)" fontSize="8" fontWeight="500">MS2</text>
-              
-              <rect x="210" y="100" width="25" height="15" rx="3" fill="rgba(168, 85, 247, 0.4)" stroke="rgb(168, 85, 247)" strokeWidth="1.5"/>
-              <text x="215" y="110" fill="rgb(168, 85, 247)" fontSize="8" fontWeight="500">MS1</text>
-              
-              <rect x="265" y="100" width="25" height="15" rx="3" fill="rgba(168, 85, 247, 0.4)" stroke="rgb(168, 85, 247)" strokeWidth="1.5"/>
-              <text x="270" y="110" fill="rgb(168, 85, 247)" fontSize="8" fontWeight="500">MS2</text>
-              
-              <rect x="360" y="100" width="25" height="15" rx="3" fill="rgba(168, 85, 247, 0.4)" stroke="rgb(168, 85, 247)" strokeWidth="1.5"/>
-              <text x="365" y="110" fill="rgb(168, 85, 247)" fontSize="8" fontWeight="500">MS1</text>
-              
-              <rect x="415" y="100" width="25" height="15" rx="3" fill="rgba(168, 85, 247, 0.4)" stroke="rgb(168, 85, 247)" strokeWidth="1.5"/>
-              <text x="420" y="110" fill="rgb(168, 85, 247)" fontSize="8" fontWeight="500">MS2</text>
-              
-              {/* Service Mesh */}
-              <path d="M85 100 L115 100 M235 100 L265 100 M385 100 L415 100" stroke="rgba(168, 85, 247, 0.8)" strokeWidth="2" strokeDasharray="5,3"/>
-              <text x="90" y="95" fill="rgb(168, 85, 247)" fontSize="9" fontWeight="500">Service Mesh</text>
-              
-              {/* Ingress Gateway */}
-              <rect x="220" y="200" width="60" height="25" rx="6" fill="rgba(251, 191, 36, 0.4)" stroke="rgb(251, 191, 36)" strokeWidth="2"/>
-              <text x="235" y="218" fill="rgb(251, 191, 36)" fontSize="11" fontWeight="600">GATEWAY</text>
-              
-              {/* Kubernetes Cluster */}
-              <rect x="40" y="170" width="420" height="20" rx="4" fill="rgba(59, 130, 246, 0.2)" stroke="rgba(59, 130, 246, 0.5)" strokeWidth="1.5"/>
-              <text x="220" y="185" fill="rgb(147, 197, 253)" fontSize="11" fontWeight="600">KUBERNETES CLUSTER</text>
-              
-              {/* Autoscaler */}
-              <rect x="380" y="240" width="80" height="25" rx="6" fill="rgba(239, 68, 68, 0.4)" stroke="rgb(239, 68, 68)" strokeWidth="2"/>
-              <text x="405" y="258" fill="rgb(239, 68, 68)" fontSize="11" fontWeight="600">AUTOSCALER</text>
-              
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="arrow1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0,0 L0,6 L8,3 z" fill="rgba(148, 163, 184, 0.8)"/>
+                <filter id="nodeShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="dataFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
                 </marker>
+                <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.15)"/>
+                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+                </linearGradient>
               </defs>
               
-              {/* Connections */}
-              <path d="M250 200 L100 150 M250 200 L250 150 M250 200 L400 150" stroke="rgba(148, 163, 184, 0.7)" strokeWidth="2" markerEnd="url(#arrow1)"/>
+              {/* Primary Cloud Infrastructure */}
+              <ellipse cx="300" cy="180" rx="260" ry="150" fill="url(#cloudGradient)" stroke="#3B82F6" strokeWidth="2" opacity="0.8" filter="url(#nodeShadow)"/>
+              <text x="300" y="50" textAnchor="middle" fill="#60A5FA" fontSize="32" fontWeight="500">☁️</text>
+              <text x="300" y="75" textAnchor="middle" fill="#93C5FD" fontSize="13" fontWeight="600">Multi-Tenant Cloud Platform</text>
+              
+              {/* Tenant VPCs - Left to Right Layout */}
+              <g filter="url(#nodeShadow)">
+                <rect x="80" y="120" width="120" height="70" rx="16" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="140" y="145" textAnchor="middle" fill="#10B981" fontSize="24">👥</text>
+                <text x="140" y="170" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Tenant A</text>
+                <text x="140" y="185" textAnchor="middle" fill="#6EE7B7" fontSize="11">Isolated VPC</text>
+              </g>
+              
+              <g filter="url(#nodeShadow)">
+                <rect x="240" y="120" width="120" height="70" rx="16" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="300" y="145" textAnchor="middle" fill="#10B981" fontSize="24">👥</text>
+                <text x="300" y="170" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Tenant B</text>
+                <text x="300" y="185" textAnchor="middle" fill="#6EE7B7" fontSize="11">Isolated VPC</text>
+              </g>
+              
+              <g filter="url(#nodeShadow)">
+                <rect x="400" y="120" width="120" height="70" rx="16" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="460" y="145" textAnchor="middle" fill="#10B981" fontSize="24">👥</text>
+                <text x="460" y="170" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Tenant C</text>
+                <text x="460" y="185" textAnchor="middle" fill="#6EE7B7" fontSize="11">Isolated VPC</text>
+              </g>
+              
+              {/* Service Mesh Orchestration */}
+              <g filter="url(#nodeShadow)">
+                <rect x="200" y="230" width="200" height="50" rx="25" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="300" y="250" textAnchor="middle" fill="#9333EA" fontSize="24">🔄</text>
+                <text x="300" y="270" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Service Mesh Orchestration</text>
+              </g>
+              
+              {/* Security Gateway */}
+              <g filter="url(#nodeShadow)">
+                <rect x="150" y="300" width="140" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="220" y="325" textAnchor="middle" fill="#F59E0B" fontSize="20">🛡️</text>
+                <text x="280" y="325" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Gateway</text>
+              </g>
+              
+              {/* Auto-scaling Controller */}
+              <g filter="url(#nodeShadow)">
+                <rect x="360" y="300" width="140" height="40" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="430" y="325" textAnchor="middle" fill="#EF4444" fontSize="20">🔄</text>
+                <text x="480" y="325" textAnchor="middle" fill="#F87171" fontSize="12" fontWeight="600">Auto-scale</text>
+              </g>
+              
+              {/* Data Flow Connections */}
+              <path d="M140 190 Q200 210 240 230" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#dataFlow)" opacity="0.8"/>
+              <path d="M300 190 L300 230" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#dataFlow)" opacity="0.8"/>
+              <path d="M460 190 Q400 210 360 230" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#dataFlow)" opacity="0.8"/>
+              
+              <path d="M250 280 Q235 290 220 300" stroke="#3B82F6" strokeWidth="2" fill="none" markerEnd="url(#dataFlow)" opacity="0.6"/>
+              <path d="M350 280 Q365 290 380 300" stroke="#3B82F6" strokeWidth="2" fill="none" markerEnd="url(#dataFlow)" opacity="0.6"/>
+              
+              {/* Connection Labels */}
+              <text x="190" y="205" fill="#60A5FA" fontSize="10" fontWeight="500">Service Traffic</text>
+              <text x="410" y="205" fill="#60A5FA" fontSize="10" fontWeight="500">Service Traffic</text>
+              <text x="305" y="210" fill="#60A5FA" fontSize="10" fontWeight="500">Direct</text>
             </svg>
             <div className="mt-4 text-center">
               <h4 className="text-lg font-semibold text-white">Multi-Tenant VPC + Service Mesh</h4>
@@ -137,47 +153,109 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       case 'enterprise-portals':
         return (
           <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
-            <svg viewBox="0 0 500 320" className="w-full h-full">
-              {/* Central Hub Cloud */}
-              <ellipse cx="250" cy="160" rx="100" ry="60" fill="rgba(59, 130, 246, 0.15)" stroke="rgba(59, 130, 246, 0.6)" strokeWidth="3"/>
-              <text x="190" y="140" fill="rgb(147, 197, 253)" fontSize="14" fontWeight="bold">CENTRAL HUB</text>
-              <text x="200" y="160" fill="rgb(147, 197, 253)" fontSize="12" fontWeight="600">SSO + API GATEWAY</text>
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow2" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="secureFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <marker id="controlFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
+                </marker>
+                <radialGradient id="hubGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+                </radialGradient>
+              </defs>
               
-              {/* Identity Service */}
-              <rect x="220" y="175" width="60" height="20" rx="6" fill="rgba(34, 197, 94, 0.4)" stroke="rgb(34, 197, 94)" strokeWidth="2"/>
-              <text x="235" y="190" fill="rgb(34, 197, 94)" fontSize="10" fontWeight="600">IDENTITY</text>
+              {/* Central Identity Hub - Primary Node */}
+              <g filter="url(#nodeShadow2)">
+                <ellipse cx="300" cy="180" rx="120" ry="70" fill="url(#hubGradient)" stroke="#3B82F6" strokeWidth="3"/>
+                <text x="300" y="155" textAnchor="middle" fill="#3B82F6" fontSize="28">☁️</text>
+                <text x="300" y="180" textAnchor="middle" fill="#3B82F6" fontSize="24">👤</text>
+                <text x="300" y="205" textAnchor="middle" fill="#60A5FA" fontSize="14" fontWeight="600">Identity Hub</text>
+                <text x="300" y="220" textAnchor="middle" fill="#93C5FD" fontSize="11">SSO + API Gateway</text>
+              </g>
               
-              {/* Branch Offices */}
-              <rect x="50" y="40" width="80" height="50" rx="10" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.5)" strokeWidth="2"/>
-              <text x="70" y="60" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">BRANCH A</text>
-              <text x="75" y="80" fill="rgb(196, 181, 253)" fontSize="10">Office Site</text>
+              {/* Branch Offices - Distributed Layout */}
+              <g filter="url(#nodeShadow2)">
+                <rect x="60" y="60" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="110" y="85" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="110" y="105" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Branch A</text>
+                <text x="110" y="118" textAnchor="middle" fill="#C084FC" fontSize="10">Remote Office</text>
+              </g>
               
-              <rect x="370" y="40" width="80" height="50" rx="10" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.5)" strokeWidth="2"/>
-              <text x="390" y="60" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">BRANCH B</text>
-              <text x="395" y="80" fill="rgb(196, 181, 253)" fontSize="10">Office Site</text>
+              <g filter="url(#nodeShadow2)">
+                <rect x="440" y="60" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="490" y="85" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="490" y="105" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Branch B</text>
+                <text x="490" y="118" textAnchor="middle" fill="#C084FC" fontSize="10">Remote Office</text>
+              </g>
               
-              <rect x="50" y="230" width="80" height="50" rx="10" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.5)" strokeWidth="2"/>
-              <text x="70" y="250" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">ON-PREMISE</text>
-              <text x="75" y="270" fill="rgb(196, 181, 253)" fontSize="10">Data Center</text>
+              <g filter="url(#nodeShadow2)">
+                <rect x="60" y="270" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="110" y="295" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="110" y="315" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">On-Premise</text>
+                <text x="110" y="328" textAnchor="middle" fill="#C084FC" fontSize="10">Data Center</text>
+              </g>
               
-              <rect x="370" y="230" width="80" height="50" rx="10" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.5)" strokeWidth="2"/>
-              <text x="390" y="250" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">BRANCH C</text>
-              <text x="395" y="270" fill="rgb(196, 181, 253)" fontSize="10">Remote Site</text>
+              <g filter="url(#nodeShadow2)">
+                <rect x="440" y="270" width="100" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="490" y="295" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="490" y="315" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Remote Site</text>
+                <text x="490" y="328" textAnchor="middle" fill="#C084FC" fontSize="10">Field Office</text>
+              </g>
               
-              {/* VPN Tunnels */}
-              <path d="M130 65 Q190 100 190 150" stroke="rgba(251, 191, 36, 0.9)" strokeWidth="3" strokeDasharray="8,4" fill="none"/>
-              <path d="M370 65 Q310 100 310 150" stroke="rgba(251, 191, 36, 0.9)" strokeWidth="3" strokeDasharray="8,4" fill="none"/>
-              <path d="M130 255 Q190 220 190 170" stroke="rgba(251, 191, 36, 0.9)" strokeWidth="3" strokeDasharray="8,4" fill="none"/>
-              <path d="M370 255 Q310 220 310 170" stroke="rgba(251, 191, 36, 0.9)" strokeWidth="3" strokeDasharray="8,4" fill="none"/>
+              {/* Security Gateways */}
+              <g filter="url(#nodeShadow2)">
+                <rect x="200" y="120" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="225" y="142" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
               
-              <text x="160" y="25" fill="rgb(251, 191, 36)" fontSize="12" fontWeight="600">SECURE VPN/SD-WAN TUNNELS</text>
+              <g filter="url(#nodeShadow2)">
+                <rect x="350" y="120" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="375" y="142" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
               
-              {/* Security Icons */}
-              <rect x="160" y="130" width="20" height="15" rx="3" fill="rgba(239, 68, 68, 0.4)" stroke="rgb(239, 68, 68)" strokeWidth="1"/>
-              <text x="165" y="141" fill="rgb(239, 68, 68)" fontSize="8" fontWeight="500">FW</text>
+              <g filter="url(#nodeShadow2)">
+                <rect x="200" y="205" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="225" y="227" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
               
-              <rect x="320" y="130" width="20" height="15" rx="3" fill="rgba(239, 68, 68, 0.4)" stroke="rgb(239, 68, 68)" strokeWidth="1"/>
-              <text x="325" y="141" fill="rgb(239, 68, 68)" fontSize="8" fontWeight="500">FW</text>
+              <g filter="url(#nodeShadow2)">
+                <rect x="350" y="205" width="50" height="35" rx="18" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="375" y="227" textAnchor="middle" fill="#EF4444" fontSize="16">🛡️</text>
+              </g>
+              
+              {/* Encrypted VPN Connections */}
+              <path d="M160 90 Q180 105 200 125" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              <path d="M440 90 Q420 105 400 125" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              <path d="M160 300 Q180 255 200 230" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              <path d="M440 300 Q420 255 400 230" stroke="#F59E0B" strokeWidth="4" strokeDasharray="12,6" fill="none" markerEnd="url(#secureFlow)" opacity="0.9"/>
+              
+              {/* Hub Control Connections */}
+              <path d="M250 137 Q270 155 280 170" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              <path d="M350 137 Q330 155 320 170" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              <path d="M250 222 Q270 205 280 190" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              <path d="M350 222 Q330 205 320 190" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#controlFlow)" opacity="0.8"/>
+              
+              {/* Connection Labels */}
+              <text x="180" y="115" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 SD-WAN</text>
+              <text x="400" y="115" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 SD-WAN</text>
+              <text x="175" y="245" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 VPN</text>
+              <text x="405" y="245" fill="#F59E0B" fontSize="11" fontWeight="500">🔒 VPN</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="140" height="55" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Network Types</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" strokeWidth="3" strokeDasharray="6,3"/>
+                <text x="35" y="28" fill="#FBBF24" fontSize="9">Encrypted</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#3B82F6" strokeWidth="2"/>
+                <text x="35" y="43" fill="#60A5FA" fontSize="9">Control</text>
+              </g>
             </svg>
             <div className="mt-4 text-center">
               <h4 className="text-lg font-semibold text-white">Hub-and-Spoke Hybrid Cloud</h4>
@@ -189,53 +267,90 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       case 'compliance-reporting':
         return (
           <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
-            <svg viewBox="0 0 500 320" className="w-full h-full">
-              {/* DMZ Layer */}
-              <rect x="20" y="30" width="460" height="70" rx="10" fill="rgba(239, 68, 68, 0.15)" stroke="rgba(239, 68, 68, 0.6)" strokeWidth="3"/>
-              <text x="40" y="55" fill="rgb(248, 113, 113)" fontSize="14" fontWeight="bold">DMZ - DATA INGESTION LAYER</text>
-              <text x="40" y="85" fill="rgb(248, 113, 113)" fontSize="11" fontWeight="500">Secure External Data Entry Point</text>
-              
-              {/* VLANs */}
-              <rect x="40" y="120" width="120" height="50" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="2"/>
-              <text x="70" y="140" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">COMPLIANCE</text>
-              <text x="85" y="155" fill="rgb(196, 181, 253)" fontSize="10">VLAN</text>
-              
-              <rect x="190" y="120" width="120" height="50" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="2"/>
-              <text x="230" y="140" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">AUDIT</text>
-              <text x="240" y="155" fill="rgb(196, 181, 253)" fontSize="10">VLAN</text>
-              
-              <rect x="340" y="120" width="120" height="50" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="2"/>
-              <text x="375" y="140" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">ARCHIVE</text>
-              <text x="385" y="155" fill="rgb(196, 181, 253)" fontSize="10">VLAN</text>
-              
-              {/* WORM Storage */}
-              <rect x="60" y="200" width="80" height="35" rx="6" fill="rgba(34, 197, 94, 0.3)" stroke="rgb(34, 197, 94)" strokeWidth="2"/>
-              <text x="80" y="220" fill="rgb(34, 197, 94)" fontSize="11" fontWeight="600">WORM</text>
-              <text x="80" y="235" fill="rgb(34, 197, 94)" fontSize="9">Storage</text>
-              
-              {/* Data Lake */}
-              <ellipse cx="380" cy="215" rx="80" ry="45" fill="rgba(59, 130, 246, 0.15)" stroke="rgba(59, 130, 246, 0.6)" strokeWidth="3"/>
-              <text x="340" y="205" fill="rgb(147, 197, 253)" fontSize="12" fontWeight="600">DATA LAKE</text>
-              <text x="350" y="225" fill="rgb(147, 197, 253)" fontSize="10">Analytics Engine</text>
-              
-              {/* Audit Engine */}
-              <rect x="200" y="270" width="100" height="30" rx="8" fill="rgba(251, 191, 36, 0.3)" stroke="rgb(251, 191, 36)" strokeWidth="2"/>
-              <text x="225" y="290" fill="rgb(251, 191, 36)" fontSize="11" fontWeight="600">AUDIT ENGINE</text>
-              
-              {/* Firewall */}
-              <rect x="220" y="60" width="60" height="20" rx="4" fill="rgba(239, 68, 68, 0.4)" stroke="rgb(239, 68, 68)" strokeWidth="2"/>
-              <text x="235" y="75" fill="rgb(239, 68, 68)" fontSize="10" fontWeight="600">FIREWALL</text>
-              
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="arrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0,0 L0,6 L8,3 z" fill="rgba(148, 163, 184, 0.8)"/>
+                <filter id="nodeShadow3" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="complianceFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
                 </marker>
+                <linearGradient id="dmzGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(239, 68, 68, 0.15)"/>
+                  <stop offset="100%" stopColor="rgba(239, 68, 68, 0.05)"/>
+                </linearGradient>
               </defs>
               
-              {/* Data Flow */}
-              <path d="M250 100 L100 120 M250 100 L250 120 M250 100 L400 120" stroke="rgba(148, 163, 184, 0.8)" strokeWidth="2" markerEnd="url(#arrow2)"/>
-              <path d="M100 170 L100 200 M400 170 L380 175" stroke="rgba(148, 163, 184, 0.8)" strokeWidth="2" markerEnd="url(#arrow2)"/>
-              <path d="M250 170 L250 270" stroke="rgba(148, 163, 184, 0.8)" strokeWidth="2" markerEnd="url(#arrow2)"/>
+              {/* DMZ Security Layer */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="40" y="40" width="520" height="80" rx="20" fill="url(#dmzGradient)" stroke="#EF4444" strokeWidth="3"/>
+                <text x="300" y="70" textAnchor="middle" fill="#EF4444" fontSize="24">🛡️</text>
+                <text x="300" y="95" textAnchor="middle" fill="#F87171" fontSize="14" fontWeight="600">DMZ Data Ingestion Layer</text>
+                <text x="300" y="110" textAnchor="middle" fill="#FCA5A5" fontSize="11">Secure External Entry Point</text>
+              </g>
+              
+              {/* Compliance Processing VLAN */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="80" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="150" y="175" textAnchor="middle" fill="#9333EA" fontSize="24">📑</text>
+                <text x="150" y="195" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Compliance VLAN</text>
+                <text x="150" y="208" textAnchor="middle" fill="#C084FC" fontSize="10">Policy Enforcement</text>
+              </g>
+              
+              {/* Audit Processing VLAN */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="250" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="320" y="175" textAnchor="middle" fill="#9333EA" fontSize="24">🔄</text>
+                <text x="320" y="195" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Audit VLAN</text>
+                <text x="320" y="208" textAnchor="middle" fill="#C084FC" fontSize="10">Log Processing</text>
+              </g>
+              
+              {/* Archive VLAN */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="420" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="490" y="175" textAnchor="middle" fill="#9333EA" fontSize="24">🗂️</text>
+                <text x="490" y="195" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Archive VLAN</text>
+                <text x="490" y="208" textAnchor="middle" fill="#C084FC" fontSize="10">Long-term Storage</text>
+              </g>
+              
+              {/* WORM Storage Database (Cylinder) */}
+              <g filter="url(#nodeShadow3)">
+                <ellipse cx="150" cy="250" rx="50" ry="18" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" strokeWidth="2"/>
+                <rect x="100" y="250" width="100" height="40" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" strokeWidth="2"/>
+                <ellipse cx="150" cy="290" rx="50" ry="18" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" strokeWidth="2"/>
+                <text x="150" y="275" textAnchor="middle" fill="#10B981" fontSize="20">🔒</text>
+                <text x="150" y="315" textAnchor="middle" fill="#34D399" fontSize="12" fontWeight="600">WORM Storage</text>
+                <text x="150" y="330" textAnchor="middle" fill="#6EE7B7" fontSize="10">Immutable Records</text>
+              </g>
+              
+              {/* Data Lake Cloud */}
+              <g filter="url(#nodeShadow3)">
+                <ellipse cx="450" cy="270" rx="90" ry="55" fill="rgba(59, 130, 246, 0.12)" stroke="#3B82F6" strokeWidth="3"/>
+                <text x="450" y="255" textAnchor="middle" fill="#3B82F6" fontSize="28">☁️</text>
+                <text x="450" y="285" textAnchor="middle" fill="#60A5FA" fontSize="14" fontWeight="600">Analytics Data Lake</text>
+                <text x="450" y="300" textAnchor="middle" fill="#93C5FD" fontSize="11">Big Data Processing</text>
+              </g>
+              
+              {/* Audit Engine */}
+              <g filter="url(#nodeShadow3)">
+                <rect x="250" y="320" width="140" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="320" y="345" textAnchor="middle" fill="#F59E0B" fontSize="20">🔄</text>
+                <text x="380" y="345" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Audit Engine</text>
+              </g>
+              
+              {/* Data Flow Connections */}
+              <path d="M300 120 Q200 135 150 150" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M300 120 L320 150" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M300 120 Q400 135 490 150" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              
+              <path d="M150 210 L150 232" stroke="#10B981" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M490 210 Q470 230 450 240" stroke="#3B82F6" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              <path d="M320 210 L320 320" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#complianceFlow)" opacity="0.8"/>
+              
+              {/* Connection Labels */}
+              <text x="225" y="135" fill="#60A5FA" fontSize="10" fontWeight="500">Compliance Data</text>
+              <text x="325" y="135" fill="#60A5FA" fontSize="10" fontWeight="500">Audit Logs</text>
+              <text x="395" y="135" fill="#60A5FA" fontSize="10" fontWeight="500">Archive Data</text>
             </svg>
             <div className="mt-4 text-center">
               <h4 className="text-lg font-semibold text-white">Segmented DMZ + Data Lake Overlay</h4>
@@ -247,51 +362,102 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       case 'itil-itsm':
         return (
           <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-96">
-            <svg viewBox="0 0 500 320" className="w-full h-full">
-              {/* ZTNA Gateway */}
-              <rect x="200" y="20" width="100" height="30" rx="6" fill="rgba(239, 68, 68, 0.4)" stroke="rgb(239, 68, 68)" strokeWidth="2"/>
-              <text x="225" y="40" fill="rgb(239, 68, 68)" fontSize="12" fontWeight="600">ZTNA GATEWAY</text>
+            <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow4" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="zeroTrustFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#EF4444"/>
+                </marker>
+                <marker id="bastionFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <radialGradient id="serviceDeskGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(59, 130, 246, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+                </radialGradient>
+              </defs>
               
-              {/* Service Desk Cluster */}
-              <rect x="150" y="70" width="200" height="80" rx="10" fill="rgba(59, 130, 246, 0.15)" stroke="rgba(59, 130, 246, 0.6)" strokeWidth="3"/>
-              <text x="210" y="95" fill="rgb(147, 197, 253)" fontSize="14" fontWeight="bold">SERVICE DESK CLUSTER</text>
-              <text x="220" y="115" fill="rgb(147, 197, 253)" fontSize="11">ITIL Framework</text>
+              {/* Zero Trust Network Access Gateway */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="220" y="30" width="160" height="45" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="3"/>
+                <text x="300" y="55" textAnchor="middle" fill="#EF4444" fontSize="24">🛡️</text>
+                <text x="300" y="75" textAnchor="middle" fill="#F87171" fontSize="14" fontWeight="600">ZTNA Gateway</text>
+              </g>
               
-              {/* Service Desk Nodes */}
-              <rect x="170" y="120" width="35" height="20" rx="4" fill="rgba(34, 197, 94, 0.4)" stroke="rgb(34, 197, 94)" strokeWidth="2"/>
-              <text x="180" y="135" fill="rgb(34, 197, 94)" fontSize="9" fontWeight="500">NODE 1</text>
+              {/* ITIL Service Desk Cluster - Primary */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="180" y="100" width="240" height="80" rx="20" fill="url(#serviceDeskGradient)" stroke="#3B82F6" strokeWidth="3"/>
+                <text x="300" y="125" textAnchor="middle" fill="#3B82F6" fontSize="24">👤</text>
+                <text x="300" y="150" textAnchor="middle" fill="#3B82F6" fontSize="24">🔄</text>
+                <text x="300" y="175" textAnchor="middle" fill="#60A5FA" fontSize="14" fontWeight="600">ITIL Service Desk</text>
+              </g>
               
-              <rect x="230" y="120" width="35" height="20" rx="4" fill="rgba(34, 197, 94, 0.4)" stroke="rgb(34, 197, 94)" strokeWidth="2"/>
-              <text x="240" y="135" fill="rgb(34, 197, 94)" fontSize="9" fontWeight="500">NODE 2</text>
+              {/* Bastion Jump Hosts */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="80" y="210" width="120" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="140" y="235" textAnchor="middle" fill="#F59E0B" fontSize="20">🔑</text>
+                <text x="170" y="235" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Bastion</text>
+                <text x="140" y="250" textAnchor="middle" fill="#FCD34D" fontSize="10">Jump Host</text>
+              </g>
               
-              <rect x="290" y="120" width="35" height="20" rx="4" fill="rgba(34, 197, 94, 0.4)" stroke="rgb(34, 197, 94)" strokeWidth="2"/>
-              <text x="300" y="135" fill="rgb(34, 197, 94)" fontSize="9" fontWeight="500">NODE 3</text>
+              <g filter="url(#nodeShadow4)">
+                <rect x="400" y="210" width="120" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="460" y="235" textAnchor="middle" fill="#F59E0B" fontSize="20">🔑</text>
+                <text x="490" y="235" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Bastion</text>
+                <text x="460" y="250" textAnchor="middle" fill="#FCD34D" fontSize="10">Jump Host</text>
+              </g>
               
-              {/* Bastion Hosts */}
-              <rect x="50" y="180" width="80" height="30" rx="6" fill="rgba(251, 191, 36, 0.4)" stroke="rgb(251, 191, 36)" strokeWidth="2"/>
-              <text x="70" y="200" fill="rgb(251, 191, 36)" fontSize="11" fontWeight="600">BASTION HOST</text>
+              {/* Microsegmented Networks */}
+              <g filter="url(#nodeShadow4)">
+                <rect x="60" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="130" y="305" textAnchor="middle" fill="#9333EA" fontSize="22">👥</text>
+                <text x="130" y="325" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Production LAN</text>
+                <text x="130" y="338" textAnchor="middle" fill="#C084FC" fontSize="10">Critical Systems</text>
+              </g>
               
-              <rect x="370" y="180" width="80" height="30" rx="6" fill="rgba(251, 191, 36, 0.4)" stroke="rgb(251, 191, 36)" strokeWidth="2"/>
-              <text x="390" y="200" fill="rgb(251, 191, 36)" fontSize="11" fontWeight="600">BASTION HOST</text>
+              <g filter="url(#nodeShadow4)">
+                <rect x="230" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="300" y="305" textAnchor="middle" fill="#9333EA" fontSize="22">🔄</text>
+                <text x="300" y="325" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Management</text>
+                <text x="300" y="338" textAnchor="middle" fill="#C084FC" fontSize="10">Admin Network</text>
+              </g>
               
-              {/* Segmented Networks */}
-              <rect x="30" y="230" width="120" height="50" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="2"/>
-              <text x="65" y="250" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">PRODUCTION</text>
-              <text x="85" y="270" fill="rgb(196, 181, 253)" fontSize="10">LAN</text>
+              <g filter="url(#nodeShadow4)">
+                <rect x="400" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="470" y="305" textAnchor="middle" fill="#9333EA" fontSize="22">👤</text>
+                <text x="470" y="325" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Out-of-Band</text>
+                <text x="470" y="338" textAnchor="middle" fill="#C084FC" fontSize="10">Emergency Access</text>
+              </g>
               
-              <rect x="170" y="230" width="160" height="50" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="2"/>
-              <text x="225" y="250" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">MANAGEMENT</text>
-              <text x="245" y="270" fill="rgb(196, 181, 253)" fontSize="10">NETWORK</text>
+              {/* Zero Trust Control Flow */}
+              <path d="M300 75 L300 100" stroke="#EF4444" strokeWidth="4" fill="none" markerEnd="url(#zeroTrustFlow)" opacity="0.9"/>
               
-              <rect x="350" y="230" width="120" height="50" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="2"/>
-              <text x="385" y="250" fill="rgb(196, 181, 253)" fontSize="12" fontWeight="600">OUT-OF-BAND</text>
-              <text x="395" y="270" fill="rgb(196, 181, 253)" fontSize="10">NETWORK</text>
+              {/* Bastion Access Control */}
+              <path d="M140 250 L130 280" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#bastionFlow)" opacity="0.8"/>
+              <path d="M460 250 L470 280" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#bastionFlow)" opacity="0.8"/>
               
-              {/* Zero Trust Lines */}
-              <path d="M250 50 L250 70 M90 210 L90 230 M410 210 L410 230" stroke="rgba(239, 68, 68, 0.8)" strokeWidth="3"/>
-              <path d="M150 230 L170 230 M330 230 L350 230" stroke="rgba(148, 163, 184, 0.6)" strokeWidth="2" strokeDasharray="5,3"/>
+              {/* Service Desk to Bastions */}
+              <path d="M220 160 Q150 185 140 210" stroke="#3B82F6" strokeWidth="2" fill="none" strokeDasharray="8,4" opacity="0.7"/>
+              <path d="M380 160 Q450 185 460 210" stroke="#3B82F6" strokeWidth="2" fill="none" strokeDasharray="8,4" opacity="0.7"/>
               
-              <text x="30" y="20" fill="rgb(239, 68, 68)" fontSize="11" fontWeight="600">ZERO TRUST MICROSEGMENTATION</text>
+              {/* Connection Labels */}
+              <text x="320" y="90" fill="#EF4444" fontSize="11" fontWeight="500">Zero Trust Policy</text>
+              <text x="120" y="270" fill="#F59E0B" fontSize="10" fontWeight="500">Controlled Access</text>
+              <text x="440" y="270" fill="#F59E0B" fontSize="10" fontWeight="500">Controlled Access</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="160" height="70" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Access Control</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#EF4444" strokeWidth="3"/>
+                <text x="35" y="28" fill="#F87171" fontSize="9">Zero Trust</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="35" y="43" fill="#FBBF24" fontSize="9">Bastion Control</text>
+                <line x1="10" y1="55" x2="30" y2="55" stroke="#3B82F6" strokeWidth="2" strokeDasharray="4,2"/>
+                <text x="35" y="58" fill="#60A5FA" fontSize="9">Service Mgmt</text>
+              </g>
             </svg>
             <div className="mt-4 text-center">
               <h4 className="text-lg font-semibold text-white">Zero-Trust Access Fabric</h4>
@@ -303,39 +469,95 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       case 'operational-playbooks':
         return (
           <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-80">
-            <svg viewBox="0 0 400 300" className="w-full h-full">
-              {/* Management VPC */}
-              <rect x="40" y="40" width="140" height="100" rx="12" fill="rgba(251, 191, 36, 0.1)" stroke="rgba(251, 191, 36, 0.4)" strokeWidth="2"/>
-              <text x="50" y="60" fill="rgb(251, 191, 36)" fontSize="10" fontWeight="bold">Management VPC</text>
+            <svg viewBox="0 0 500 340" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="nodeShadow5" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="workflowFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#9333EA"/>
+                </marker>
+                <marker id="secureAccess" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <radialGradient id="managementGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(245, 158, 11, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(245, 158, 11, 0.05)"/>
+                </radialGradient>
+                <radialGradient id="productionGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(16, 185, 129, 0.05)"/>
+                </radialGradient>
+              </defs>
               
-              {/* CI/CD Cluster */}
-              <rect x="60" y="80" width="100" height="40" rx="6" fill="rgba(59, 130, 246, 0.2)" stroke="rgb(59, 130, 246)"/>
-              <text x="75" y="105" fill="rgb(59, 130, 246)" fontSize="9">CI/CD Controllers</text>
+              {/* Management VPC - CI/CD Platform */}
+              <g filter="url(#nodeShadow5)">
+                <ellipse cx="130" cy="100" rx="80" ry="60" fill="url(#managementGradient)" stroke="#F59E0B" strokeWidth="3"/>
+                <text x="130" y="80" textAnchor="middle" fill="#F59E0B" fontSize="24">☁️</text>
+                <text x="130" y="105" textAnchor="middle" fill="#F59E0B" fontSize="20">📘</text>
+                <text x="130" y="130" textAnchor="middle" fill="#FBBF24" fontSize="13" fontWeight="600">CI/CD Management</text>
+                <text x="130" y="145" textAnchor="middle" fill="#FCD34D" fontSize="10">DevOps Orchestration</text>
+              </g>
               
-              {/* Bastion Node */}
-              <rect x="200" y="100" width="40" height="30" rx="6" fill="rgba(239, 68, 68, 0.3)" stroke="rgb(239, 68, 68)"/>
-              <text x="207" y="120" fill="rgb(239, 68, 68)" fontSize="8">🔐 Bastion</text>
+              {/* Bastion Security Gateway */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="240" y="110" width="60" height="40" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="3"/>
+                <text x="270" y="135" textAnchor="middle" fill="#EF4444" fontSize="20">🔑</text>
+                <text x="270" y="155" textAnchor="middle" fill="#F87171" fontSize="11" fontWeight="600">Gateway</text>
+              </g>
               
               {/* Production VPC */}
-              <rect x="260" y="40" width="120" height="100" rx="12" fill="rgba(34, 197, 94, 0.1)" stroke="rgba(34, 197, 94, 0.4)" strokeWidth="2"/>
-              <text x="270" y="60" fill="rgb(34, 197, 94)" fontSize="10" fontWeight="bold">Production VPC</text>
+              <g filter="url(#nodeShadow5)">
+                <ellipse cx="370" cy="100" rx="80" ry="60" fill="url(#productionGradient)" stroke="#10B981" strokeWidth="3"/>
+                <text x="370" y="80" textAnchor="middle" fill="#10B981" fontSize="24">☁️</text>
+                <text x="370" y="105" textAnchor="middle" fill="#10B981" fontSize="20">🔄</text>
+                <text x="370" y="130" textAnchor="middle" fill="#34D399" fontSize="13" fontWeight="600">Production Cluster</text>
+                <text x="370" y="145" textAnchor="middle" fill="#6EE7B7" fontSize="10">Live Workloads</text>
+              </g>
               
-              {/* Workflow Nodes */}
-              <circle cx="290" cy="90" r="12" fill="rgba(168, 85, 247, 0.3)" stroke="rgb(168, 85, 247)"/>
-              <circle cx="330" cy="90" r="12" fill="rgba(168, 85, 247, 0.3)" stroke="rgb(168, 85, 247)"/>
-              <circle cx="310" cy="115" r="12" fill="rgba(168, 85, 247, 0.3)" stroke="rgb(168, 85, 247)"/>
+              {/* Automated Workflow Controllers */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="150" y="210" width="200" height="60" rx="20" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="200" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">📖</text>
+                <text x="300" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="255" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Workflow Orchestration</text>
+                <text x="250" y="270" textAnchor="middle" fill="#C084FC" fontSize="10">Automated Playbooks</text>
+              </g>
               
-              {/* Automation Controllers */}
-              <rect x="120" y="170" width="160" height="50" rx="8" fill="rgba(147, 51, 234, 0.1)" stroke="rgba(147, 51, 234, 0.4)" strokeWidth="2"/>
-              <text x="140" y="190" fill="rgb(196, 181, 253)" fontSize="10" fontWeight="bold">Automation Controllers</text>
-              <text x="160" y="205" fill="rgb(196, 181, 253)" fontSize="8">Workflow Orchestration</text>
+              {/* Role-based Access Control */}
+              <path d="M210 100 Q225 105 240 125" stroke="#F59E0B" strokeWidth="3" strokeDasharray="8,4" fill="none" markerEnd="url(#secureAccess)" opacity="0.9"/>
+              <path d="M300 125 Q335 115 340 100" stroke="#10B981" strokeWidth="3" strokeDasharray="8,4" fill="none" markerEnd="url(#secureAccess)" opacity="0.9"/>
+              <path d="M270 150 L250 210" stroke="#9333EA" strokeWidth="3" fill="none" markerEnd="url(#workflowFlow)" opacity="0.8"/>
               
-              {/* Role-based Access Lines */}
-              <path d="M180 90 L200 115" stroke="rgba(251, 191, 36, 0.8)" strokeWidth="2" strokeDasharray="4,4"/>
-              <path d="M240 115 L260 90" stroke="rgba(34, 197, 94, 0.8)" strokeWidth="2" strokeDasharray="4,4"/>
-              <path d="M200 170 L220 130" stroke="rgba(147, 51, 234, 0.8)" strokeWidth="2" strokeDasharray="4,4"/>
+              {/* Policy Management */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="40" y="290" width="120" height="30" rx="15" fill="rgba(148, 163, 184, 0.12)" stroke="#64748B" strokeWidth="2"/>
+                <text x="70" y="310" textAnchor="middle" fill="#64748B" fontSize="16">🛡️</text>
+                <text x="130" y="310" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600">Policy Engine</text>
+              </g>
               
-              <text x="50" y="250" fill="rgb(148, 163, 184)" fontSize="8">Role-based network segmentation</text>
+              {/* Monitoring & Logging */}
+              <g filter="url(#nodeShadow5)">
+                <rect x="340" y="290" width="120" height="30" rx="15" fill="rgba(148, 163, 184, 0.12)" stroke="#64748B" strokeWidth="2"/>
+                <text x="370" y="310" textAnchor="middle" fill="#64748B" fontSize="16">📖</text>
+                <text x="430" y="310" textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600">Audit Logs</text>
+              </g>
+              
+              {/* Connection Labels */}
+              <text x="210" y="95" fill="#F59E0B" fontSize="10" fontWeight="500">Secure CI/CD</text>
+              <text x="320" y="95" fill="#10B981" fontSize="10" fontWeight="500">Deploy</text>
+              <text x="275" y="185" fill="#9333EA" fontSize="10" fontWeight="500">Orchestrate</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="150" height="55" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Access Control</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" strokeWidth="3" strokeDasharray="4,2"/>
+                <text x="35" y="28" fill="#FBBF24" fontSize="9">Secure</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#9333EA" strokeWidth="2"/>
+                <text x="35" y="43" fill="#A855F7" fontSize="9">Workflow</text>
+              </g>
             </svg>
             <div className="mt-4 text-center">
               <h4 className="text-sm font-semibold text-white">Bastioned Workflow Cluster</h4>
@@ -347,49 +569,111 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       case 'enterprise-recovery':
         return (
           <div className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 h-80">
-            <svg viewBox="0 0 400 300" className="w-full h-full">
-              {/* Primary Site */}
-              <rect x="30" y="50" width="120" height="100" rx="12" fill="rgba(34, 197, 94, 0.1)" stroke="rgba(34, 197, 94, 0.4)" strokeWidth="2"/>
-              <text x="40" y="70" fill="rgb(34, 197, 94)" fontSize="10" fontWeight="bold">🏢 Primary Site</text>
-              <text x="50" y="85" fill="rgb(34, 197, 94)" fontSize="8">Active Production</text>
-              
-              {/* Primary Infrastructure */}
-              <rect x="50" y="100" width="30" height="20" fill="rgba(59, 130, 246, 0.3)" stroke="rgb(59, 130, 246)"/>
-              <rect x="90" y="100" width="30" height="20" fill="rgba(59, 130, 246, 0.3)" stroke="rgb(59, 130, 246)"/>
-              <text x="60" y="135" fill="rgb(59, 130, 246)" fontSize="7">App Servers</text>
-              
-              {/* DR Site */}
-              <rect x="250" y="50" width="120" height="100" rx="12" fill="rgba(239, 68, 68, 0.1)" stroke="rgba(239, 68, 68, 0.4)" strokeWidth="2"/>
-              <text x="260" y="70" fill="rgb(239, 68, 68)" fontSize="10" fontWeight="bold">🏢 DR Site</text>
-              <text x="270" y="85" fill="rgb(239, 68, 68)" fontSize="8">Passive Standby</text>
-              
-              {/* DR Infrastructure */}
-              <rect x="270" y="100" width="30" height="20" fill="rgba(148, 163, 184, 0.3)" stroke="rgb(148, 163, 184)" strokeDasharray="3,3"/>
-              <rect x="310" y="100" width="30" height="20" fill="rgba(148, 163, 184, 0.3)" stroke="rgb(148, 163, 184)" strokeDasharray="3,3"/>
-              <text x="280" y="135" fill="rgb(148, 163, 184)" fontSize="7">Standby Servers</text>
-              
-              {/* SD-WAN Tunnel */}
-              <path d="M150 100 Q200 80 250 100" stroke="rgba(251, 191, 36, 0.8)" strokeWidth="3" strokeDasharray="8,4" fill="none"/>
-              <text x="170" y="75" fill="rgb(251, 191, 36)" fontSize="9">🔒 Encrypted SD-WAN</text>
-              
-              {/* Replication VLAN */}
-              <rect x="120" y="180" width="160" height="30" rx="6" fill="rgba(168, 85, 247, 0.1)" stroke="rgba(168, 85, 247, 0.4)" strokeWidth="2"/>
-              <text x="160" y="200" fill="rgb(168, 85, 247)" fontSize="9">Replication VLAN</text>
-              
-              {/* Async Arrows */}
-              <path d="M150 150 L150 180 M250 150 L250 180" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="1.5"/>
-              <path d="M160 195 L220 195" stroke="rgba(168, 85, 247, 0.8)" strokeWidth="2" markerEnd="url(#arrow)"/>
-              <path d="M240 205 L180 205" stroke="rgba(168, 85, 247, 0.6)" strokeWidth="1" strokeDasharray="3,3" markerEnd="url(#arrow)"/>
-              
-              {/* Failover Orchestrator */}
-              <circle cx="200" cy="240" r="15" fill="rgba(251, 191, 36, 0.2)" stroke="rgb(251, 191, 36)" strokeWidth="2"/>
-              <text x="192" y="247" fill="rgb(251, 191, 36)" fontSize="8">⚡ Orchestrator</text>
-              
+            <svg viewBox="0 0 500 340" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="arrow" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
-                  <polygon points="0 0, 8 3, 0 6" fill="rgba(168, 85, 247, 0.8)"/>
+                <filter id="nodeShadow6" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+                </filter>
+                <marker id="replicationFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#9333EA"/>
                 </marker>
+                <marker id="failoverFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+                </marker>
+                <linearGradient id="activeSiteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)"/>
+                  <stop offset="100%" stopColor="rgba(16, 185, 129, 0.05)"/>
+                </linearGradient>
+                <linearGradient id="drSiteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(239, 68, 68, 0.15)"/>
+                  <stop offset="100%" stopColor="rgba(239, 68, 68, 0.03)"/>
+                </linearGradient>
               </defs>
+              
+              {/* Active Primary Site */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="50" y="60" width="140" height="120" rx="20" fill="url(#activeSiteGradient)" stroke="#10B981" strokeWidth="3"/>
+                <text x="120" y="90" textAnchor="middle" fill="#10B981" fontSize="24">🔄</text>
+                <text x="120" y="120" textAnchor="middle" fill="#10B981" fontSize="20">👥</text>
+                <text x="120" y="145" textAnchor="middle" fill="#34D399" fontSize="14" fontWeight="600">Primary Site</text>
+                <text x="120" y="165" textAnchor="middle" fill="#6EE7B7" fontSize="11">Active Production</text>
+              </g>
+              
+              {/* Disaster Recovery Site */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="310" y="60" width="140" height="120" rx="20" fill="url(#drSiteGradient)" stroke="#EF4444" strokeWidth="3" strokeDasharray="12,6"/>
+                <text x="380" y="90" textAnchor="middle" fill="rgba(239, 68, 68, 0.8)" fontSize="24">🔄</text>
+                <text x="380" y="120" textAnchor="middle" fill="rgba(239, 68, 68, 0.8)" fontSize="20">👥</text>
+                <text x="380" y="145" textAnchor="middle" fill="rgba(248, 113, 113, 0.9)" fontSize="14" fontWeight="600">DR Site</text>
+                <text x="380" y="165" textAnchor="middle" fill="rgba(252, 165, 165, 0.8)" fontSize="11">Passive Standby</text>
+              </g>
+              
+              {/* Encrypted SD-WAN Tunnel */}
+              <g filter="url(#nodeShadow6)">
+                <path d="M190 120 Q250 80 310 120" stroke="#F59E0B" strokeWidth="5" strokeDasharray="12,6" fill="none" opacity="0.9"/>
+                <ellipse cx="250" cy="95" rx="25" ry="15" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" strokeWidth="2"/>
+                <text x="250" y="100" textAnchor="middle" fill="#F59E0B" fontSize="16">🔒</text>
+                <text x="250" y="50" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Encrypted SD-WAN</text>
+                <text x="250" y="65" textAnchor="middle" fill="#FCD34D" fontSize="10">Multi-Protocol Link</text>
+              </g>
+              
+              {/* Asynchronous Replication Layer */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="150" y="210" width="200" height="50" rx="25" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" strokeWidth="2"/>
+                <text x="190" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">📑</text>
+                <text x="310" y="235" textAnchor="middle" fill="#9333EA" fontSize="20">🔄</text>
+                <text x="250" y="255" textAnchor="middle" fill="#A855F7" fontSize="13" fontWeight="600">Async Replication VLAN</text>
+              </g>
+              
+              {/* Automated Failover Orchestrator */}
+              <g filter="url(#nodeShadow6)">
+                <ellipse cx="250" cy="300" rx="50" ry="30" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" strokeWidth="3"/>
+                <text x="250" y="290" textAnchor="middle" fill="#F59E0B" fontSize="20">🛠️</text>
+                <text x="250" y="310" textAnchor="middle" fill="#F59E0B" fontSize="20">🔄</text>
+                <text x="250" y="330" textAnchor="middle" fill="#FBBF24" fontSize="12" fontWeight="600">Failover Orchestrator</text>
+              </g>
+              
+              {/* Health Monitoring */}
+              <g filter="url(#nodeShadow6)">
+                <rect x="20" y="250" width="80" height="30" rx="15" fill="rgba(34, 197, 94, 0.12)" stroke="#10B981" strokeWidth="2"/>
+                <text x="60" y="270" textAnchor="middle" fill="#10B981" fontSize="16">🔄</text>
+                <text x="85" y="270" textAnchor="middle" fill="#34D399" fontSize="10" fontWeight="600">Monitor</text>
+              </g>
+              
+              <g filter="url(#nodeShadow6)">
+                <rect x="400" y="250" width="80" height="30" rx="15" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" strokeWidth="2"/>
+                <text x="440" y="270" textAnchor="middle" fill="#EF4444" fontSize="16">🔄</text>
+                <text x="465" y="270" textAnchor="middle" fill="#F87171" fontSize="10" fontWeight="600">Standby</text>
+              </g>
+              
+              {/* Data Replication Flows */}
+              <path d="M120 180 Q150 195 170 210" stroke="#9333EA" strokeWidth="3" fill="none" markerEnd="url(#replicationFlow)" opacity="0.8"/>
+              <path d="M380 180 Q350 195 330 210" stroke="#9333EA" strokeWidth="3" fill="none" markerEnd="url(#replicationFlow)" opacity="0.8"/>
+              
+              {/* Orchestrator Control */}
+              <path d="M250 260 L250 270" stroke="#F59E0B" strokeWidth="3" fill="none" markerEnd="url(#failoverFlow)" opacity="0.8"/>
+              
+              {/* Health Check Connections */}
+              <path d="M100 250 Q175 235 200 210" stroke="#10B981" strokeWidth="2" fill="none" strokeDasharray="6,3" opacity="0.6"/>
+              <path d="M400 250 Q325 235 300 210" stroke="#EF4444" strokeWidth="2" fill="none" strokeDasharray="6,3" opacity="0.6"/>
+              
+              {/* Connection Labels */}
+              <text x="200" y="25" fill="#F59E0B" fontSize="11" fontWeight="500">Primary Connection</text>
+              <text x="135" y="195" fill="#9333EA" fontSize="10" fontWeight="500">Data Sync</text>
+              <text x="345" y="195" fill="#9333EA" fontSize="10" fontWeight="500">Data Sync</text>
+              
+              {/* Legend */}
+              <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="160" height="70" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1"/>
+                <text x="10" y="15" fill="#FFFFFF" fontSize="11" fontWeight="600">Recovery Types</text>
+                <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" strokeWidth="3" strokeDasharray="6,3"/>
+                <text x="35" y="28" fill="#FBBF24" fontSize="9">Encrypted</text>
+                <line x1="10" y1="40" x2="30" y2="40" stroke="#9333EA" strokeWidth="2"/>
+                <text x="35" y="43" fill="#A855F7" fontSize="9">Replication</text>
+                <line x1="10" y1="55" x2="30" y2="55" stroke="#10B981" strokeWidth="2" strokeDasharray="3,2"/>
+                <text x="35" y="58" fill="#34D399" fontSize="9">Health Check</text>
+              </g>
             </svg>
             <div className="mt-4 text-center">
               <h4 className="text-sm font-semibold text-white">Multi-Site Active/Passive DR with SD-WAN</h4>
@@ -453,7 +737,7 @@ export default function BusinessSolutions() {
       id: 'custom-saas',
       name: 'Custom SaaS Platforms',
       icon: Cloud,
-      description: 'Build cloud-based software solutions with modular HR, ERP, and CRM systems that scale with your business.',
+      description: 'Isolated VPCs per tenant (or namespaces) inside a cloud region, Kubernetes microservices fronted by ingress, service mesh for secure east-west traffic and autoscaling.',
       category: 'general',
       workflow: [
         { id: 'cloud-hub', icon: Cloud, label: 'Cloud Hub', description: 'Central cloud infrastructure setup' },
@@ -466,7 +750,7 @@ export default function BusinessSolutions() {
       id: 'enterprise-portals',
       name: 'Enterprise Portals',
       icon: Key,
-      description: 'Secure single sign-on portals that provide unified access to all your internal applications and systems.',
+      description: 'Central hub (identity, SSO, API gateway) in a secure cloud region with spokes for branch offices / on-prem apps over VPN/SD-WAN for low-latency access.',
       category: 'general',
       workflow: [
         { id: 'user-login', icon: Users, label: 'User Login', description: 'Employee authentication' },
@@ -479,7 +763,7 @@ export default function BusinessSolutions() {
       id: 'compliance-reporting',
       name: 'Compliance & Reporting Automation',
       icon: FileText,
-      description: 'Automated compliance monitoring and audit-ready report generation with blockchain-verified authenticity.',
+      description: 'DMZ for ingestion and transformation, separate compliance VLANs with immutable storage (WORM) and an isolated data-lake network overlay for auditing and egress control.',
       category: 'general',
       workflow: [
         { id: 'data-source', icon: Database, label: 'Data Sources', description: 'Multiple data inputs collected' },
@@ -492,7 +776,7 @@ export default function BusinessSolutions() {
       id: 'itil-itsm',
       name: 'ITIL-Based ITSM Kits',
       icon: Headphones,
-      description: 'Complete IT service management solution with automated ticket routing and resolution workflows.',
+      description: 'Internal service desk systems on a segmented LAN with ZTNA (identity-based microsegmentation), bastion hosts for admin access and out-of-band management network.',
       category: 'general',
       workflow: [
         { id: 'ticket-creation', icon: Ticket, label: 'Ticket Creation', description: 'Support request submitted' },
@@ -505,7 +789,7 @@ export default function BusinessSolutions() {
       id: 'operational-playbooks',
       name: 'Operational Playbooks & SOP Generators',
       icon: BookOpen,
-      description: 'Dynamic standard operating procedure creation with workflow automation for consistent operations.',
+      description: 'Hardened orchestration cluster (CI/CD + automation controllers) in a management VPC, separated from production networks via bastions and role-based network policies.',
       category: 'general',
       workflow: [
         { id: 'sop-templates', icon: BookOpen, label: 'SOP Templates', description: 'Standard procedure templates' },
@@ -518,7 +802,7 @@ export default function BusinessSolutions() {
       id: 'enterprise-recovery',
       name: 'Enterprise Recovery Kits',
       icon: Wrench,
-      description: 'Pre-configured disaster recovery solutions with automated failover and restoration procedures.',
+      description: 'Primary and DR sites connected by encrypted SD-WAN, asynchronous replication over dedicated replication VLANs and automated failover orchestration.',
       category: 'general',
       workflow: [
         { id: 'outage-event', icon: AlertTriangle, label: 'Outage Event', description: 'System failure detected' },
