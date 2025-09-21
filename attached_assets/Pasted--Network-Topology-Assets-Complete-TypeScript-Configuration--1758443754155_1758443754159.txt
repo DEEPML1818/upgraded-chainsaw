@@ -1,0 +1,1457 @@
+// Network Topology Assets - Complete TypeScript Configuration
+
+// =============================================================================
+// CORE TYPES & INTERFACES
+// =============================================================================
+
+export interface Position {
+  x: number; // Percentage (0-100)
+  y: number; // Percentage (0-100)
+}
+
+export interface Size {
+  width: number; // vw units
+  height: number; // vh units
+}
+
+export interface NetworkZone {
+  id: string;
+  name: string;
+  position: Position;
+  size: Size;
+  color: string;
+  backgroundColor: string;
+  description: string;
+  securityLevel: 'external' | 'dmz' | 'internal' | 'restricted' | 'management';
+}
+
+export interface NetworkComponent {
+  id: string;
+  name: string;
+  type: ComponentType;
+  position: Position;
+  size: Size;
+  icon: string;
+  color: string;
+  backgroundColor: string;
+  status: ComponentStatus;
+  zoneId: string;
+}
+
+export interface Connection {
+  id: string;
+  source: string;
+  target: string;
+  type: ConnectionType;
+  protocol: string;
+  midPointLabel: string;
+  path: string; // SVG path coordinates
+  security: SecurityLevel;
+  animated: boolean;
+}
+
+export type ComponentType = 
+  | 'internet' | 'firewall' | 'load_balancer' | 'api_gateway' 
+  | 'database' | 'cache' | 'storage' | 'queue' | 'service_mesh'
+  | 'auth_service' | 'tenant' | 'monitoring' | 'bastion'
+  | 'vpn_gateway' | 'sdwan' | 'identity_provider' | 'orchestrator'
+  | 'data_lake' | 'etl' | 'compliance' | 'audit' | 'workflow';
+
+export type ConnectionType = 'standard' | 'secure' | 'encrypted' | 'high_traffic';
+
+export type ComponentStatus = 'active' | 'warning' | 'critical' | 'maintenance';
+
+export type SecurityLevel = 'public' | 'internal' | 'restricted' | 'critical';
+
+// =============================================================================
+// DESIGN SYSTEM CONSTANTS
+// =============================================================================
+
+export const DESIGN_TOKENS = {
+  colors: {
+    // Network Security Hierarchy
+    perimeter: '#ff9800',     // External/DMZ - Warning Orange
+    security: '#f44336',      // Security Layer - Alert Red  
+    service: '#3f51b5',       // Service Layer - Professional Blue
+    application: '#009688',   // Application Layer - Reliable Teal
+    data: '#607d8b',          // Data Layer - Stable Blue-Grey
+    management: '#9e9e9e',    // Management - Neutral Grey
+    
+    // Connection Security Levels
+    insecure: '#f44336',      // Unencrypted/High Risk
+    standard: '#2196f3',      // Standard Security
+    secure: '#4caf50',        // Encrypted/Authenticated
+    critical: '#9c27b0',      // Mission Critical
+    
+    // Component States
+    active: '#4caf50',
+    warning: '#ff9800', 
+    critical: '#f44336',
+    maintenance: '#9e9e9e'
+  },
+  
+  animations: {
+    titleGlow: 'titleGlow 3s ease-in-out infinite alternate',
+    iconBounce: 'iconBounce 2s ease-in-out infinite',
+    statusPulse: 'statusPulse 2s ease-in-out infinite',
+    dataFlow: 'dataFlow 3s ease-in-out infinite',
+    labelFloat: 'labelFloat 3s ease-in-out infinite',
+    particleFloat: 'particleFloat 8s ease-in-out infinite'
+  },
+  
+  gradients: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    container: 'rgba(255, 255, 255, 0.95)',
+    zoneExternal: 'linear-gradient(135deg, rgba(255,193,7,0.1), rgba(255,152,0,0.1))',
+    zoneSecurity: 'linear-gradient(135deg, rgba(244,67,54,0.1), rgba(229,57,53,0.1))',
+    zoneService: 'linear-gradient(135deg, rgba(63,81,181,0.1), rgba(57,73,171,0.1))',
+    zoneApplication: 'linear-gradient(135deg, rgba(0,150,136,0.1), rgba(0,121,107,0.1))',
+    zoneData: 'linear-gradient(135deg, rgba(96,125,139,0.1), rgba(84,110,122,0.1))'
+  }
+};
+
+// =============================================================================
+// CONNECTION DEFINITIONS
+// =============================================================================
+
+export const CONNECTION_STYLES = {
+  standard: {
+    stroke: DESIGN_TOKENS.colors.standard,
+    strokeWidth: 3,
+    strokeDasharray: 'none',
+    animation: 'dataFlow 3s ease-in-out infinite'
+  },
+  secure: {
+    stroke: DESIGN_TOKENS.colors.secure,
+    strokeWidth: 4,
+    strokeDasharray: 'none',
+    animation: 'secureFlow 2s linear infinite'
+  },
+  encrypted: {
+    stroke: DESIGN_TOKENS.colors.warning,
+    strokeWidth: 3,
+    strokeDasharray: '8 4',
+    animation: 'encryptedFlow 2s linear infinite'
+  },
+  high_traffic: {
+    stroke: DESIGN_TOKENS.colors.critical,
+    strokeWidth: 5,
+    strokeDasharray: 'none', 
+    animation: 'highTrafficFlow 1s ease-in-out infinite'
+  }
+};
+
+export const MID_POINT_LABELS = {
+  // Network Protocols
+  VPN: { color: DESIGN_TOKENS.colors.secure, description: 'Virtual Private Network' },
+  AUTH: { color: DESIGN_TOKENS.colors.critical, description: 'Authentication' },
+  API: { color: DESIGN_TOKENS.colors.service, description: 'API Gateway' },
+  DATA: { color: DESIGN_TOKENS.colors.data, description: 'Data Transfer' },
+  CACHE: { color: DESIGN_TOKENS.colors.warning, description: 'Cache Layer' },
+  PROXY: { color: DESIGN_TOKENS.colors.perimeter, description: 'Proxy Server' },
+  LB: { color: DESIGN_TOKENS.colors.application, description: 'Load Balancer' },
+  MESH: { color: DESIGN_TOKENS.colors.service, description: 'Service Mesh' },
+  FILTER: { color: DESIGN_TOKENS.colors.security, description: 'Traffic Filter' },
+  ROUTE: { color: DESIGN_TOKENS.colors.standard, description: 'Routing' },
+  QUEUE: { color: DESIGN_TOKENS.colors.critical, description: 'Message Queue' },
+  SYNC: { color: DESIGN_TOKENS.colors.application, description: 'Synchronization' },
+  REPLICATE: { color: DESIGN_TOKENS.colors.warning, description: 'Data Replication' },
+  FAILOVER: { color: DESIGN_TOKENS.colors.critical, description: 'Failover' },
+  BACKUP: { color: DESIGN_TOKENS.colors.data, description: 'Backup Process' },
+  HEALTH: { color: DESIGN_TOKENS.colors.secure, description: 'Health Check' },
+  SDWAN: { color: DESIGN_TOKENS.colors.perimeter, description: 'SD-WAN' },
+  ZTNA: { color: DESIGN_TOKENS.colors.critical, description: 'Zero Trust Network' },
+  MICRO: { color: DESIGN_TOKENS.colors.service, description: 'Microsegmentation' },
+  ADMIN: { color: DESIGN_TOKENS.colors.management, description: 'Admin Access' },
+  OOB: { color: DESIGN_TOKENS.colors.security, description: 'Out-of-Band' },
+  ITSM: { color: DESIGN_TOKENS.colors.application, description: 'IT Service Management' },
+  GIT: { color: DESIGN_TOKENS.colors.standard, description: 'Git Operations' },
+  CICD: { color: DESIGN_TOKENS.colors.warning, description: 'CI/CD Pipeline' },
+  BASTION: { color: DESIGN_TOKENS.colors.critical, description: 'Bastion Host' },
+  DEPLOY: { color: DESIGN_TOKENS.colors.secure, description: 'Deployment' },
+  POLICY: { color: DESIGN_TOKENS.colors.service, description: 'Policy Engine' },
+  MONITOR: { color: DESIGN_TOKENS.colors.data, description: 'Monitoring' },
+  INGEST: { color: DESIGN_TOKENS.colors.perimeter, description: 'Data Ingestion' },
+  TRANSFORM: { color: DESIGN_TOKENS.colors.warning, description: 'Data Transform' },
+  COMPLY: { color: DESIGN_TOKENS.colors.critical, description: 'Compliance' },
+  AUDIT: { color: DESIGN_TOKENS.colors.security, description: 'Audit Trail' },
+  REPORT: { color: DESIGN_TOKENS.colors.application, description: 'Reporting' },
+  ARCHIVE: { color: DESIGN_TOKENS.colors.data, description: 'Archive Storage' },
+  SSO: { color: DESIGN_TOKENS.colors.service, description: 'Single Sign-On' },
+  MGMT: { color: DESIGN_TOKENS.colors.management, description: 'Management' },
+  ASYNC: { color: DESIGN_TOKENS.colors.application, description: 'Async Processing' },
+  EVENT: { color: DESIGN_TOKENS.colors.critical, description: 'Event Handling' }
+};
+
+// =============================================================================
+// COMPONENT LIBRARY
+// =============================================================================
+
+export const COMPONENT_LIBRARY = {
+  // Infrastructure Components
+  internet: {
+    icon: '🌐',
+    color: '#e67e22',
+    background: 'linear-gradient(135deg, #fff8f0, #ffeaa7)',
+    defaultSize: { width: 6, height: 8 }
+  },
+  firewall: {
+    icon: '🔥',
+    color: '#e74c3c', 
+    background: 'linear-gradient(135deg, #fef5f5, #ffcdd2)',
+    defaultSize: { width: 6, height: 8 }
+  },
+  load_balancer: {
+    icon: '⚖️',
+    color: '#9b59b6',
+    background: 'linear-gradient(135deg, #faf5ff, #e1bee7)',
+    defaultSize: { width: 6, height: 8 }
+  },
+  api_gateway: {
+    icon: '🚪',
+    color: '#e91e63',
+    background: 'linear-gradient(135deg, #fce4ec, #f8bbd9)',
+    defaultSize: { width: 6, height: 8 }
+  },
+  
+  // Security Components  
+  auth_service: {
+    icon: '🔐',
+    color: '#f39c12',
+    background: 'linear-gradient(135deg, #fff3e0, #ffcc02)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  vpn_gateway: {
+    icon: '🔒',
+    color: '#27ae60',
+    background: 'linear-gradient(135deg, #e8f5e8, #c8e6c9)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  bastion: {
+    icon: '🏰',
+    color: '#ff5722',
+    background: 'linear-gradient(135deg, #fbe9e7, #ffab91)',
+    defaultSize: { width: 5, height: 7 }
+  },
+  identity_provider: {
+    icon: '👤',
+    color: '#673ab7',
+    background: 'linear-gradient(135deg, #f3e5f5, #d1c4e9)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  
+  // Service Components
+  service_mesh: {
+    icon: '🕸️',
+    color: '#3f51b5',
+    background: 'linear-gradient(135deg, #e8eaf6, #9fa8da)',
+    defaultSize: { width: 7, height: 8 }
+  },
+  orchestrator: {
+    icon: '🎭',
+    color: '#2196f3',
+    background: 'linear-gradient(135deg, #e3f2fd, #90caf9)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  workflow: {
+    icon: '⚙️',
+    color: '#607d8b',
+    background: 'linear-gradient(135deg, #eceff1, #b0bec5)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  
+  // Application Components
+  tenant: {
+    icon: '🏢',
+    color: '#009688',
+    background: 'linear-gradient(135deg, #e0f2f1, #80cbc4)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  
+  // Data Components
+  database: {
+    icon: '🗄️',
+    color: '#2196f3',
+    background: 'linear-gradient(135deg, #e3f2fd, #64b5f6)',
+    defaultSize: { width: 7, height: 8 }
+  },
+  cache: {
+    icon: '⚡',
+    color: '#ff5722',
+    background: 'linear-gradient(135deg, #fbe9e7, #ff8a65)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  storage: {
+    icon: '📁',
+    color: '#4caf50',
+    background: 'linear-gradient(135deg, #f1f8e9, #aed581)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  queue: {
+    icon: '📬',
+    color: '#9c27b0',
+    background: 'linear-gradient(135deg, #f3e5f5, #ce93d8)',
+    defaultSize: { width: 7, height: 8 }
+  },
+  data_lake: {
+    icon: '🏞️',
+    color: '#00bcd4',
+    background: 'linear-gradient(135deg, #e0f7fa, #4dd0e1)',
+    defaultSize: { width: 7, height: 8 }
+  },
+  
+  // Monitoring & Management
+  monitoring: {
+    icon: '📊',
+    color: '#27ae60',
+    background: 'linear-gradient(135deg, #f0fff8, #a7ffeb)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  
+  // Networking Components
+  sdwan: {
+    icon: '🌐',
+    color: '#795548',
+    background: 'linear-gradient(135deg, #efebe9, #d7ccc8)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  
+  // Compliance & Audit
+  compliance: {
+    icon: '📋',
+    color: '#ff9800',
+    background: 'linear-gradient(135deg, #fff3e0, #ffcc02)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  audit: {
+    icon: '🔍',
+    color: '#9e9e9e',
+    background: 'linear-gradient(135deg, #f5f5f5, #e0e0e0)',
+    defaultSize: { width: 6, height: 7 }
+  },
+  
+  // ETL & Processing
+  etl: {
+    icon: '🔄',
+    color: '#673ab7',
+    background: 'linear-gradient(135deg, #f3e5f5, #ba68c8)',
+    defaultSize: { width: 6, height: 7 }
+  }
+};
+
+// =============================================================================
+// ZONE TEMPLATES
+// =============================================================================
+
+export const ZONE_TEMPLATES = {
+  external: {
+    color: '#ff9800',
+    backgroundColor: 'linear-gradient(135deg, rgba(255,193,7,0.1), rgba(255,152,0,0.1))',
+    securityLevel: 'external' as const
+  },
+  dmz: {
+    color: '#f44336',
+    backgroundColor: 'linear-gradient(135deg, rgba(244,67,54,0.1), rgba(229,57,53,0.1))',
+    securityLevel: 'dmz' as const
+  },
+  internal: {
+    color: '#2196f3',
+    backgroundColor: 'linear-gradient(135deg, rgba(33,150,243,0.1), rgba(30,136,229,0.1))',
+    securityLevel: 'internal' as const
+  },
+  service: {
+    color: '#3f51b5',
+    backgroundColor: 'linear-gradient(135deg, rgba(63,81,181,0.1), rgba(57,73,171,0.1))',
+    securityLevel: 'internal' as const
+  },
+  application: {
+    color: '#009688',
+    backgroundColor: 'linear-gradient(135deg, rgba(0,150,136,0.1), rgba(0,121,107,0.1))',
+    securityLevel: 'internal' as const
+  },
+  data: {
+    color: '#607d8b',
+    backgroundColor: 'linear-gradient(135deg, rgba(96,125,139,0.1), rgba(84,110,122,0.1))',
+    securityLevel: 'restricted' as const
+  },
+  management: {
+    color: '#9e9e9e',
+    backgroundColor: 'linear-gradient(90deg, rgba(158,158,158,0.1), rgba(97,97,97,0.1))',
+    securityLevel: 'management' as const
+  }
+};
+
+// =============================================================================
+// ARCHITECTURE DEFINITIONS
+// =============================================================================
+
+export const ARCHITECTURES = {
+  'multi-tenant-vpc-service-mesh': {
+    title: 'Multi-tenant VPC + Service Mesh Network Topology',
+    zones: [
+      {
+        id: 'internet-zone',
+        name: 'Internet',
+        position: { x: 2, y: 2 },
+        size: { width: 18, height: 12 },
+        ...ZONE_TEMPLATES.external,
+        description: 'External network access point'
+      },
+      {
+        id: 'gateway-zone', 
+        name: 'Gateway Subnet',
+        position: { x: 80, y: 2 },
+        size: { width: 18, height: 12 },
+        ...ZONE_TEMPLATES.internal,
+        description: 'Network gateway and routing'
+      },
+      {
+        id: 'private-dmz-zone',
+        name: 'Private DMZ In', 
+        position: { x: 2, y: 16 },
+        size: { width: 25, height: 18 },
+        ...ZONE_TEMPLATES.dmz,
+        description: 'Private DMZ for inbound traffic'
+      },
+      {
+        id: 'public-dmz-zone',
+        name: 'Public DMZ Out',
+        position: { x: 73, y: 16 },
+        size: { width: 25, height: 18 },
+        ...ZONE_TEMPLATES.dmz, 
+        description: 'Public DMZ for outbound traffic'
+      },
+      {
+        id: 'service-mesh-zone',
+        name: 'Service Mesh Layer',
+        position: { x: 2, y: 36 },
+        size: { width: 30, height: 18 },
+        ...ZONE_TEMPLATES.service,
+        description: 'Microservice communication fabric'
+      },
+      {
+        id: 'tenant-zone',
+        name: 'Tenant Applications',
+        position: { x: 73, y: 36 },
+        size: { width: 25, height: 18 },
+        ...ZONE_TEMPLATES.application,
+        description: 'Multi-tenant application layer'
+      },
+      {
+        id: 'data-zone',
+        name: 'Data & Storage Layer',
+        position: { x: 2, y: 56 },
+        size: { width: 50, height: 18 },
+        ...ZONE_TEMPLATES.data,
+        description: 'Data persistence and storage'
+      },
+      {
+        id: 'virtual-network-zone',
+        name: 'Virtual Network',
+        position: { x: 2, y: 76 },
+        size: { width: 96, height: 4 },
+        ...ZONE_TEMPLATES.management,
+        description: 'Virtual network infrastructure'
+      }
+    ],
+    
+    components: [
+      {
+        id: 'internet',
+        name: 'Internet',
+        type: 'internet' as ComponentType,
+        position: { x: 8, y: 5 },
+        size: COMPONENT_LIBRARY.internet.defaultSize,
+        icon: COMPONENT_LIBRARY.internet.icon,
+        color: COMPONENT_LIBRARY.internet.color,
+        backgroundColor: COMPONENT_LIBRARY.internet.background,
+        status: 'active' as ComponentStatus,
+        zoneId: 'internet-zone'
+      },
+      {
+        id: 'on-premise',
+        name: 'On-Premise',
+        type: 'internet' as ComponentType,
+        position: { x: 3, y: 5 },
+        size: { width: 6, height: 8 },
+        icon: '🏢',
+        color: '#95a5a6',
+        backgroundColor: 'linear-gradient(135deg, #ecf0f1, #bdc3c7)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'internet-zone'
+      },
+      {
+        id: 'gateway',
+        name: 'Gateway',
+        type: 'api_gateway' as ComponentType,
+        position: { x: 86, y: 5 },
+        size: { width: 6, height: 8 },
+        icon: '🚪',
+        color: '#27ae60',
+        backgroundColor: 'linear-gradient(135deg, #d5f4e6, #81ecec)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'gateway-zone'
+      },
+      {
+        id: 'udr',
+        name: 'UDR',
+        type: 'load_balancer' as ComponentType,
+        position: { x: 91, y: 5 },
+        size: { width: 5, height: 6 },
+        icon: '📍',
+        color: '#3498db',
+        backgroundColor: 'linear-gradient(135deg, #dbeafe, #93c5fd)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'gateway-zone'
+      },
+      {
+        id: 'nsg-private',
+        name: 'NSG',
+        type: 'firewall' as ComponentType,
+        position: { x: 4, y: 19 },
+        size: { width: 5, height: 6 },
+        icon: '🛡️',
+        color: '#2196f3',
+        backgroundColor: 'linear-gradient(135deg, #e3f2fd, #90caf9)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'private-dmz-zone'
+      },
+      {
+        id: 'nva-private',
+        name: 'NVA',
+        type: 'firewall' as ComponentType,
+        position: { x: 11, y: 21 },
+        size: { width: 6, height: 7 },
+        icon: '🔒',
+        color: '#1976d2',
+        backgroundColor: 'linear-gradient(135deg, #e1f5fe, #4fc3f7)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'private-dmz-zone'
+      },
+      {
+        id: 'availability-set-private',
+        name: 'Availability Set',
+        type: 'orchestrator' as ComponentType,
+        position: { x: 19, y: 27 },
+        size: { width: 8, height: 5 },
+        icon: '⚡',
+        color: '#0d47a1',
+        backgroundColor: 'linear-gradient(135deg, #e8eaf6, #9fa8da)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'private-dmz-zone'
+      },
+      {
+        id: 'nsg-public',
+        name: 'NSG',
+        type: 'firewall' as ComponentType,
+        position: { x: 91, y: 19 },
+        size: { width: 5, height: 6 },
+        icon: '🛡️',
+        color: '#9c27b0',
+        backgroundColor: 'linear-gradient(135deg, #f3e5f5, #ce93d8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'public-dmz-zone'
+      },
+      {
+        id: 'nva-public',
+        name: 'NVA',
+        type: 'firewall' as ComponentType,
+        position: { x: 83, y: 21 },
+        size: { width: 6, height: 7 },
+        icon: '🔒',
+        color: '#7b1fa2',
+        backgroundColor: 'linear-gradient(135deg, #fce4ec, #f48fb1)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'public-dmz-zone'
+      },
+      {
+        id: 'availability-set-public',
+        name: 'Availability Set',
+        type: 'orchestrator' as ComponentType,
+        position: { x: 73, y: 27 },
+        size: { width: 8, height: 5 },
+        icon: '⚡',
+        color: '#4a148c',
+        backgroundColor: 'linear-gradient(135deg, #f3e5f5, #ba68c8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'public-dmz-zone'
+      },
+      {
+        id: 'jumpbox',
+        name: 'Jumpbox',
+        type: 'bastion' as ComponentType,
+        position: { x: 37, y: 26 },
+        size: { width: 5, height: 7 },
+        icon: '🔧',
+        color: '#ff5722',
+        backgroundColor: 'linear-gradient(135deg, #fbe9e7, #ffab91)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'service-mesh-zone'
+      },
+      {
+        id: 'service-mesh',
+        name: 'Service Mesh',
+        type: 'service_mesh' as ComponentType,
+        position: { x: 4, y: 39 },
+        size: { width: 7, height: 8 },
+        icon: '🕸️',
+        color: '#3f51b5',
+        backgroundColor: 'linear-gradient(135deg, #e8eaf6, #9fa8da)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'service-mesh-zone'
+      },
+      {
+        id: 'auth-service',
+        name: 'Auth Service',
+        type: 'auth_service' as ComponentType,
+        position: { x: 13, y: 39 },
+        size: { width: 6, height: 7 },
+        icon: '🔐',
+        color: '#ff9800',
+        backgroundColor: 'linear-gradient(135deg, #fff3e0, #ffcc02)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'service-mesh-zone'
+      },
+      {
+        id: 'api-gateway',
+        name: 'API Gateway',
+        type: 'api_gateway' as ComponentType,
+        position: { x: 22, y: 46 },
+        size: { width: 6, height: 7 },
+        icon: '🚪',
+        color: '#e91e63',
+        backgroundColor: 'linear-gradient(135deg, #fce4ec, #f8bbd9)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'service-mesh-zone'
+      },
+      {
+        id: 'tenant-a',
+        name: 'Tenant A',
+        type: 'tenant' as ComponentType,
+        position: { x: 92, y: 39 },
+        size: { width: 6, height: 7 },
+        icon: '🏢',
+        color: '#009688',
+        backgroundColor: 'linear-gradient(135deg, #e0f2f1, #80cbc4)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'tenant-zone'
+      },
+      {
+        id: 'tenant-b',
+        name: 'Tenant B',
+        type: 'tenant' as ComponentType,
+        position: { x: 85, y: 46 },
+        size: { width: 6, height: 7 },
+        icon: '🏢',
+        color: '#00bcd4',
+        backgroundColor: 'linear-gradient(135deg, #e0f7fa, #4dd0e1)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'tenant-zone'
+      },
+      {
+        id: 'tenant-c',
+        name: 'Tenant C',
+        type: 'tenant' as ComponentType,
+        position: { x: 85, y: 39 },
+        size: { width: 6, height: 7 },
+        icon: '🏢',
+        color: '#4db6ac',
+        backgroundColor: 'linear-gradient(135deg, #f4fffd, #a7ffeb)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'tenant-zone'
+      },
+      {
+        id: 'database',
+        name: 'PostgreSQL',
+        type: 'database' as ComponentType,
+        position: { x: 8, y: 59 },
+        size: { width: 7, height: 8 },
+        icon: '🗄️',
+        color: '#2196f3',
+        backgroundColor: 'linear-gradient(135deg, #e3f2fd, #64b5f6)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'data-zone'
+      },
+      {
+        id: 'cache',
+        name: 'Redis Cache',
+        type: 'cache' as ComponentType,
+        position: { x: 18, y: 59 },
+        size: { width: 6, height: 7 },
+        icon: '⚡',
+        color: '#ff5722',
+        backgroundColor: 'linear-gradient(135deg, #fbe9e7, #ff8a65)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'data-zone'
+      },
+      {
+        id: 'storage',
+        name: 'File Storage',
+        type: 'storage' as ComponentType,
+        position: { x: 27, y: 59 },
+        size: { width: 6, height: 7 },
+        icon: '📁',
+        color: '#4caf50',
+        backgroundColor: 'linear-gradient(135deg, #f1f8e9, #aed581)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'data-zone'
+      },
+      {
+        id: 'message-queue',
+        name: 'Message Queue',
+        type: 'queue' as ComponentType,
+        position: { x: 36, y: 59 },
+        size: { width: 7, height: 8 },
+        icon: '📬',
+        color: '#9c27b0',
+        backgroundColor: 'linear-gradient(135deg, #f3e5f5, #ce93d8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'data-zone'
+      }
+    ],
+    
+    connections: [
+      {
+        id: 'conn-onprem-gateway',
+        source: 'on-premise',
+        target: 'gateway',
+        type: 'secure' as ConnectionType,
+        protocol: 'HTTPS',
+        midPointLabel: 'VPN',
+        path: 'M 9,9 Q 20,8 76,9',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-internet-gateway',
+        source: 'internet',
+        target: 'gateway',
+        type: 'secure' as ConnectionType,
+        protocol: 'HTTPS',
+        midPointLabel: 'ROUTE',
+        path: 'M 14,9 Q 30,8 76,9',
+        security: 'public' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-gateway-udr',
+        source: 'gateway',
+        target: 'udr',
+        type: 'standard' as ConnectionType,
+        protocol: 'TCP',
+        midPointLabel: 'ROUTE',
+        path: 'M 82,9 L 87,9',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-udr-nsg-private',
+        source: 'udr',
+        target: 'nsg-private',
+        type: 'standard' as ConnectionType,
+        protocol: 'TCP',
+        midPointLabel: 'FILTER',
+        path: 'M 89,13 Q 85,17 6.5,22',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-udr-nsg-public',
+        source: 'udr',
+        target: 'nsg-public',
+        type: 'standard' as ConnectionType,
+        protocol: 'TCP',
+        midPointLabel: 'FILTER',
+        path: 'M 89,13 Q 92,17 93.5,22',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-nsg-private-nva-private',
+        source: 'nsg-private',
+        target: 'nva-private',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'PROXY',
+        path: 'M 6.5,25 L 14,24',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-nsg-public-nva-public',
+        source: 'nsg-public',
+        target: 'nva-public',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'PROXY',
+        path: 'M 93.5,25 L 86,24',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-nva-private-availability-private',
+        source: 'nva-private',
+        target: 'availability-set-private',
+        type: 'standard' as ConnectionType,
+        protocol: 'HTTP',
+        midPointLabel: 'LB',
+        path: 'M 17,28 L 23,30',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-nva-public-availability-public',
+        source: 'nva-public',
+        target: 'availability-set-public',
+        type: 'standard' as ConnectionType,
+        protocol: 'HTTP',
+        midPointLabel: 'LB',
+        path: 'M 83,28 L 77,30',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-nva-private-service-mesh',
+        source: 'nva-private',
+        target: 'service-mesh',
+        type: 'high_traffic' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'MESH',
+        path: 'M 14,28 Q 10,35 7.5,42',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-nva-public-service-mesh',
+        source: 'nva-public',
+        target: 'service-mesh',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'mTLS',
+        midPointLabel: 'MESH',
+        path: 'M 86,28 Q 50,35 7.5,42',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-service-mesh-auth',
+        source: 'service-mesh',
+        target: 'auth-service',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'AUTH',
+        path: 'M 11,42 L 16,42',
+        security: 'critical' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-auth-api-gateway',
+        source: 'auth-service',
+        target: 'api-gateway',
+        type: 'secure' as ConnectionType,
+        protocol: 'JWT',
+        midPointLabel: 'API',
+        path: 'M 19,45 Q 22,48 25,49',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-service-mesh-api-gateway',
+        source: 'service-mesh',
+        target: 'api-gateway',
+        type: 'high_traffic' as ConnectionType,
+        protocol: 'HTTP/2',
+        midPointLabel: 'API',
+        path: 'M 7.5,47 Q 15,50 25,49',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-api-gateway-tenant-a',
+        source: 'api-gateway',
+        target: 'tenant-a',
+        type: 'standard' as ConnectionType,
+        protocol: 'REST',
+        midPointLabel: 'ROUTE',
+        path: 'M 28,49 Q 50,45 94,42',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-api-gateway-tenant-b',
+        source: 'api-gateway',
+        target: 'tenant-b',
+        type: 'standard' as ConnectionType,
+        protocol: 'REST',
+        midPointLabel: 'ROUTE',
+        path: 'M 28,49 Q 50,49 86,49',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-api-gateway-tenant-c',
+        source: 'api-gateway',
+        target: 'tenant-c',
+        type: 'standard' as ConnectionType,
+        protocol: 'REST',
+        midPointLabel: 'ROUTE',
+        path: 'M 28,49 Q 60,47 94,42',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-jumpbox-service-mesh',
+        source: 'jumpbox',
+        target: 'service-mesh',
+        type: 'secure' as ConnectionType,
+        protocol: 'SSH',
+        midPointLabel: 'MGMT',
+        path: 'M 37.5,29 Q 25,35 7.5,42',
+        security: 'critical' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-jumpbox-nva-private',
+        source: 'jumpbox',
+        target: 'nva-private',
+        type: 'secure' as ConnectionType,
+        protocol: 'SSH',
+        midPointLabel: 'ADMIN',
+        path: 'M 37.5,29 Q 25,26 17,25',
+        security: 'critical' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-jumpbox-nva-public',
+        source: 'jumpbox',
+        target: 'nva-public',
+        type: 'secure' as ConnectionType,
+        protocol: 'SSH',
+        midPointLabel: 'ADMIN',
+        path: 'M 37.5,29 Q 60,26 83,25',
+        security: 'critical' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-tenant-a-database',
+        source: 'tenant-a',
+        target: 'database',
+        type: 'secure' as ConnectionType,
+        protocol: 'SQL/TLS',
+        midPointLabel: 'DATA',
+        path: 'M 94,45 Q 60,55 11.5,63',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-tenant-b-database',
+        source: 'tenant-b',
+        target: 'database',
+        type: 'secure' as ConnectionType,
+        protocol: 'SQL/TLS',
+        midPointLabel: 'DATA',
+        path: 'M 86,52 Q 50,58 11.5,63',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-tenant-c-database',
+        source: 'tenant-c',
+        target: 'database',
+        type: 'secure' as ConnectionType,
+        protocol: 'SQL/TLS',
+        midPointLabel: 'DATA',
+        path: 'M 94,45 Q 70,55 11.5,63',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-database-cache',
+        source: 'database',
+        target: 'cache',
+        type: 'standard' as ConnectionType,
+        protocol: 'TCP',
+        midPointLabel: 'CACHE',
+        path: 'M 15,63 L 21,63',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-cache-storage',
+        source: 'cache',
+        target: 'storage',
+        type: 'standard' as ConnectionType,
+        protocol: 'TCP',
+        midPointLabel: 'STORE',
+        path: 'M 24,63 L 30,63',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-storage-message-queue',
+        source: 'storage',
+        target: 'message-queue',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'AMQP',
+        midPointLabel: 'QUEUE',
+        path: 'M 33,63 L 39.5,63',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-service-mesh-message-queue',
+        source: 'service-mesh',
+        target: 'message-queue',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'AMQP',
+        midPointLabel: 'ASYNC',
+        path: 'M 7.5,47 Q 25,55 39.5,63',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-message-queue-service-mesh',
+        source: 'message-queue',
+        target: 'service-mesh',
+        type: 'encrypted' as ConnectionType,
+        protocol: 'AMQP',
+        midPointLabel: 'EVENT',
+        path: 'M 39.5,59 Q 25,52 7.5,47',
+        security: 'restricted' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-tenant-a-service-mesh',
+        source: 'tenant-a',
+        target: 'service-mesh',
+        type: 'standard' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'MESH',
+        path: 'M 94,42 Q 50,41 7.5,42',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-tenant-b-service-mesh',
+        source: 'tenant-b',
+        target: 'service-mesh',
+        type: 'standard' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'MESH',
+        path: 'M 86,49 Q 50,45 7.5,42',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      },
+      {
+        id: 'conn-tenant-c-service-mesh',
+        source: 'tenant-c',
+        target: 'service-mesh',
+        type: 'standard' as ConnectionType,
+        protocol: 'gRPC',
+        midPointLabel: 'MESH',
+        path: 'M 94,42 Q 60,41 7.5,42',
+        security: 'internal' as SecurityLevel,
+        animated: true
+      }
+    ]
+  },
+
+  'hub-spoke-hybrid-cloud': {
+    title: 'Hub-and-Spoke Hybrid Cloud Network Topology',
+    zones: [
+      {
+        id: 'internet-zone',
+        name: 'Internet',
+        position: { x: 2, y: 2 },
+        size: { width: 20, height: 15 },
+        ...ZONE_TEMPLATES.external,
+        description: 'External internet connectivity'
+      },
+      {
+        id: 'branch-network-zone',
+        name: 'Branch Network',
+        position: { x: 2, y: 20 },
+        size: { width: 30, height: 25 },
+        ...ZONE_TEMPLATES.internal,
+        description: 'Branch office networks'
+      },
+      {
+        id: 'hub-cloud-zone',
+        name: 'Hub Cloud Region',
+        position: { x: 40, y: 2 },
+        size: { width: 35, height: 40 },
+        ...ZONE_TEMPLATES.service,
+        description: 'Central cloud hub'
+      },
+      {
+        id: 'identity-zone',
+        name: 'Identity Zone',
+        position: { x: 78, y: 2 },
+        size: { width: 20, height: 20 },
+        ...ZONE_TEMPLATES.dmz,
+        description: 'Identity and authentication services'
+      },
+      {
+        id: 'application-zone',
+        name: 'Application Zone',
+        position: { x: 78, y: 25 },
+        size: { width: 20, height: 20 },
+        ...ZONE_TEMPLATES.application,
+        description: 'Application services'
+      },
+      {
+        id: 'data-zone',
+        name: 'Data Zone',
+        position: { x: 40, y: 45 },
+        size: { width: 35, height: 25 },
+        ...ZONE_TEMPLATES.data,
+        description: 'Data storage and processing'
+      },
+      {
+        id: 'management-zone',
+        name: 'Management Network',
+        position: { x: 2, y: 73 },
+        size: { width: 96, height: 5 },
+        ...ZONE_TEMPLATES.management,
+        description: 'Network management and monitoring'
+      }
+    ],
+    components: [
+      {
+        id: 'internet',
+        name: 'Internet',
+        type: 'internet' as ComponentType,
+        position: { x: 8, y: 6 },
+        size: COMPONENT_LIBRARY.internet.defaultSize,
+        icon: COMPONENT_LIBRARY.internet.icon,
+        color: COMPONENT_LIBRARY.internet.color,
+        backgroundColor: COMPONENT_LIBRARY.internet.background,
+        status: 'active' as ComponentStatus,
+        zoneId: 'internet-zone'
+      },
+      {
+        id: 'branch-office-1',
+        name: 'Branch Office 1',
+        type: 'tenant' as ComponentType,
+        position: { x: 5, y: 25 },
+        size: { width: 7, height: 8 },
+        icon: '🏢',
+        color: '#795548',
+        backgroundColor: 'linear-gradient(135deg, #efebe9, #d7ccc8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'branch-network-zone'
+      },
+      {
+        id: 'branch-office-2',
+        name: 'Branch Office 2',
+        type: 'tenant' as ComponentType,
+        position: { x: 15, y: 30 },
+        size: { width: 7, height: 8 },
+        icon: '🏢',
+        color: '#795548',
+        backgroundColor: 'linear-gradient(135deg, #efebe9, #d7ccc8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'branch-network-zone'
+      },
+      {
+        id: 'branch-office-3',
+        name: 'Branch Office 3',
+        type: 'tenant' as ComponentType,
+        position: { x: 25, y: 35 },
+        size: { width: 7, height: 8 },
+        icon: '🏢',
+        color: '#795548',
+        backgroundColor: 'linear-gradient(135deg, #efebe9, #d7ccc8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'branch-network-zone'
+      },
+      {
+        id: 'on-premise-dc',
+        name: 'On-Premise DC',
+        type: 'database' as ComponentType,
+        position: { x: 5, y: 35 },
+        size: { width: 8, height: 9 },
+        icon: '🏭',
+        color: '#607d8b',
+        backgroundColor: 'linear-gradient(135deg, #eceff1, #b0bec5)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'branch-network-zone'
+      },
+      {
+        id: 'hub-vpc',
+        name: 'Hub VPC',
+        type: 'orchestrator' as ComponentType,
+        position: { x: 45, y: 10 },
+        size: { width: 8, height: 9 },
+        icon: '☁️',
+        color: '#2196f3',
+        backgroundColor: 'linear-gradient(135deg, #e3f2fd, #90caf9)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'hub-cloud-zone'
+      },
+      {
+        id: 'identity-provider',
+        name: 'Identity Provider',
+        type: 'identity_provider' as ComponentType,
+        position: { x: 82, y: 8 },
+        size: { width: 7, height: 8 },
+        icon: '👤',
+        color: '#673ab7',
+        backgroundColor: 'linear-gradient(135deg, #f3e5f5, #d1c4e9)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'identity-zone'
+      },
+      {
+        id: 'sso-gateway',
+        name: 'SSO Gateway',
+        type: 'auth_service' as ComponentType,
+        position: { x: 82, y: 15 },
+        size: { width: 7, height: 8 },
+        icon: '🔐',
+        color: '#e91e63',
+        backgroundColor: 'linear-gradient(135deg, #fce4ec, #f8bbd9)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'identity-zone'
+      },
+      {
+        id: 'api-gateway',
+        name: 'API Gateway',
+        type: 'api_gateway' as ComponentType,
+        position: { x: 55, y: 20 },
+        size: { width: 7, height: 8 },
+        icon: '🚪',
+        color: '#ff5722',
+        backgroundColor: 'linear-gradient(135deg, #fbe9e7, #ffab91)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'hub-cloud-zone'
+      },
+      {
+        id: 'sdwan-controller',
+        name: 'SD-WAN Controller',
+        type: 'sdwan' as ComponentType,
+        position: { x: 45, y: 25 },
+        size: { width: 8, height: 8 },
+        icon: '🌐',
+        color: '#795548',
+        backgroundColor: 'linear-gradient(135deg, #efebe9, #d7ccc8)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'hub-cloud-zone'
+      },
+      {
+        id: 'load-balancer',
+        name: 'Load Balancer',
+        type: 'load_balancer' as ComponentType,
+        position: { x: 65, y: 15 },
+        size: { width: 7, height: 8 },
+        icon: '⚖️',
+        color: '#9b59b6',
+        backgroundColor: 'linear-gradient(135deg, #faf5ff, #e1bee7)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'hub-cloud-zone'
+      },
+      {
+        id: 'app-server-1',
+        name: 'App Server 1',
+        type: 'tenant' as ComponentType,
+        position: { x: 82, y: 30 },
+        size: { width: 6, height: 7 },
+        icon: '🖥️',
+        color: '#009688',
+        backgroundColor: 'linear-gradient(135deg, #e0f2f1, #80cbc4)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'application-zone'
+      },
+      {
+        id: 'app-server-2',
+        name: 'App Server 2',
+        type: 'tenant' as ComponentType,
+        position: { x: 90, y: 35 },
+        size: { width: 6, height: 7 },
+        icon: '🖥️',
+        color: '#009688',
+        backgroundColor: 'linear-gradient(135deg, #e0f2f1, #80cbc4)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'application-zone'
+      },
+      {
+        id: 'database-cluster',
+        name: 'Database Cluster',
+        type: 'database' as ComponentType,
+        position: { x: 45, y: 50 },
+        size: { width: 8, height: 9 },
+        icon: '🗄️',
+        color: '#2196f3',
+        backgroundColor: 'linear-gradient(135deg, #e3f2fd, #64b5f6)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'data-zone'
+      },
+      {
+        id: 'monitoring-hub',
+        name: 'Monitoring Hub',
+        type: 'monitoring' as ComponentType,
+        position: { x: 60, y: 55 },
+        size: { width: 7, height: 8 },
+        icon: '📊',
+        color: '#4caf50',
+        backgroundColor: 'linear-gradient(135deg, #f1f8e9, #c8e6c9)',
+        status: 'active' as ComponentStatus,
+        zoneId: 'data-zone'
+      }
+    ],
+    connections: [
+      // Add connections for hub-spoke architecture
+      {
+        id: 'internet-hub-vpc',
+        source: 'internet',
+        target: 'hub-vpc',
+        type: 'secure' as ConnectionType,
+        protocol: 'HTTPS',
+        midPointLabel: 'VPN',
+        path: 'M 14,10 Q 30,8 49,14',
+        security: 'public' as SecurityLevel,
+        animated: true
+      }
+      // ... more connections would be defined here
+    ]
+  }
+
+  // Additional architectures would be defined here following the same pattern:
+  // 'segmented-dmz-data-lake': { ... }
+  // 'zero-trust-access-fabric': { ... }  
+  // 'bastioned-workflow-cluster': { ... }
+  // 'multi-site-active-passive-dr': { ... }
+};
+
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
+
+export class TopologyGenerator {
+  static generateHTML(architectureName: keyof typeof ARCHITECTURES): string {
+    const architecture = ARCHITECTURES[architectureName];
+    if (!architecture) {
+      throw new Error(`Architecture ${architectureName} not found`);
+    }
+
+    return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${architecture.title}</title>
+    <style>
+        ${this.generateCSS()}
+    </style>
+</head>
+<body>
+    <div class="title">${architecture.title}</div>
+    <div class="topology-container">
+        ${this.generateZones(architecture.zones)}
+        ${this.generateComponents(architecture.components)}
+        ${this.generateConnections(architecture.connections)}
+        ${this.generateLabels(architecture.connections)}
+        ${this.generateLegend()}
+    </div>
+</body>
+</html>`;
+  }
+
+  static generateCSS(): string {
+    return `
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: ${DESIGN_TOKENS.gradients.background};
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .title {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: ${DESIGN_TOKENS.animations.titleGlow};
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+            to { text-shadow: 2px 2px 20px rgba(255,255,255,0.5); }
+        }
+
+        .topology-container {
+            width: 95vw;
+            height: 90vh;
+            position: relative;
+            background: ${DESIGN_TOKENS.gradients.container};
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .network-zone {
+            position: absolute;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 2px dashed;
+            transition: all 0.3s ease;
+        }
+
+        .network-zone:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .zone-label {
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: ${DESIGN_TOKENS.animations.labelFloat};
+        }
+
+        @keyframes labelFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .network-component {
+            position: absolute;
+            background: white;
+            border: 3px solid;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .network-component:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border-width: 4px
