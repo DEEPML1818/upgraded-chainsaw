@@ -124,39 +124,47 @@ export function useGSAPAnimations() {
         );
       });
 
-      // Floating orbs continuous animation
-      gsap.to('.orb-1', {
-        x: 50,
-        y: -30,
-        duration: 8,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1
-      });
+      // Floating orbs continuous animation (only if elements exist)
+      if (document.querySelector('.orb-1')) {
+        gsap.to('.orb-1', {
+          x: 50,
+          y: -30,
+          duration: 8,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1
+        });
+      }
 
-      gsap.to('.orb-2', {
-        x: -40,
-        y: 40,
-        duration: 6,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1
-      });
+      if (document.querySelector('.orb-2')) {
+        gsap.to('.orb-2', {
+          x: -40,
+          y: 40,
+          duration: 6,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1
+        });
+      }
 
-      gsap.to('.orb-3', {
-        x: -30,
-        y: -50,
-        duration: 10,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1
-      });
+      if (document.querySelector('.orb-3')) {
+        gsap.to('.orb-3', {
+          x: -30,
+          y: -50,
+          duration: 10,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1
+        });
+      }
 
-      // Initial loading animation
-      gsap.fromTo('.hero-content', 
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out', delay: 0.3 }
-      );
+      // Initial loading animation (only if element exists)
+      if (document.querySelector('.hero-content')) {
+        gsap.fromTo('.hero-content', 
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out', delay: 0.3 }
+        );
+      }
 
       return () => {
         ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());
