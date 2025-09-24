@@ -45,7 +45,8 @@ import {
   Network,
   X // Import X icon for closing the modal
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import InteractiveTopology from '../components/topology/InteractiveTopology';
 
 // CSS animations for enhanced topology visualization
 const topologyAnimations = `
@@ -251,48 +252,9 @@ interface BusinessSolution {
   category: 'general' | 'niche' | 'specialized';
 }
 
-const ExpandableTopology = ({ svgContent, title, description }: { svgContent: string, title: string, description: string }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsModalOpen(true);
-    // Prevent body scrolling when modal is open
-    document.body.style.overflow = 'hidden';
-  };
-
-  const handleCloseModal = (e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    setIsModalOpen(false);
-    // Restore body scrolling when modal is closed
-    document.body.style.overflow = 'unset';
-  };
-
-  // Close modal on Escape key
+// Performance optimization: Inject CSS animations once
+const useTopologyAnimations = () => {
   useEffect(() => {
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isModalOpen) {
-        handleCloseModal();
-      }
-    };
-
-    if (isModalOpen) {
-      document.addEventListener('keydown', handleEscapeKey);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
-      // Cleanup: restore body scrolling if component unmounts while modal is open
-      document.body.style.overflow = 'unset';
-    };
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    // Inject CSS animations into the document head only once
     const existingStyle = document.getElementById('topology-animations');
     if (!existingStyle) {
       const styleElement = document.createElement('style');
@@ -301,114 +263,13 @@ const ExpandableTopology = ({ svgContent, title, description }: { svgContent: st
       document.head.appendChild(styleElement);
     }
   }, []);
-
-  return (
-    <>
-      <div
-        className="topology-diagram bg-slate-900/30 rounded-xl border border-gray-700/50 p-3 h-80 cursor-pointer group hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20 hover:bg-slate-800/40 hover:scale-105"
-        onClick={handleOpenModal}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleOpenModal(e as any);
-          }
-        }}
-      >
-        {/* Full size SVG container for preview */}
-        <div
-          className="h-64 overflow-hidden rounded-lg bg-slate-800/50 flex items-center justify-center pointer-events-none p-2"
-          dangerouslySetInnerHTML={{ __html: svgContent }}
-        />
-
-        <div className="mt-2 text-center pointer-events-none">
-          <h4 className="text-xs font-semibold text-white group-hover:text-blue-300 transition-colors">{title}</h4>
-          <p className="text-xs text-gray-400 mt-1 line-clamp-1">{description}</p>
-          <div className="flex items-center justify-center gap-1 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></div>
-            <p className="text-xs text-blue-400">Click to expand</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Centered Popup Window */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-          onClick={handleCloseModal}
-          style={{ animation: 'fadeIn 0.3s ease-out' }}
-        >
-          <div
-            className="bg-slate-900/98 border border-gray-600/50 rounded-2xl w-[800px] max-w-[90vw] max-h-[80vh] overflow-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-            style={{ animation: 'zoomIn 0.3s ease-out' }}
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-600/30 sticky top-0 bg-slate-900/98 backdrop-blur-sm z-10">
-              <h3 className="text-2xl md:text-3xl font-bold text-white">{title}</h3>
-              <button
-                onClick={handleCloseModal}
-                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-slate-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Close modal"
-              >
-                <X className="w-6 h-6 md:w-8 md:h-8" />
-              </button>
-            </div>
-
-            {/* Popup Content */}
-            <div className="p-4">
-              {/* Full size SVG content inside the popup */}
-              <div
-                className="bg-slate-800/30 rounded-xl p-4 mb-4 min-h-[300px] flex items-center justify-center border border-slate-700/30"
-                dangerouslySetInnerHTML={{ __html: svgContent }}
-              />
-
-              {/* Description */}
-              <div className="text-center space-y-3">
-                <p className="text-gray-300 text-base leading-relaxed">{description}</p>
-                <p className="text-gray-400 text-sm">
-                  Interactive network topology with animated data flows and security layers.
-                </p>
-                <div className="pt-2">
-                  <button
-                    onClick={handleCloseModal}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Add modal animations */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        @keyframes zoomIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-      `}</style>
-    </>
-  );
 };
 
 
 const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
-  const renderTopology = () => {
+  useTopologyAnimations(); // Performance optimization: inject CSS once
+  
+  const renderTopology = useMemo(() => {
     let svgContent = '';
     let title = '';
     let description = '';
@@ -2245,7 +2106,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
             {/* Load Balancer Layer */}
             <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(16, 185, 129, 0.1)" stroke="#10B981" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="40" y="45" fill="#10B981" font-size="16" font-weight="bold" class="jump-icon">⚖️</text>
+            <text x="40" y="45" fill="#10B981" font-size="16" font-weight="bold" class="jump-icon">🪙</text>
             <text x="90" y="45" fill="#34D399" font-size="14" font-weight="bold">GLOBAL LOAD BALANCER</text>
             <text x="400" y="60" text-anchor="middle" fill="#6EE7B7" font-size="12" font-weight="600">Active/Active Multi-Cloud Distribution</text>
 
@@ -2254,7 +2115,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
               <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
               <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
               <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="1"/>
-              <text x="720" y="52" text-anchor="middle" fill="#EC4899" font-size="8" font-weight="600">TVL: $2.4B</text>
+              <text x="720" y="52" text-anchor="middle" fill="#EC4899" font-size="8" font-weight="600">TVL: $2.4B 🔗</text>
             </g>
 
             {/* Enhanced AWS Multi-Cloud Region */}
@@ -2323,7 +2184,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
                 <ellipse cx="25" cy="20" rx="15" ry="8" fill="rgba(59, 130, 246, 0.3)" stroke="#3B82F6" stroke-width="1"/>
                 <rect x="10" y="20" width="30" height="15" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="1"/>
                 <ellipse cx="25" cy="35" rx="15" ry="8" fill="rgba(59, 130, 246, 0.3)" stroke="#3B82F6" stroke-width="1"/>
-                <text x="25" y="28" text-anchor="middle" fill="#3B82F6" font-size="12" class="animated-icon-pulse">💰</text>
+                <text x="25" y="28" text-anchor="middle" fill="#3B82F6" font-size="12" class="animated-icon-pulse">🪙</text>
                 <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Staking Pools</text>
               </g>
 
@@ -2443,7 +2304,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
             {/* CDN + Edge Cache Layer */}
             <ellipse cx="400" cy="80" rx="180" ry="40" fill="url(#nftGradient)" stroke="#A855F7" stroke-width="3" class="animated-cloud-float"/>
-            <text x="400" y="75" text-anchor="middle" fill="#C4B5FD" font-size="14" font-weight="bold">EDGE-ACCELERATED CDN</text>
+            <text x="400" y="75" text-anchor="middle" fill="#C4B5FD" font-size="14" font-weight="bold">🎫 EDGE-ACCELERATED CDN</text>
             <text x="400" y="90" text-anchor="middle" fill="#DDD6FE" font-size="10">Global Content Delivery Network</text>
 
             {/* API Gateway Layer */}
@@ -2454,21 +2315,21 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
             {/* Microservices Layer */}
             <g class="animated-server">
               <rect x="100" y="250" width="120" height="80" rx="8" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2"/>
-              <text x="110" y="270" fill="#34D399" font-size="11" font-weight="bold">NFT Service</text>
+              <text x="110" y="270" fill="#34D399" font-size="11" font-weight="bold">🎨 NFT Service</text>
 
               <rect x="250" y="250" width="120" height="80" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="260" y="270" fill="#FBBF24" font-size="11" font-weight="bold">Payment Service</text>
+              <text x="260" y="270" fill="#FBBF24" font-size="11" font-weight="bold">🪙 Payment Service</text>
 
               <rect x="400" y="250" width="120" height="80" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="#EC4899" stroke-width="2"/>
-              <text x="410" y="270" fill="#F472B6" font-size="11" font-weight="bold">Auction Service</text>
+              <text x="410" y="270" fill="#F472B6" font-size="11" font-weight="bold">🎫 Auction Service</text>
 
               <rect x="550" y="250" width="120" height="80" rx="8" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="2"/>
-              <text x="560" y="270" fill="#A78BFA" font-size="11" font-weight="bold">User Service</text>
+              <text x="560" y="270" fill="#A78BFA" font-size="11" font-weight="bold">👤 User Service</text>
             </g>
 
             {/* Secure Wallet Node Cluster */}
             <rect x="300" y="360" width="200" height="60" rx="8" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
-            <text x="310" y="380" fill="#F87171" font-size="12" font-weight="bold">WALLET NODE CLUSTER</text>
+            <text x="310" y="380" fill="#F87171" font-size="12" font-weight="bold">🔗 WALLET NODE CLUSTER</text>
             <text x="310" y="395" fill="#FCA5A5" font-size="10">Segregated Security Subnets</text>
 
             {/* Network connections */}
@@ -2480,8 +2341,8 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
             <path d="M400 330 L400 360" stroke="#EF4444" stroke-width="3" class="animated-secure-connection"/>
           </svg>
         `;
-        title = 'Multi-Cloud Active/Active + Blockchain Overlay';
-        description = 'Distributed DeFi infrastructure with HSM security and P2P blockchain networking';
+        title = 'Edge-Accelerated CDN + API Gateway Topology';
+        description = 'NFT marketplace with global CDN, microservices, and secure wallet infrastructure';
         break;
 
       case 'quant-trading':
@@ -2497,7 +2358,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
             {/* Colocated Leaf-Spine Network */}
             <rect x="50" y="50" width="300" height="150" rx="12" fill="url(#quantGradient)" stroke="#22C55E" stroke-width="3" class="animated-network-glow"/>
-            <text x="60" y="75" fill="#4ADE80" font-size="14" font-weight="bold">COLOCATED LEAF-SPINE</text>
+            <text x="60" y="75" fill="#4ADE80" font-size="14" font-weight="bold">📊 COLOCATED LEAF-SPINE</text>
             <text x="60" y="90" fill="#86EFAC" font-size="10">Deterministic Switching Fabric</text>
 
             {/* Spine Switches */}
@@ -2566,7 +2427,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
             {/* Data Collectors Layer */}
             <rect x="50" y="50" width="700" height="60" rx="8" fill="url(#fraudGradient)" stroke="#EF4444" stroke-width="2" class="animated-server"/>
-            <text x="60" y="75" fill="#F87171" font-size="14" font-weight="bold">HIGH-THROUGHPUT DATA COLLECTORS</text>
+            <text x="60" y="75" fill="#F87171" font-size="14" font-weight="bold">🔍 HIGH-THROUGHPUT DATA COLLECTORS</text>
             <text x="60" y="90" fill="#FCA5A5" font-size="10">TAP/SPAN Network Feeds & Transaction Monitoring</text>
 
             {/* Pub/Sub Overlay Network */}
@@ -2633,15 +2494,15 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
             {/* Edge Telemetry Collectors */}
             <g class="animated-server">
               <ellipse cx="150" cy="80" rx="60" ry="30" fill="url(#rugGradient)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="150" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">DEX Endpoint</text>
+              <text x="150" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">⚠️ DEX Endpoint</text>
               <text x="150" y="88" text-anchor="middle" fill="#FCD34D" font-size="8">Uniswap</text>
 
               <ellipse cx="400" cy="80" rx="60" ry="30" fill="url(#rugGradient)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="400" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">DEX Endpoint</text>
+              <text x="400" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">⚠️ DEX Endpoint</text>
               <text x="400" y="88" text-anchor="middle" fill="#FCD34D" font-size="8">PancakeSwap</text>
 
               <ellipse cx="650" cy="80" rx="60" ry="30" fill="url(#rugGradient)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="650" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">DEX Endpoint</text>
+              <text x="650" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">⚠️ DEX Endpoint</text>
               <text x="650" y="88" text-anchor="middle" fill="#FCD34D" font-size="8">SushiSwap</text>
             </g>
 
@@ -2657,7 +2518,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
             {/* Central GPU Training Cluster */}
             <rect x="200" y="290" width="400" height="80" rx="12" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="3" class="animated-server"/>
-            <text x="210" y="315" fill="#60A5FA" font-size="14" font-weight="bold">CENTRAL GPU TRAINING CLUSTER</text>
+            <text x="210" y="315" fill="#60A5FA" font-size="14" font-weight="bold">🤖 CENTRAL GPU TRAINING CLUSTER</text>
             <text x="210" y="330" fill="#93C5FD" font-size="10">Advanced ML Models for Rug Pull Pattern Recognition</text>
 
             {/* GPU Nodes */}
@@ -2719,7 +2580,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
             {/* P2P Blockchain Overlay Network */}
             <ellipse cx="400" cy="120" rx="300" ry="60" fill="url(#daoGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
-            <text x="400" y="110" text-anchor="middle" fill="#60A5FA" font-size="16" font-weight="bold">P2P BLOCKCHAIN OVERLAY NETWORK</text>
+            <text x="400" y="110" text-anchor="middle" fill="#60A5FA" font-size="16" font-weight="bold">🏛️ P2P BLOCKCHAIN OVERLAY NETWORK</text>
             <text x="400" y="125" text-anchor="middle" fill="#93C5FD" font-size="11">Fully Decentralized On-Chain Voting Infrastructure</text>
             <text x="400" y="140" text-anchor="middle" fill="#BFDBFE" font-size="9">Ethereum • Polygon • Arbitrum • Base</text>
 
@@ -2798,10 +2659,10 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <span className="text-gray-400">Topology diagram not available</span>
         </div>;
     }
-    return <ExpandableTopology svgContent={svgContent} title={title} description={description} />;
-  };
+    return <InteractiveTopology svgContent={svgContent} title={title} description={description} />;
+  }, [solutionId]); // Memoize based on solution ID
 
-  return renderTopology();
+  return renderTopology;
 };
 
 const SolutionCard = ({ solution, isActive, onHover }: {
