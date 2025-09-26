@@ -1,9 +1,9 @@
+
 // Enhanced Interactive Topology Component
 // Combines sophisticated SVG topologies with pan/zoom controls and node inspection
 
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, ZoomOut, ZoomIn, Target, Info } from 'lucide-react';
-import OptimizedSVGRenderer from './OptimizedSVGRenderer';
+import { ChevronLeft, ChevronRight, ZoomOut, ZoomIn, Target, Info, Monitor } from 'lucide-react';
 
 interface InteractiveTopologyProps {
   svgContent: string;
@@ -28,15 +28,10 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
   description,
   className = '',
   enablePerformanceMode = true,
-  animationQuality
+  animationQuality = 'medium'
 }) => {
-  const svgRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const svgContainerRef = useRef<HTMLDivElement>(null);
   const tooltipTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Safe performance optimization without SSR issues
-  const effectiveAnimationQuality = animationQuality || 'high';
-  const effectivePerformanceMode = enablePerformanceMode;
   
   // Pan/Zoom state
   const [scale, setScale] = useState(1);
@@ -60,17 +55,98 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
     nodeType: ''
   });
 
-  // Enhanced zoom controls
+  // Process SVG content with minimal overhead
+  const processedSVGContent = useMemo(() => {
+    if (!svgContent) return '';
+    
+    // Add CSS animations based on quality setting
+    const animationCSS = animationQuality === 'high' ? `
+      <style>
+        .animated-data-packet { animation: dataPacketFlow 3s ease-in-out infinite; }
+        .animated-connection { animation: connectionPulse 2s linear infinite; }
+        .animated-router { animation: routerSpin 4s linear infinite; }
+        .animated-status { animation: statusBlink 2s ease-in-out infinite; }
+        .animated-server { animation: serverHum 3s ease-in-out infinite; }
+        .animated-security-shield { animation: shieldPulse 2.5s ease-in-out infinite; }
+        .animated-network-glow { animation: networkGlow 3s ease-in-out infinite; }
+        .animated-high-traffic { animation: trafficFlow 1.5s linear infinite; }
+        .animated-secure-connection { animation: secureFlow 3s ease-in-out infinite; }
+        .animated-encrypted-connection { animation: encryptedFlow 2s linear infinite; }
+        .animated-icon-pulse { animation: iconPulse 2s ease-in-out infinite; }
+        .animated-node { animation: nodeFloat 4s ease-in-out infinite; }
+        
+        @keyframes dataPacketFlow {
+          0%, 100% { opacity: 0.6; transform: translateY(0px); }
+          50% { opacity: 1; transform: translateY(-3px); }
+        }
+        @keyframes connectionPulse {
+          0% { stroke-dashoffset: 12; }
+          100% { stroke-dashoffset: 0; }
+        }
+        @keyframes routerSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes statusBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        @keyframes serverHum {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
+        @keyframes shieldPulse {
+          0%, 100% { filter: brightness(1); }
+          50% { filter: brightness(1.2); }
+        }
+        @keyframes networkGlow {
+          0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+          50% { filter: drop-shadow(0 0 15px currentColor); }
+        }
+        @keyframes trafficFlow {
+          0% { stroke-dashoffset: 20; }
+          100% { stroke-dashoffset: 0; }
+        }
+        @keyframes secureFlow {
+          0% { stroke-dashoffset: 15; opacity: 0.7; }
+          100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+        @keyframes encryptedFlow {
+          0% { stroke-dashoffset: 10; }
+          100% { stroke-dashoffset: 0; }
+        }
+        @keyframes iconPulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+        }
+        @keyframes nodeFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-2px); }
+        }
+      </style>
+    ` : '';
+    
+    // Insert animations into SVG
+    return svgContent.replace('<svg', `${animationCSS}<svg`);
+  }, [svgContent, animationQuality]);
+
+  // Enhanced zoom controls with smooth transitions
   const handleZoomIn = useCallback(() => {
-    setScale(prev => Math.min(prev * 1.2, 3));
+    setScale(prev => Math.min(prev * 1.3, 4));
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setScale(prev => Math.max(prev / 1.2, 0.3));
+    setScale(prev => Math.max(prev / 1.3, 0.2));
   }, []);
 
   const handleZoomReset = useCallback(() => {
     setScale(1);
+    setPanX(0);
+    setPanY(0);
+  }, []);
+
+  const handleFitToView = useCallback(() => {
+    setScale(0.8);
     setPanX(0);
     setPanY(0);
   }, []);
@@ -105,7 +181,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
   }, []);
 
   // Touch gesture support for mobile devices
-  const getTouchDistance = (touches: TouchList) => {
+  const getTouchDistance = (touches: React.TouchList) => {
     if (touches.length < 2) return 0;
     const touch1 = touches[0];
     const touch2 = touches[1];
@@ -115,7 +191,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
     );
   };
 
-  const getTouchCenter = (touches: TouchList) => {
+  const getTouchCenter = (touches: React.TouchList) => {
     if (touches.length === 1) {
       return { x: touches[0].clientX, y: touches[0].clientY };
     } else if (touches.length === 2) {
@@ -186,7 +262,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
         setPanY(center.y - worldFocal.y * newScale);
       }
     }
-  }, [isTouching, isPinching, touchStart, worldFocal, scale]);
+  }, [isTouching, isPinching, touchStart, worldFocal]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 0) {
@@ -209,7 +285,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target === document.body || containerRef.current?.contains(e.target as Node)) {
+      if (e.target === document.body || svgContainerRef.current?.contains(e.target as Node)) {
         switch (e.key) {
           case '+':
           case '=':
@@ -255,8 +331,8 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
     const text = target.closest('text');
     
     if (rect || text) {
-      const svgRect = svgRef.current?.getBoundingClientRect();
-      if (svgRect) {
+      const containerRect = svgContainerRef.current?.getBoundingClientRect();
+      if (containerRect) {
         let nodeInfo = '';
         let nodeType = '';
 
@@ -298,8 +374,8 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
 
         setTooltip({
           visible: true,
-          x: e.clientX - svgRect.left,
-          y: e.clientY - svgRect.top,
+          x: e.clientX - containerRect.left,
+          y: e.clientY - containerRect.top,
           content: nodeInfo,
           nodeType
         });
@@ -319,13 +395,13 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
 
   return (
     <div 
-      ref={containerRef}
+      ref={svgContainerRef}
       className={`relative w-full h-80 bg-slate-900/30 rounded-xl border border-gray-700/50 overflow-hidden group ${className}`}
       tabIndex={0}
     >
-      {/* Control Panel - Mobile optimized */}
+      {/* Enhanced Control Panel - Mobile optimized */}
       <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 opacity-80 hover:opacity-100 transition-opacity">
-        <div className="flex gap-1 bg-slate-800/90 backdrop-blur-sm rounded-lg p-1 border border-gray-600/50">
+        <div className="flex gap-1 bg-slate-800/95 backdrop-blur-sm rounded-lg p-1 border border-gray-600/50 shadow-lg">
           <button
             onClick={handleZoomIn}
             className="p-3 md:p-2 hover:bg-slate-700/70 active:bg-slate-600/80 rounded-md transition-colors touch-manipulation"
@@ -350,6 +426,14 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
           >
             <Target className="w-5 h-5 md:w-4 md:h-4 text-blue-400" />
           </button>
+          <button
+            onClick={handleFitToView}
+            className="p-3 md:p-2 hover:bg-slate-700/70 active:bg-slate-600/80 rounded-md transition-colors touch-manipulation"
+            title="Fit to View"
+            data-testid="interactive-topology-fit-view"
+          >
+            <Monitor className="w-5 h-5 md:w-4 md:h-4 text-purple-400" />
+          </button>
         </div>
         
         <div className="flex gap-1 bg-slate-800/90 backdrop-blur-sm rounded-lg p-1 border border-gray-600/50 md:flex hidden">
@@ -372,16 +456,19 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
         </div>
       </div>
 
-      {/* Info Panel */}
-      <div className="absolute top-4 right-4 z-20 opacity-70 hover:opacity-100 transition-opacity">
-        <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg p-3 border border-gray-600/50 max-w-xs" data-testid="interactive-topology-info-panel">
+      {/* Enhanced Info Panel */}
+      <div className="absolute top-4 right-4 z-20 opacity-80 hover:opacity-100 transition-opacity">
+        <div className="bg-slate-800/95 backdrop-blur-sm rounded-lg p-3 border border-gray-600/50 max-w-sm shadow-lg" data-testid="interactive-topology-info-panel">
           <div className="flex items-center gap-2 mb-2">
             <Info className="w-4 h-4 text-blue-400" />
             <span className="text-sm font-semibold text-blue-300">{title}</span>
           </div>
-          <p className="text-xs text-gray-400 leading-relaxed">{description}</p>
-          <div className="mt-2 text-xs text-gray-500">
-            Touch/click components for details • Pan with finger/mouse • Pinch to zoom
+          <p className="text-xs text-gray-400 leading-relaxed mb-3">{description}</p>
+          <div className="space-y-1 text-xs text-gray-500">
+            <div>🖱️ <strong>Mouse:</strong> Drag to pan, scroll to zoom</div>
+            <div>📱 <strong>Touch:</strong> Drag to pan, pinch to zoom</div>
+            <div>⌨️ <strong>Keys:</strong> +/- zoom, arrows pan, 0 reset</div>
+            <div>🎯 <strong>Click:</strong> Inspect network components</div>
           </div>
         </div>
       </div>
@@ -395,9 +482,9 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
         </div>
       </div>
 
-      {/* Interactive SVG Container */}
+      {/* Interactive SVG Container - Direct Integration */}
       <div 
-        className="w-full h-full cursor-move"
+        className="absolute inset-0 cursor-grab active:cursor-grabbing"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -405,29 +492,26 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        style={{ 
-          cursor: isDragging ? 'grabbing' : 'grab',
-          touchAction: 'none' // Prevent default touch behaviors
-        }}
+        style={{ touchAction: 'none' }}
       >
         <div
-          className="w-full h-full transition-transform duration-150 ease-out"
+          className="w-full h-full origin-center transition-transform duration-200 ease-out"
           style={{
             transform: `translate(${panX}px, ${panY}px) scale(${scale})`,
-            transformOrigin: 'center center',
-            willChange: isDragging ? 'transform' : 'auto'
+            willChange: isDragging || isPinching ? 'transform' : 'auto'
           }}
           onClick={handleSVGClick}
         >
-          <div ref={svgRef} className="w-full h-full">
-            <OptimizedSVGRenderer
-              svgContent={svgContent}
-              enableGPUAcceleration={effectivePerformanceMode}
-              enableViewportCulling={effectivePerformanceMode}
-              animationQuality={effectiveAnimationQuality}
-              className="w-full h-full"
-            />
-          </div>
+          {/* Direct SVG Content Rendering */}
+          <div
+            className="w-full h-full"
+            style={{
+              display: 'block',
+              visibility: 'visible',
+              opacity: 1
+            }}
+            dangerouslySetInnerHTML={{ __html: processedSVGContent }}
+          />
         </div>
       </div>
 

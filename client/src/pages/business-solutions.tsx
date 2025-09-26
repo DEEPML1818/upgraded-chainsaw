@@ -46,196 +46,7 @@ import {
   X // Import X icon for closing the modal
 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
-import InteractiveTopology from '../components/topology/InteractiveTopology';
-import ExpandableTopology from '../components/topology/ExpandableTopology'; // Import ExpandableTopology for correction
 
-// CSS animations for enhanced topology visualization
-const topologyAnimations = `
-  @keyframes jump {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
-
-  @keyframes iconBounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-6px); }
-    60% { transform: translateY(-3px); }
-  }
-
-  @keyframes iconPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.1); }
-  }
-
-  @keyframes dataFlow {
-    0% { stroke-dashoffset: 20; opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { stroke-dashoffset: 0; opacity: 0.6; }
-  }
-
-  @keyframes secureFlow {
-    0% { stroke-dashoffset: 24; }
-    100% { stroke-dashoffset: 0; }
-  }
-
-  @keyframes encryptedFlow {
-    0% { stroke-dashoffset: 12; }
-    100% { stroke-dashoffset: 0; }
-  }
-
-  @keyframes highTrafficFlow {
-    0%, 100% { stroke-width: 3; opacity: 0.8; }
-    50% { stroke-width: 6; opacity: 1; }
-  }
-
-  @keyframes nodePulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.05); }
-  }
-
-  @keyframes statusPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.15); }
-  }
-
-  @keyframes serverPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-    50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
-  }
-
-  @keyframes networkGlow {
-    0%, 100% { filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.4)); }
-    50% { filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.8)); }
-  }
-
-  @keyframes routerSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  @keyframes dataPacket {
-    0% { transform: translateX(-10px); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateX(10px); opacity: 0; }
-  }
-
-  @keyframes cloudFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-
-  @keyframes securityShield {
-    0%, 100% { stroke-width: 2; stroke-dasharray: 0; }
-    50% { stroke-width: 3; stroke-dasharray: 5 5; }
-  }
-
-  .jump-icon {
-    animation: jump 2s infinite ease-in-out;
-    transform-origin: center bottom;
-    display: inline-block;
-  }
-
-  .topology-diagram:hover .jump-icon {
-    animation: jump 1s infinite ease-in-out;
-  }
-
-  .animated-icon {
-    animation: iconBounce 2.5s ease-in-out infinite;
-    display: inline-block;
-  }
-
-  .animated-icon-pulse {
-    animation: iconPulse 3s ease-in-out infinite;
-    display: inline-block;
-  }
-
-  .animated-connection {
-    stroke-dasharray: 10 5;
-    animation: dataFlow 3s ease-in-out infinite;
-  }
-
-  .animated-secure-connection {
-    stroke-dasharray: 12 6;
-    animation: secureFlow 2s linear infinite;
-  }
-
-  .animated-encrypted-connection {
-    stroke-dasharray: 8 4;
-    animation: encryptedFlow 2s linear infinite;
-  }
-
-  .animated-high-traffic {
-    animation: highTrafficFlow 1.5s ease-in-out infinite;
-  }
-
-  .animated-node {
-    animation: nodePulse 4s ease-in-out infinite;
-  }
-
-  .animated-status {
-    animation: statusPulse 2.5s ease-in-out infinite;
-  }
-
-  .animated-server {
-    animation: serverPulse 3s ease-in-out infinite;
-  }
-
-  .animated-network-glow {
-    animation: networkGlow 2s ease-in-out infinite;
-  }
-
-  .animated-router {
-    animation: routerSpin 10s linear infinite;
-    transform-origin: center;
-  }
-
-  .animated-data-packet {
-    animation: dataPacket 2s ease-in-out infinite;
-  }
-
-  .animated-cloud-float {
-    animation: cloudFloat 4s ease-in-out infinite;
-  }
-
-  .animated-security-shield {
-    animation: securityShield 3s ease-in-out infinite;
-  }
-
-  .network-component {
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-
-  .network-component:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-  }
-
-  /* Enhanced hover effects for topology diagrams */
-  .topology-diagram:hover .jump-icon {
-    animation-duration: 1s;
-  }
-
-  .topology-diagram:hover .animated-icon-pulse {
-    animation-duration: 1.5s;
-  }
-
-  .topology-diagram:hover .animated-status {
-    animation-duration: 1s;
-  }
-
-  .topology-diagram:hover .animated-server {
-    animation-duration: 1.5s;
-  }
-
-  .topology-diagram:hover .animated-network-glow {
-    animation-duration: 1s;
-  }
-
-  .topology-diagram:hover .animated-router {
-    animation-duration: 5s;
-  }
-`;
 
 interface WorkflowStep {
   id: string;
@@ -253,22 +64,11 @@ interface BusinessSolution {
   category: 'general' | 'niche' | 'specialized';
 }
 
-// Performance optimization: Inject CSS animations once
-const useTopologyAnimations = () => {
-  useEffect(() => {
-    const existingStyle = document.getElementById('topology-animations');
-    if (!existingStyle) {
-      const styleElement = document.createElement('style');
-      styleElement.id = 'topology-animations';
-      styleElement.innerHTML = topologyAnimations;
-      document.head.appendChild(styleElement);
-    }
-  }, []);
-};
 
+import { InteractiveTopology } from '@/components/topology/InteractiveTopology';
 
 const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
-  const renderTopology = () => {
+  const renderTopology = useMemo(() => {
     let svgContent = '';
     let title = '';
     let description = '';
@@ -278,59 +78,18 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         svgContent = `
           <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <filter id="networkShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
+              <filter id="simpleShadow">
+                <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.2"/>
               </filter>
-              <filter id="serverGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <marker id="networkFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#60A5FA" filter="url(#serverGlow)"/>
+              <marker id="networkFlow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#60A5FA"/>
               </marker>
-              <marker id="secureFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#10B981" filter="url(#serverGlow)"/>
+              <marker id="secureFlow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#10B981"/>
               </marker>
-              <pattern id="meshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="0" cy="0" r="0.5" fill="#60A5FA" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="gatewayGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(16, 185, 129, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="dmzGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(139, 92, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(139, 92, 246, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="dmzOutGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(236, 72, 153, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(236, 72, 153, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(220, 38, 38, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(220, 38, 38, 0.1)"/>
-              </linearGradient>
             </defs>
 
-            {/* Background */}
+            {/* Enhanced Background with depth */}
             <rect width="100%" height="100%" fill="#0F172A"/>
             <rect width="100%" height="100%" fill="url(#meshPattern)" opacity="0.4"/>
 
@@ -342,230 +101,276 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
               <circle cx="200" cy="250" r="1" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0.5s"/>
             </g>
 
-            {/* Internet Zone */}
-            <rect x="20" y="20" width="760" height="50" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
+            {/* Network Segments */}
+
+            {/* Internet/External Zone */}
+            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
             <text x="40" y="45" fill="#F59E0B" font-size="16" font-weight="bold" class="jump-icon">🌐</text>
             <text x="90" y="45" fill="#FBBF24" font-size="14" font-weight="bold">INTERNET</text>
             <text x="400" y="60" text-anchor="middle" fill="#FCD34D" font-size="12" font-weight="600">External Access Layer - Secure Internet Gateway</text>
 
-            {/* Gateway Subnet */}
+            {/* Network performance indicators */}
+            <g class="performance-indicators">
+              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
+              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="720" y="52" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="600">LOAD: 68%</text>
+            </g>
+
+            {/* Enhanced Gateway Subnet with detailed components */}
             <g class="network-component">
-              <rect x="650" y="90" width="130" height="80" rx="12" fill="url(#gatewayGradient)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="660" y="110" fill="#34D399" font-size="13" font-weight="bold">GATEWAY SUBNET</text>
-              
-              {/* IGW */}
-              <g transform="translate(665, 120)" class="animated-network-glow">
-                <rect width="40" height="30" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <circle cx="20" cy="15" r="6" fill="none" stroke="#6EE7B7" stroke-width="1.5" class="animated-router"/>
-                <text x="20" y="20" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">IGW</text>
+              <rect x="650" y="100" width="130" height="90" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="660" y="120" fill="#34D399" font-size="13" font-weight="bold">GATEWAY SUBNET</text>
+
+              {/* Enhanced Internet Gateway */}
+              <g transform="translate(665, 130)" class="animated-network-glow">
+                <rect width="45" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow)"/>
+                <circle cx="22.5" cy="12" r="8" fill="none" stroke="#6EE7B7" stroke-width="1.5" class="animated-router"/>
+                <circle cx="22.5" cy="12" r="4" fill="#10B981" opacity="0.8"/>
+                <rect x="18" y="20" width="9" height="3" rx="1" fill="#6EE7B7" opacity="0.9"/>
+                <rect x="16" y="25" width="13" height="2" rx="1" fill="#34D399" opacity="0.7"/>
+                <text x="22.5" y="32" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">IGW</text>
               </g>
-              
-              {/* WAF */}
-              <g transform="translate(715, 120)" class="animated-security-shield">
-                <rect width="40" height="30" rx="6" fill="rgba(239, 68, 68, 0.3)" stroke="#EF4444" stroke-width="2"/>
-                <path d="M20 8 L24 12 L20 18 L16 12 Z" fill="none" stroke="#FCA5A5" stroke-width="2"/>
-                <text x="20" y="25" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">WAF</text>
+
+              {/* Enhanced WAF */}
+              <g transform="translate(720, 130)" class="animated-security-shield">
+                <rect width="45" height="35" rx="6" fill="url(#firewallGradient)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow)"/>
+                <path d="M22.5 8 L28 12 L22.5 20 L17 12 Z" fill="none" stroke="#FCA5A5" stroke-width="2" class="animated-security-shield"/>
+                <circle cx="22.5" cy="14" r="3" fill="#EF4444" opacity="0.8"/>
+                <text x="22.5" y="32" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">WAF</text>
               </g>
             </g>
 
-            {/* Private DMZ IN */}
+            {/* Enhanced Private DMZ IN with detailed network security components */}
             <g class="network-component">
-              <rect x="20" y="190" width="180" height="100" rx="12" fill="url(#dmzGradient)" stroke="#3B82F6" stroke-width="3" stroke-dasharray="12,6" class="animated-secure-connection"/>
-              <text x="30" y="210" fill="#60A5FA" font-size="13" font-weight="bold">PRIVATE DMZ IN</text>
-              
-              {/* NSG */}
-              <g transform="translate(35, 230)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="rgba(59, 130, 246, 0.3)" stroke="#3B82F6" stroke-width="2"/>
-                <rect x="8" y="8" width="34" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="8" y="14" width="34" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="8" y="19" width="34" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <circle cx="15" cy="27" r="2" fill="#3B82F6" class="animated-status"/>
-                <circle cx="25" cy="27" r="2" fill="#10B981" class="animated-status"/>
-                <circle cx="35" cy="27" r="2" fill="#F59E0B" class="animated-status"/>
-                <text x="25" y="50" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">NSG</text>
+              <rect x="20" y="220" width="200" height="120" rx="12" fill="rgba(59, 130, 246, 0.08)" stroke="#3B82F6" stroke-width="3" stroke-dasharray="12,6" class="animated-secure-connection"/>
+              <text x="30" y="240" fill="#60A5FA" font-size="13" font-weight="bold">PRIVATE DMZ IN</text>
+
+              {/* Enhanced Network Security Group */}
+              <g transform="translate(35, 260)" class="animated-server">
+                <rect width="60" height="40" rx="6" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow)"/>
+                <rect x="8" y="8" width="44" height="6" rx="2" fill="#60A5FA" opacity="0.8"/>
+                <rect x="8" y="16" width="44" height="4" rx="1" fill="#93C5FD" opacity="0.6"/>
+                <rect x="8" y="22" width="44" height="4" rx="1" fill="#BFDBFE" opacity="0.4"/>
+                <circle cx="15" cy="32" r="2" fill="#3B82F6" class="animated-status"/>
+                <circle cx="25" cy="32" r="2" fill="#10B981" class="animated-status"/>
+                <circle cx="35" cy="32" r="2" fill="#F59E0B" class="animated-status"/>
+                <text x="30" y="52" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">NSG</text>
               </g>
 
-              {/* NVA */}
-              <g transform="translate(95, 230)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <rect x="8" y="8" width="16" height="20" rx="3" fill="#34D399" opacity="0.8"/>
-                <rect x="26" y="8" width="16" height="20" rx="3" fill="#6EE7B7" opacity="0.6"/>
-                <circle cx="16" cy="12" r="1.5" fill="#10B981"/>
-                <circle cx="34" cy="12" r="1.5" fill="#10B981"/>
-                <text x="25" y="50" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">NVA</text>
-              </g>
-            </g>
-
-            {/* Service Mesh Layer */}
-            <g class="network-component">
-              <rect x="220" y="190" width="320" height="100" rx="12" fill="url(#meshGradient)" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
-              <text x="230" y="210" fill="#A78BFA" font-size="13" font-weight="bold">SERVICE MESH LAYER</text>
-
-              {/* API-1 */}
-              <g transform="translate(250, 230)" class="animated-server">
-                <ellipse cx="0" cy="0" rx="25" ry="18" fill="rgba(139, 92, 246, 0.3)" stroke="#8B5CF6" stroke-width="2"/>
-                <rect x="-10" y="-6" width="20" height="3" rx="1" fill="#A78BFA" opacity="0.9"/>
-                <rect x="-10" y="-2" width="20" height="2" rx="1" fill="#C4B5FD" opacity="0.7"/>
-                <rect x="-10" y="2" width="20" height="2" rx="1" fill="#DDD6FE" opacity="0.5"/>
-                <circle cx="0" cy="8" r="2" fill="#8B5CF6" class="animated-icon-pulse"/>
-                <text x="0" y="25" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">API-1</text>
+              {/* Enhanced Network Virtual Appliance */}
+              <g transform="translate(105, 260)" class="animated-server">
+                <rect width="60" height="40" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow)"/>
+                <rect x="8" y="8" width="20" height="24" rx="3" fill="#34D399" opacity="0.8"/>
+                <rect x="32" y="8" width="20" height="24" rx="3" fill="#6EE7B7" opacity="0.6"/>
+                <circle cx="18" cy="14" r="1.5" fill="#10B981"/>
+                <circle cx="42" cy="14" r="1.5" fill="#10B981"/>
+                <path d="M20 20 L40 20" stroke="#10B981" stroke-width="2" marker-end="url(#secureFlow)" class="animated-connection"/>
+                <text x="30" y="52" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">NVA</text>
               </g>
 
-              {/* Auth Service */}
-              <g transform="translate(320, 225)" class="animated-server">
-                <rect width="70" height="25" rx="12" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
-                <rect x="6" y="5" width="14" height="14" rx="3" fill="#F59E0B" opacity="0.8"/>
-                <circle cx="13" cy="12" r="2" fill="#FBBF24"/>
-                <path d="M25 7 L60 7 M25 12 L60 12 M25 17 L60 17" stroke="#F59E0B" stroke-width="1" opacity="0.8"/>
-                <text x="35" y="35" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Auth Service</text>
+              {/* Enhanced Availability Set indicator */}
+              <g transform="translate(65, 310)">
+                <rect width="60" height="20" rx="6" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,2"/>
+                <circle cx="20" cy="10" r="2" fill="#F59E0B" class="animated-icon-pulse"/>
+                <circle cx="30" cy="10" r="2" fill="#F59E0B" class="animated-icon-pulse" style="animation-delay: 0.5s"/>
+                <circle cx="40" cy="10" r="2" fill="#F59E0B" class="animated-icon-pulse" style="animation-delay: 1s"/>
+                <text x="30" y="28" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="500">Availability Set</text>
               </g>
-
-              {/* API-2 */}
-              <g transform="translate(420, 230)" class="animated-server">
-                <ellipse cx="0" cy="0" rx="25" ry="18" fill="rgba(139, 92, 246, 0.3)" stroke="#8B5CF6" stroke-width="2"/>
-                <rect x="-10" y="-6" width="20" height="3" rx="1" fill="#A78BFA" opacity="0.9"/>
-                <rect x="-10" y="-2" width="20" height="2" rx="1" fill="#C4B5FD" opacity="0.7"/>
-                <rect x="-10" y="2" width="20" height="2" rx="1" fill="#DDD6FE" opacity="0.5"/>
-                <circle cx="0" cy="8" r="2" fill="#8B5CF6" class="animated-icon-pulse"/>
-                <text x="0" y="25" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">API-2</text>
-              </g>
-
-              {/* Service mesh connections */}
-              <path d="M275 230 L320 237" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
-              <path d="M390 237 L395 230" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
             </g>
 
             {/* Public DMZ OUT */}
+            <rect x="580" y="220" width="200" height="120" rx="8" fill="rgba(236, 72, 153, 0.1)" stroke="#EC4899" stroke-width="2"/>
+            <text x="590" y="240" fill="#F472B6" font-size="12" font-weight="bold">PUBLIC DMZ OUT</text>
+            <rect x="595" y="260" width="60" height="40" rx="4" fill="rgba(30, 41, 59, 0.8)" stroke="#EC4899" stroke-width="1" filter="url(#networkShadow)"/>
+            <text x="625" y="275" text-anchor="middle" fill="#EC4899" font-size="12" class="jump-icon">🛡️</text>
+            <text x="625" y="290" text-anchor="middle" fill="#F9A8D4" font-size="9" font-weight="500">NSG</text>
+            <rect x="665" y="260" width="60" height="40" rx="4" fill="rgba(30, 41, 59, 0.8)" stroke="#10B981" stroke-width="1" filter="url(#networkShadow)"/>
+            <text x="695" y="275" text-anchor="middle" fill="#10B981" font-size="12" class="jump-icon">🔒</text>
+            <text x="695" y="290" text-anchor="middle" fill="#6EE7B7" font-size="9" font-weight="500">NVA</text>
+            <rect x="625" y="310" width="60" height="20" rx="4" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="1"/>
+            <text x="655" y="323" text-anchor="middle" fill="#FBBF24" font-size="9" font-weight="500">Availability Set</text>
+
+            {/* Enhanced Service Mesh Layer with microservices visualization */}
             <g class="network-component">
-              <rect x="560" y="190" width="180" height="100" rx="12" fill="url(#dmzOutGradient)" stroke="#EC4899" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="570" y="210" fill="#F472B6" font-size="13" font-weight="bold">PUBLIC DMZ OUT</text>
-              
-              {/* NSG */}
-              <g transform="translate(575, 230)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="rgba(236, 72, 153, 0.3)" stroke="#EC4899" stroke-width="2"/>
-                <text x="25" y="20" text-anchor="middle" fill="#EC4899" font-size="12" class="jump-icon">🛡️</text>
-                <text x="25" y="50" text-anchor="middle" fill="#F9A8D4" font-size="8" font-weight="600">NSG</text>
+              <rect x="240" y="220" width="320" height="120" rx="12" fill="rgba(139, 92, 246, 0.08)" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
+              <text x="250" y="240" fill="#A78BFA" font-size="13" font-weight="bold">SERVICE MESH LAYER</text>
+
+              {/* Enhanced Microservice Node 1 */}
+              <g transform="translate(275, 262)" class="animated-server">
+                <ellipse cx="0" cy="0" rx="28" ry="20" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="-12" y="-8" width="24" height="4" rx="2" fill="#A78BFA" opacity="0.9"/>
+                <rect x="-12" y="-2" width="24" height="3" rx="1" fill="#C4B5FD" opacity="0.7"/>
+                <rect x="-12" y="3" width="24" height="3" rx="1" fill="#DDD6FE" opacity="0.5"/>
+                <circle cx="0" cy="10" r="3" fill="#8B5CF6" class="animated-icon-pulse"/>
+                <text x="0" y="32" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">API-1</text>
               </g>
 
-              {/* NVA */}
-              <g transform="translate(635, 230)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <text x="25" y="20" text-anchor="middle" fill="#10B981" font-size="12" class="jump-icon">🔒</text>
-                <text x="25" y="50" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">NVA</text>
+              {/* Enhanced Auth Service */}
+              <g transform="translate(340, 260)" class="animated-server">
+                <rect width="80" height="28" rx="14" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="6" width="16" height="16" rx="3" fill="#F59E0B" opacity="0.8"/>
+                <circle cx="16" cy="14" r="3" fill="#FBBF24"/>
+                <path d="M30 8 L70 8 M30 14 L70 14 M30 20 L70 20" stroke="#F59E0B" stroke-width="1.5" opacity="0.8"/>
+                <text x="40" y="40" text-anchor="middle" fill="#FBBF24" font-size="9" font-weight="600">Auth Service</text>
+              </g>
+
+              {/* Enhanced Microservice Node 2 */}
+              <g transform="translate(475, 262)" class="animated-server">
+                <ellipse cx="0" cy="0" rx="28" ry="20" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="-12" y="-8" width="24" height="4" rx="2" fill="#A78BFA" opacity="0.9"/>
+                <rect x="-12" y="-2" width="24" height="3" rx="1" fill="#C4B5FD" opacity="0.7"/>
+                <rect x="-12" y="3" width="24" height="3" rx="1" fill="#DDD6FE" opacity="0.5"/>
+                <circle cx="0" cy="10" r="3" fill="#8B5CF6" class="animated-icon-pulse"/>
+                <text x="0" y="32" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">API-2</text>
+              </g>
+
+              {/* Service Mesh connections */}
+              <path d="M303 262 L340 268" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
+              <path d="M420 268 L447 262" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
+
+              <text x="400" y="325" text-anchor="middle" fill="#C4B5FD" font-size="11" font-weight="600">Service Mesh Infrastructure</text>
+            </g>
+
+            {/* Enhanced Tenant Applications with detailed application containers */}
+            <g class="network-component">
+              <rect x="580" y="360" width="200" height="80" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="590" y="380" fill="#34D399" font-size="13" font-weight="bold">TENANT APPLICATIONS</text>
+
+              {/* Enhanced Tenant C Application */}
+              <g transform="translate(595, 390)" class="animated-server">
+                <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
+                <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
+                <rect x="8" y="20" width="34" height="4" rx="2" fill="#6EE7B7" opacity="0.5"/>
+                <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
+                <circle cx="25" cy="28" r="1.5" fill="#34D399" class="animated-status"/>
+                <circle cx="35" cy="28" r="1.5" fill="#6EE7B7" class="animated-status"/>
+                <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant C</text>
+              </g>
+
+              {/* Enhanced Tenant A Application */}
+              <g transform="translate(655, 390)" class="animated-server">
+                <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
+                <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
+                <rect x="8" y="20" width="34" height="4" rx="2" fill="#6EE7B7" opacity="0.5"/>
+                <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
+                <circle cx="25" cy="28" r="1.5" fill="#34D399" class="animated-status"/>
+                <circle cx="35" cy="28" r="1.5" fill="#6EE7B7" class="animated-status"/>
+                <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant A</text>
+              </g>
+
+              {/* Enhanced Tenant B Application */}
+              <g transform="translate(715, 390)" class="animated-server">
+                <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
+                <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
+                <rect x="8" y="20" width="34" height="4" rx="2" fill="#6EE7B7" opacity="0.5"/>
+                <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
+                <circle cx="25" cy="28" r="1.5" fill="#34D399" class="animated-status"/>
+                <circle cx="35" cy="28" r="1.5" fill="#6EE7B7" class="animated-status"/>
+                <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant B</text>
               </g>
             </g>
 
-            {/* Data & Storage Layer */}
+            {/* Enhanced Data & Storage Layer with detailed database components */}
             <g class="network-component">
-              <rect x="20" y="310" width="280" height="80" rx="12" fill="url(#dataGradient)" stroke="#DC2626" stroke-width="3" stroke-dasharray="6,3" class="animated-connection"/>
-              <text x="30" y="330" fill="#F87171" font-size="13" font-weight="bold">DATA & STORAGE LAYER</text>
+              <rect x="20" y="360" width="320" height="80" rx="12" fill="rgba(220, 38, 38, 0.08)" stroke="#DC2626" stroke-width="3" stroke-dasharray="6,3" class="animated-connection"/>
+              <text x="30" y="380" fill="#F87171" font-size="13" font-weight="bold">DATA & STORAGE LAYER</text>
 
-              {/* PostgreSQL */}
-              <g transform="translate(35, 340)" class="animated-server">
-                <rect width="50" height="30" rx="6" fill="rgba(59, 130, 246, 0.3)" stroke="#3B82F6" stroke-width="2"/>
-                <rect x="8" y="6" width="34" height="6" rx="2" fill="#3B82F6" opacity="0.9"/>
-                <rect x="8" y="14" width="34" height="4" rx="1" fill="#60A5FA" opacity="0.7"/>
-                <circle cx="15" cy="22" r="1" fill="#3B82F6" class="animated-icon-pulse"/>
-                <circle cx="25" cy="22" r="1" fill="#10B981" class="animated-icon-pulse"/>
-                <circle cx="35" cy="22" r="1" fill="#F59E0B" class="animated-icon-pulse"/>
-                <text x="25" y="44" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">PostgreSQL</text>
+              {/* Enhanced PostgreSQL Database */}
+              <g transform="translate(35, 390)" class="animated-server">
+                <rect width="60" height="35" rx="6" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="6" width="44" height="8" rx="2" fill="#3B82F6" opacity="0.9"/>
+                <rect x="10" y="8" width="40" height="1" fill="#60A5FA"/>
+                <rect x="10" y="10" width="40" height="1" fill="#93C5FD" opacity="0.8"/>
+                <rect x="10" y="12" width="40" height="1" fill="#BFDBFE" opacity="0.6"/>
+                <rect x="8" y="18" width="44" height="6" rx="1" fill="#1E293B" stroke="#3B82F6" stroke-width="0.5"/>
+                <circle cx="15" cy="21" r="1" fill="#3B82F6" class="animated-icon-pulse"/>
+                <circle cx="25" cy="21" r="1" fill="#10B981" class="animated-icon-pulse"/>
+                <circle cx="35" cy="21" r="1" fill="#F59E0B" class="animated-icon-pulse"/>
+                <circle cx="45" cy="21" r="1" fill="#EF4444" class="animated-icon-pulse"/>
+                <text x="30" y="48" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">PostgreSQL</text>
               </g>
 
-              {/* Redis Cache */}
-              <g transform="translate(95, 340)" class="animated-server">
-                <rect width="50" height="30" rx="6" fill="rgba(220, 38, 38, 0.3)" stroke="#DC2626" stroke-width="2"/>
-                <rect x="8" y="6" width="14" height="14" rx="2" fill="#DC2626" opacity="0.8"/>
-                <rect x="24" y="6" width="14" height="14" rx="2" fill="#EF4444" opacity="0.6"/>
-                <circle cx="15" cy="13" r="1.5" fill="#FCA5A5" class="animated-status"/>
-                <circle cx="31" cy="13" r="1.5" fill="#F87171" class="animated-status"/>
-                <text x="25" y="44" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Redis Cache</text>
+              {/* Enhanced Redis Cache */}
+              <g transform="translate(105, 390)" class="animated-server">
+                <rect width="60" height="35" rx="6" fill="url(#firewallGradient)" stroke="#DC2626" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="8" width="16" height="16" rx="2" fill="#DC2626" opacity="0.8"/>
+                <rect x="28" y="8" width="16" height="16" rx="2" fill="#EF4444" opacity="0.6"/>
+                <circle cx="16" cy="16" r="2" fill="#FCA5A5" class="animated-status"/>
+                <circle cx="36" cy="16" r="2" fill="#F87171" class="animated-status"/>
+                <path d="M10 26 L50 26" stroke="#DC2626" stroke-width="1" opacity="0.8"/>
+                <text x="30" y="48" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Redis Cache</text>
               </g>
 
-              {/* File Storage */}
-              <g transform="translate(155, 340)" class="animated-server">
-                <rect width="50" height="30" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <rect x="8" y="6" width="10" height="15" rx="2" fill="#10B981" opacity="0.9"/>
-                <rect x="20" y="6" width="10" height="15" rx="2" fill="#34D399" opacity="0.7"/>
-                <rect x="32" y="6" width="10" height="15" rx="2" fill="#6EE7B7" opacity="0.5"/>
-                <text x="25" y="44" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">File Storage</text>
+              {/* Enhanced File Storage */}
+              <g transform="translate(175, 390)" class="animated-server">
+                <rect width="60" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="8" width="12" height="18" rx="2" fill="#10B981" opacity="0.9"/>
+                <rect x="22" y="8" width="12" height="18" rx="2" fill="#34D399" opacity="0.7"/>
+                <rect x="36" y="8" width="12" height="18" rx="2" fill="#6EE7B7" opacity="0.5"/>
+                <circle cx="14" cy="12" r="1" fill="#ECFDF5"/>
+                <circle cx="28" cy="12" r="1" fill="#ECFDF5"/>
+                <circle cx="42" cy="12" r="1" fill="#ECFDF5"/>
+                <text x="30" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">File Storage</text>
               </g>
 
-              {/* Message Queues */}
-              <g transform="translate(215, 340)" class="animated-server">
-                <rect width="70" height="30" rx="6" fill="rgba(139, 92, 246, 0.3)" stroke="#8B5CF6" stroke-width="2"/>
-                <rect x="8" y="6" width="54" height="3" rx="1" fill="#8B5CF6" opacity="0.9"/>
-                <rect x="8" y="11" width="54" height="2" rx="1" fill="#A78BFA" opacity="0.7"/>
-                <rect x="8" y="15" width="54" height="2" rx="1" fill="#C4B5FD" opacity="0.5"/>
-                <rect x="8" y="19" width="54" height="2" rx="1" fill="#DDD6FE" opacity="0.3"/>
-                <circle cx="18" cy="24" r="1" fill="#8B5CF6" class="animated-data-packet"/>
-                <circle cx="35" cy="24" r="1" fill="#A78BFA" class="animated-data-packet" style="animation-delay: 0.5s"/>
-                <circle cx="52" cy="24" r="1" fill="#C4B5FD" class="animated-data-packet" style="animation-delay: 1s"/>
-                <text x="35" y="44" text-anchor="middle" fill="#C4B5FD" font-size="8" font-weight="600">Message Queues</text>
+              {/* Enhanced Message Queues */}
+              <g transform="translate(245, 390)" class="animated-server">
+                <rect width="80" height="35" rx="6" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
+                <rect x="8" y="8" width="64" height="4" rx="2" fill="#8B5CF6" opacity="0.9"/>
+                <rect x="8" y="14" width="64" height="3" rx="1" fill="#A78BFA" opacity="0.7"/>
+                <rect x="8" y="19" width="64" height="3" rx="1" fill="#C4B5FD" opacity="0.5"/>
+                <rect x="8" y="24" width="64" height="3" rx="1" fill="#DDD6FE" opacity="0.3"/>
+                <circle cx="20" cy="29" r="1.5" fill="#8B5CF6" class="animated-data-packet"/>
+                <circle cx="40" cy="29" r="1.5" fill="#A78BFA" class="animated-data-packet" style="animation-delay: 0.5s"/>
+                <circle cx="60" cy="29" r="1.5" fill="#C4B5FD" class="animated-data-packet" style="animation-delay: 1s"/>
+                <text x="40" y="48" text-anchor="middle" fill="#C4B5FD" font-size="8" font-weight="600">Message Queues</text>
               </g>
             </g>
 
-            {/* Tenant Applications */}
-            <g class="network-component">
-              <rect x="560" y="310" width="180" height="80" rx="12" fill="url(#gatewayGradient)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="570" y="330" fill="#34D399" font-size="13" font-weight="bold">TENANT APPLICATIONS</text>
-
-              {/* Tenant A */}
-              <g transform="translate(575, 340)" class="animated-server">
-                <rect width="40" height="30" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <rect x="6" y="5" width="28" height="4" rx="2" fill="#10B981" opacity="0.9"/>
-                <rect x="6" y="11" width="28" height="3" rx="1" fill="#34D399" opacity="0.7"/>
-                <rect x="6" y="16" width="28" height="3" rx="1" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="12" cy="23" r="1" fill="#10B981" class="animated-status"/>
-                <circle cx="20" cy="23" r="1" fill="#34D399" class="animated-status"/>
-                <circle cx="28" cy="23" r="1" fill="#6EE7B7" class="animated-status"/>
-                <text x="20" y="44" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant A</text>
-              </g>
-
-              {/* Tenant B */}
-              <g transform="translate(625, 340)" class="animated-server">
-                <rect width="40" height="30" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <rect x="6" y="5" width="28" height="4" rx="2" fill="#10B981" opacity="0.9"/>
-                <rect x="6" y="11" width="28" height="3" rx="1" fill="#34D399" opacity="0.7"/>
-                <rect x="6" y="16" width="28" height="3" rx="1" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="12" cy="23" r="1" fill="#10B981" class="animated-status"/>
-                <circle cx="20" cy="23" r="1" fill="#34D399" class="animated-status"/>
-                <circle cx="28" cy="23" r="1" fill="#6EE7B7" class="animated-status"/>
-                <text x="20" y="44" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant B</text>
-              </g>
-
-              {/* Tenant C */}
-              <g transform="translate(675, 340)" class="animated-server">
-                <rect width="40" height="30" rx="6" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-                <rect x="6" y="5" width="28" height="4" rx="2" fill="#10B981" opacity="0.9"/>
-                <rect x="6" y="11" width="28" height="3" rx="1" fill="#34D399" opacity="0.7"/>
-                <rect x="6" y="16" width="28" height="3" rx="1" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="12" cy="23" r="1" fill="#10B981" class="animated-status"/>
-                <circle cx="20" cy="23" r="1" fill="#34D399" class="animated-status"/>
-                <circle cx="28" cy="23" r="1" fill="#6EE7B7" class="animated-status"/>
-                <text x="20" y="44" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant C</text>
-              </g>
-            </g>
-
-            {/* Network Connections */}
+            {/* Enhanced Network Connections with data flow visualization */}
             <g class="network-connections">
-              {/* Internet to Gateway */}
-              <path d="M715 70 L715 90" stroke="#60A5FA" stroke-width="4" fill="none" marker-end="url(#networkFlow)" class="animated-high-traffic"/>
-              
-              {/* Gateway to DMZ */}
-              <path d="M650 130 Q400 150 200 190" stroke="#60A5FA" stroke-width="3" fill="none" stroke-dasharray="12,6" class="animated-secure-connection" marker-end="url(#secureFlow)"/>
-              <path d="M720 130 Q680 160 650 190" stroke="#F472B6" stroke-width="3" fill="none" stroke-dasharray="10,5" class="animated-encrypted-connection" marker-end="url(#networkFlow)"/>
+              {/* Internet to Gateway flow */}
+              <path d="M715 80 L715 100" stroke="#60A5FA" stroke-width="4" fill="none" marker-end="url(#networkFlow)" class="animated-high-traffic"/>
+              <circle cx="715" cy="90" r="3" fill="#60A5FA" class="animated-data-packet"/>
+
+              {/* Gateway to DMZ flows */}
+              <path d="M650 145 Q400 180 220 220" stroke="#60A5FA" stroke-width="3" fill="none" stroke-dasharray="12,6" class="animated-secure-connection" marker-end="url(#secureFlow)"/>
+              <path d="M720 145 Q680 180 650 220" stroke="#F472B6" stroke-width="3" fill="none" stroke-dasharray="10,5" class="animated-encrypted-connection" marker-end="url(#networkFlow)"/>
 
               {/* Service mesh connections */}
-              <path d="M200 240 L560 240" stroke="#A78BFA" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
-              
-              {/* Data connections */}
-              <path d="M160 310 L380 290" stroke="#F87171" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#secureFlow)"/>
-              <path d="M380 290 L650 310" stroke="#34D399" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
+              <path d="M240 280 L580 280" stroke="#A78BFA" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
+              <circle cx="300" cy="280" r="2" fill="#A78BFA" class="animated-data-packet"/>
+              <circle cx="400" cy="280" r="2" fill="#8B5CF6" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="500" cy="280" r="2" fill="#A78BFA" class="animated-data-packet" style="animation-delay: 2s"/>
+
+              {/* Data layer connections */}
+              <path d="M180 360 L400 340" stroke="#F87171" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#secureFlow)"/>
+              <path d="M400 340 L680 360" stroke="#34D399" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
+
+              {/* Cross-layer security connections */}
+              <path d="M120 300 Q200 320 300 340" stroke="#EF4444" stroke-width="2" fill="none" stroke-dasharray="6,3" class="animated-security-shield" opacity="0.7"/>
+              <path d="M680 300 Q600 320 500 340" stroke="#EF4444" stroke-width="2" fill="none" stroke-dasharray="6,3" class="animated-security-shield" opacity="0.7"/>
+            </g>
+
+            {/* Enhanced Connection Labels with professional styling */}
+            <g class="connection-labels">
+              <rect x="370" y="190" width="60" height="20" rx="10" fill="rgba(96, 165, 250, 0.2)" stroke="#60A5FA" stroke-width="1"/>
+              <text x="400" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">SERVICE</text>
+              <rect x="520" y="190" width="60" height="20" rx="10" fill="rgba(244, 114, 182, 0.2)" stroke="#F472B6" stroke-width="1"/>
+              <text x="550" y="202" text-anchor="middle" fill="#F472B6" font-size="10" font-weight="700">API</text>
+              <rect x="270" y="340" width="60" height="20" rx="10" fill="rgba(248, 113, 113, 0.2)" stroke="#F87171" stroke-width="1"/>
+              <text x="300" y="352" text-anchor="middle" fill="#F87171" font-size="10" font-weight="700">DATA</text>
+              <rect x="510" y="340" width="60" height="20" rx="10" fill="rgba(52, 211, 153, 0.2)" stroke="#34D399" stroke-width="1"/>
+              <text x="540" y="352" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">APPS</text>
             </g>
           </svg>
         `;
-        title = 'Multi-Tenant SaaS Architecture';
-        description = 'Complete enterprise SaaS platform with DMZ isolation, service mesh, and tenant segregation';
+        title = 'Multi-Tenant VPC + Service Mesh Network Topology';
+        description = 'Isolated tenant environments with microservices orchestration';
         break;
 
       case 'enterprise-portals':
@@ -796,7 +601,7 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
                 <circle cx="30" cy="15" r="5" fill="#F59E0B" opacity="0.8"/>
                 <rect x="25" y="25" width="10" height="3" rx="1" fill="#FBBF24" opacity="0.9"/>
                 <rect x="23" y="30" width="14" height="2" rx="1" fill="#FCD34D" opacity="0.7"/>
-                <text x="30" y="55" text-anchor="middle" fill="#FCD34D" font-size="8" font-weight="600">4G/5G Router</text>
+                <text x="30" y="55" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">4G/5G Router</text>
               </g>
 
               {/* Enhanced Mobile Devices */}
@@ -854,290 +659,834 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
       case 'compliance-reporting':
         svgContent = `
-          <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <filter id="nodeShadow3" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+              <filter id="networkShadow3" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
               </filter>
-              <marker id="complianceFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#3B82F6"/>
+              <filter id="serverGlow3" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <marker id="complianceFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#3B82F6" filter="url(#serverGlow3)"/>
               </marker>
-              <linearGradient id="dmzGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(239, 68, 68, 0.15)"/>
-                <stop offset="100%" stopColor="rgba(239, 68, 68, 0.05)"/>
+              <marker id="auditFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#10B981" filter="url(#serverGlow3)"/>
+              </marker>
+              <marker id="archiveFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#serverGlow3)"/>
+              </marker>
+              <pattern id="meshPattern3" patternUnits="userSpaceOnUse" width="20" height="20">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
+                <circle cx="0" cy="0" r="0.5" fill="#3B82F6" opacity="0.2"/>
+              </pattern>
+              <linearGradient id="dmzGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.1)"/>
               </linearGradient>
+              <linearGradient id="complianceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
+              </linearGradient>
+              <radialGradient id="dataLakeGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.4)"/>
+                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.2)"/>
+              </radialGradient>
             </defs>
 
-            {/* DMZ Security Layer */}
-            <g filter="url(#nodeShadow3)">
-              <rect x="40" y="40" width="520" height="80" rx="20" fill="url(#dmzGradient)" stroke="#EF4444" stroke-width="3" class="animated-status"/>
-              <text x="300" y="70" text-anchor="middle" fill="#EF4444" font-size="24" class="animated-icon-pulse">🛡️</text>
-              <text x="300" y="95" text-anchor="middle" fill="#F87171" font-size="14" font-weight="600">DMZ Data Ingestion Layer</text>
-              <text x="300" y="110" text-anchor="middle" fill="#FCA5A5" font-size="11">Secure External Entry Point</text>
+            {/* Enhanced Background with depth */}
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            <rect width="100%" height="100%" fill="url(#meshPattern3)" opacity="0.4"/>
+
+            {/* Floating data particles */}
+            <g opacity="0.6">
+              <circle cx="150" cy="100" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 0s"/>
+              <circle cx="650" cy="150" r="1.5" fill="#10B981" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="400" cy="300" r="2" fill="#9333EA" class="animated-data-packet" style="animation-delay: 2s"/>
+              <circle cx="200" cy="250" r="1" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0.5s"/>
             </g>
 
-            {/* Compliance Processing VLAN */}
-            <g filter="url(#nodeShadow3)">
-              <rect x="80" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="150" y="175" text-anchor="middle" fill="#9333EA" font-size="24">📑</text>
-              <text x="150" y="195" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Compliance VLAN</text>
-              <text x="150" y="208" text-anchor="middle" fill="#C084FC" font-size="10">Policy Enforcement</text>
+            {/* Internet Gateway Zone */}
+            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="40" y="45" fill="#F59E0B" font-size="16" font-weight="bold" class="jump-icon">🌐</text>
+            <text x="90" y="45" fill="#FBBF24" font-size="14" font-weight="bold">EXTERNAL DATA SOURCES</text>
+            <text x="400" y="60" text-anchor="middle" fill="#FCD34D" font-size="12" font-weight="600">Regulatory Data Feeds & Compliance Reports</text>
+
+            {/* Network performance indicators */}
+            <g class="performance-indicators">
+              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
+              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="720" y="52" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="600">INGESTION: 95%</text>
             </g>
 
-            {/* Audit Processing VLAN */}
-            <g filter="url(#nodeShadow3)">
-              <rect x="250" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="320" y="175" text-anchor="middle" fill="#9333EA" font-size="24">🔄</text>
-              <text x="320" y="195" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Audit VLAN</text>
-              <text x="320" y="208" text-anchor="middle" fill="#C084FC" font-size="10">Log Processing</text>
+            {/* Enhanced DMZ Security Layer */}
+            <g class="network-component">
+              <rect x="50" y="100" width="700" height="80" rx="12" fill="url(#dmzGradient3)" stroke="#EF4444" stroke-width="4" stroke-dasharray="12,6" class="animated-secure-connection"/>
+              <text x="70" y="125" fill="#F87171" font-size="14" font-weight="bold">DMZ DATA INGESTION LAYER</text>
+
+              {/* Enhanced WAF & Data Validation */}
+              <g transform="translate(80, 130)" class="animated-security-shield">
+                <rect width="80" height="40" rx="8" fill="url(#dmzGradient3)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow3)"/>
+                <path d="M40 8 L45 12 L40 20 L35 12 Z" fill="none" stroke="#FCA5A5" stroke-width="2" class="animated-security-shield"/>
+                <circle cx="40" cy="14" r="3" fill="#EF4444" opacity="0.8"/>
+                <rect x="8" y="22" width="64" height="3" rx="1" fill="#FCA5A5" opacity="0.9"/>
+                <rect x="8" y="27" width="64" height="2" rx="1" fill="#F87171" opacity="0.7"/>
+                <text x="40" y="54" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Data Validation</text>
+              </g>
+
+              {/* Enhanced Data Transformation Engine */}
+              <g transform="translate(180, 130)" class="animated-server">
+                <rect width="80" height="40" rx="8" fill="url(#complianceGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="64" height="6" rx="3" fill="#9333EA" opacity="0.8"/>
+                <rect x="8" y="16" width="64" height="4" rx="2" fill="#A855F7" opacity="0.6"/>
+                <rect x="8" y="22" width="64" height="4" rx="2" fill="#C084FC" opacity="0.4"/>
+                <circle cx="15" cy="32" r="2" fill="#9333EA" class="animated-status"/>
+                <circle cx="30" cy="32" r="2" fill="#A855F7" class="animated-status"/>
+                <circle cx="45" cy="32" r="2" fill="#C084FC" class="animated-status"/>
+                <circle cx="60" cy="32" r="2" fill="#DDD6FE" class="animated-status"/>
+                <text x="40" y="54" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">ETL Engine</text>
+              </g>
+
+              {/* Enhanced Load Balancer */}
+              <g transform="translate(280, 130)" class="animated-network-glow">
+                <rect width="80" height="40" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow3)"/>
+                <circle cx="40" cy="15" r="10" fill="none" stroke="#FBBF24" stroke-width="1.5" class="animated-router"/>
+                <circle cx="40" cy="15" r="5" fill="#F59E0B" opacity="0.8"/>
+                <rect x="35" y="25" width="10" height="3" rx="1" fill="#FBBF24" opacity="0.9"/>
+                <rect x="33" y="30" width="14" height="2" rx="1" fill="#FCD34D" opacity="0.7"/>
+                <text x="40" y="54" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Load Balancer</text>
+              </g>
+
+              {/* Enhanced Data Quality Gateway */}
+              <g transform="translate(380, 130)" class="animated-server">
+                <rect width="80" height="40" rx="8" fill="url(#dataLakeGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="25" height="24" rx="4" fill="#3B82F6" opacity="0.8"/>
+                <rect x="37" y="8" width="25" height="24" rx="4" fill="#60A5FA" opacity="0.6"/>
+                <circle cx="20" cy="14" r="2" fill="#BFDBFE"/>
+                <circle cx="50" cy="14" r="2" fill="#BFDBFE"/>
+                <path d="M23 20 L47 20" stroke="#60A5FA" stroke-width="2" marker-end="url(#complianceFlow)" class="animated-connection"/>
+                <text x="40" y="54" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Quality Gate</text>
+              </g>
             </g>
 
-            {/* Archive VLAN */}
-            <g filter="url(#nodeShadow3)">
-              <rect x="420" y="150" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="490" y="175" text-anchor="middle" fill="#9333EA" font-size="24">🗂️</text>
-              <text x="490" y="195" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Archive VLAN</text>
-              <text x="490" y="208" text-anchor="middle" fill="#C084FC" font-size="10">Long-term Storage</text>
+            {/* Enhanced Compliance VLANs Layer */}
+            <g class="network-component">
+              <rect x="50" y="200" width="210" height="120" rx="12" fill="rgba(147, 51, 234, 0.08)" stroke="#9333EA" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
+              <text x="60" y="220" fill="#A855F7" font-size="13" font-weight="bold">COMPLIANCE VLANs</text>
+
+              {/* Enhanced PCI Compliance VLAN */}
+              <g transform="translate(70, 240)" class="animated-server">
+                <rect width="60" height="50" rx="8" fill="url(#complianceGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="44" height="8" rx="2" fill="#9333EA" opacity="0.9"/>
+                <rect x="8" y="18" width="44" height="6" rx="1" fill="#A855F7" opacity="0.7"/>
+                <rect x="8" y="26" width="44" height="6" rx="1" fill="#C084FC" opacity="0.5"/>
+                <circle cx="15" cy="38" r="2" fill="#9333EA" class="animated-status"/>
+                <circle cx="30" cy="38" r="2" fill="#A855F7" class="animated-status"/>
+                <circle cx="45" cy="38" r="2" fill="#C084FC" class="animated-status"/>
+                <text x="30" y="64" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">PCI Compliance</text>
+              </g>
+
+              {/* Enhanced SOX Audit VLAN */}
+              <g transform="translate(140, 240)" class="animated-server">
+                <rect width="60" height="50" rx="8" fill="url(#complianceGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="44" height="8" rx="2" fill="#9333EA" opacity="0.9"/>
+                <rect x="8" y="18" width="44" height="6" rx="1" fill="#A855F7" opacity="0.7"/>
+                <rect x="8" y="26" width="44" height="6" rx="1" fill="#C084FC" opacity="0.5"/>
+                <circle cx="15" cy="38" r="2" fill="#9333EA" class="animated-status"/>
+                <circle cx="30" cy="38" r="2" fill="#A855F7" class="animated-status"/>
+                <circle cx="45" cy="38" r="2" fill="#C084FC" class="animated-status"/>
+                <text x="30" y="64" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">SOX Audit</text>
+              </g>
             </g>
 
-            {/* WORM Storage Database (Cylinder) */}
-            <g filter="url(#nodeShadow3)">
-              <ellipse cx="150" cy="250" rx="50" ry="18" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-              <rect x="100" y="250" width="100" height="40" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2"/>
-              <ellipse cx="150" cy="290" rx="50" ry="18" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
-              <text x="150" y="275" text-anchor="middle" fill="#10B981" font-size="20">🔒</text>
-              <text x="150" y="315" text-anchor="middle" fill="#34D399" font-size="12" font-weight="600">WORM Storage</text>
-              <text x="150" y="330" text-anchor="middle" fill="#6EE7B7" font-size="10">Immutable Records</text>
+            {/* Enhanced WORM Storage Layer */}
+            <g class="network-component">
+              <rect x="280" y="200" width="210" height="120" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="290" y="220" fill="#34D399" font-size="13" font-weight="bold">IMMUTABLE STORAGE</text>
+
+              {/* Enhanced WORM Database Cylinder */}
+              <g transform="translate(300, 240)" class="animated-server">
+                <ellipse cx="30" cy="20" rx="30" ry="12" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
+                <rect x="0" y="20" width="60" height="35" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2"/>
+                <ellipse cx="30" cy="55" rx="30" ry="12" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
+                <text x="30" y="40" text-anchor="middle" fill="#10B981" font-size="16" class="animated-icon-pulse">🔒</text>
+                <text x="30" y="75" text-anchor="middle" fill="#34D399" font-size="8" font-weight="600">WORM Storage</text>
+                <text x="30" y="85" text-anchor="middle" fill="#6EE7B7" font-size="7">Immutable Records</text>
+              </g>
+
+              {/* Enhanced Blockchain Verification */}
+              <g transform="translate(380, 240)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="rgba(16, 185, 129, 0.12)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="20" height="30" rx="3" fill="#10B981" opacity="0.8"/>
+                <rect x="32" y="8" width="20" height="30" rx="3" fill="#34D399" opacity="0.6"/>
+                <rect x="56" y="8" width="16" height="30" rx="3" fill="#6EE7B7" opacity="0.4"/>
+                <circle cx="18" cy="14" r="1.5" fill="#ECFDF5"/>
+                <circle cx="42" cy="14" r="1.5" fill="#ECFDF5"/>
+                <circle cx="64" cy="14" r="1.5" fill="#ECFDF5"/>
+                <path d="M20 20 L40 20" stroke="#10B981" stroke-width="1.5" marker-end="url(#auditFlow)" class="animated-connection"/>
+                <path d="M44 20 L62 20" stroke="#34D399" stroke-width="1.5" marker-end="url(#auditFlow)" class="animated-connection"/>
+                <text x="40" y="64" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Blockchain Audit</text>
+              </g>
             </g>
 
-            {/* Data Lake Cloud */}
-            <g filter="url(#nodeShadow3)">
-              <ellipse cx="450" cy="270" rx="90" ry="55" fill="rgba(59, 130, 246, 0.12)" stroke="#3B82F6" stroke-width="3" class="animated-node"/>
-              <text x="450" y="255" text-anchor="middle" fill="#3B82F6" font-size="28" class="animated-icon-pulse">☁️</text>
-              <text x="450" y="285" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="600">Analytics Data Lake</text>
-              <text x="450" y="300" text-anchor="middle" fill="#93C5FD" font-size="11">Big Data Processing</text>
+            {/* Enhanced Data Lake Analytics Layer */}
+            <g class="network-component">
+              <rect x="510" y="200" width="240" height="120" rx="12" fill="rgba(59, 130, 246, 0.08)" stroke="#3B82F6" stroke-width="3" stroke-dasharray="12,6" class="animated-secure-connection"/>
+              <text x="520" y="220" fill="#60A5FA" font-size="13" font-weight="bold">ANALYTICS DATA LAKE</text>
+
+              {/* Enhanced Data Lake Cluster */}
+              <g transform="translate(530, 240)" class="animated-server">
+                <ellipse cx="50" cy="35" rx="45" ry="30" fill="url(#dataLakeGradient)" stroke="#3B82F6" stroke-width="3" filter="url(#serverGlow3)" class="animated-node"/>
+                <text x="50" y="25" text-anchor="middle" fill="#3B82F6" font-size="20" class="animated-icon-pulse">☁️</text>
+                <text x="50" y="45" text-anchor="middle" fill="#60A5FA" font-size="12" font-weight="600">Big Data</text>
+                <text x="50" y="55" text-anchor="middle" fill="#93C5FD" font-size="10">Processing</text>
+                <text x="50" y="85" text-anchor="middle" fill="#BFDBFE" font-size="8" font-weight="600">Analytics Engine</text>
+              </g>
+
+              {/* Enhanced ML Processing */}
+              <g transform="translate(630, 240)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#dataLakeGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="64" height="8" rx="4" fill="#3B82F6" opacity="0.9"/>
+                <rect x="8" y="18" width="64" height="6" rx="3" fill="#60A5FA" opacity="0.7"/>
+                <rect x="8" y="26" width="64" height="6" rx="3" fill="#93C5FD" opacity="0.5"/>
+                <circle cx="15" cy="38" r="2" fill="#3B82F6" class="animated-icon-pulse"/>
+                <circle cx="30" cy="38" r="2" fill="#60A5FA" class="animated-icon-pulse" style="animation-delay: 0.5s"/>
+                <circle cx="45" cy="38" r="2" fill="#93C5FD" class="animated-icon-pulse" style="animation-delay: 1s"/>
+                <circle cx="65" cy="38" r="2" fill="#BFDBFE" class="animated-icon-pulse" style="animation-delay: 1.5s"/>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">ML Analytics</text>
+              </g>
             </g>
 
-            {/* Audit Engine */}
-            <g filter="url(#nodeShadow3)">
-              <rect x="250" y="320" width="140" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="320" y="345" text-anchor="middle" fill="#F59E0B" font-size="20">🔄</text>
-              <text x="380" y="345" text-anchor="middle" fill="#FBBF24" font-size="12" font-weight="600">Audit Engine</text>
+            {/* Enhanced Audit Engine Layer */}
+            <g class="network-component">
+              <rect x="280" y="340" width="240" height="80" rx="12" fill="rgba(245, 158, 11, 0.08)" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6,3" class="animated-connection"/>
+              <text x="290" y="360" fill="#FBBF24" font-size="13" font-weight="bold">AUDIT & REPORTING ENGINE</text>
+
+              {/* Enhanced Compliance Monitor */}
+              <g transform="translate(300, 370)" class="animated-server">
+                <rect width="80" height="40" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="25" height="20" rx="3" fill="#F59E0B" opacity="0.8"/>
+                <rect x="37" y="8" width="35" height="20" rx="3" fill="#FBBF24" opacity="0.6"/>
+                <circle cx="20" cy="18" r="2" fill="#FCD34D" class="animated-status"/>
+                <path d="M35 18 L65 18" stroke="#F59E0B" stroke-width="2" marker-end="url(#archiveFlow)" class="animated-connection"/>
+                <text x="40" y="55" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Compliance Monitor</text>
+              </g>
+
+              {/* Enhanced Report Generator */}
+              <g transform="translate(400, 370)" class="animated-server">
+                <rect width="80" height="40" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow3)"/>
+                <rect x="8" y="8" width="64" height="6" rx="3" fill="#F59E0B" opacity="0.9"/>
+                <rect x="8" y="16" width="64" height="4" rx="2" fill="#FBBF24" opacity="0.7"/>
+                <rect x="8" y="22" width="64" height="4" rx="2" fill="#FCD34D" opacity="0.5"/>
+                <circle cx="15" cy="32" r="1.5" fill="#F59E0B" class="animated-data-packet"/>
+                <circle cx="30" cy="32" r="1.5" fill="#FBBF24" class="animated-data-packet" style="animation-delay: 0.5s"/>
+                <circle cx="45" cy="32" r="1.5" fill="#FCD34D" class="animated-data-packet" style="animation-delay: 1s"/>
+                <circle cx="60" cy="32" r="1.5" fill="#FEF3C7" class="animated-data-packet" style="animation-delay: 1.5s"/>
+                <text x="40" y="55" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Report Generator</text>
+              </g>
             </g>
 
-            {/* Data Flow Connections */}
-            <path d="M300 120 Q200 135 150 150" stroke="#3B82F6" stroke-width="3" fill="none" marker-end="url(#complianceFlow)" opacity="0.8" class="animated-connection"/>
-            <path d="M300 120 L320 150" stroke="#3B82F6" stroke-width="3" fill="none" marker-end="url(#complianceFlow)" opacity="0.8" class="animated-connection"/>
-            <path d="M300 120 Q400 135 490 150" stroke="#3B82F6" stroke-width="3" fill="none" marker-end="url(#complianceFlow)" opacity="0.8" class="animated-connection"/>
+            {/* Enhanced Network Connections with data flow visualization */}
+            <g class="network-connections">
+              {/* External to DMZ flow */}
+              <path d="M400 80 L400 100" stroke="#F59E0B" stroke-width="4" fill="none" marker-end="url(#complianceFlow)" class="animated-high-traffic"/>
+              <circle cx="400" cy="90" r="3" fill="#F59E0B" class="animated-data-packet"/>
 
-            <path d="M150 210 L150 232" stroke="#10B981" stroke-width="3" fill="none" marker-end="url(#complianceFlow)" opacity="0.8"/>
-            <path d="M490 210 Q470 230 450 240" stroke="#3B82F6" stroke-width="3" fill="none" marker-end="url(#complianceFlow)" opacity="0.8"/>
-            <path d="M320 210 L320 320" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#complianceFlow)" opacity="0.8"/>
+              {/* DMZ to VLANs flows */}
+              <path d="M120 180 L120 200" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#complianceFlow)"/>
+              <path d="M220 180 L220 200" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#complianceFlow)"/>
 
-            {/* Connection Labels */}
-            <text x="225" y="135" fill="#60A5FA" font-size="10" font-weight="500">Compliance Data</text>
-            <text x="325" y="135" fill="#60A5FA" font-size="10" font-weight="500">Audit Logs</text>
-            <text x="395" y="135" fill="#60A5FA" font-size="10" font-weight="500">Archive Data</text>
+              {/* DMZ to WORM storage */}
+              <path d="M320 180 Q350 190 385 200" stroke="#10B981" stroke-width="3" fill="none" stroke-dasharray="10,5" class="animated-encrypted-connection" marker-end="url(#auditFlow)"/>
+
+              {/* DMZ to Data Lake */}
+              <path d="M420 180 Q550 190 630 200" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#complianceFlow)"/>
+
+              {/* WORM to Audit Engine */}
+              <path d="M385 320 L385 340" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#archiveFlow)" class="animated-connection"/>
+
+              {/* Data Lake to Audit Engine */}
+              <path d="M630 320 Q550 330 440 340" stroke="#3B82F6" stroke-width="3" fill="none" stroke-dasharray="6,3" class="animated-connection" marker-end="url(#complianceFlow)"/>
+
+              {/* Data flow particles */}
+              <circle cx="385" cy="190" r="2" fill="#10B981" class="animated-data-packet"/>
+              <circle cx="550" cy="190" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="385" cy="330" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0.5s"/>
+              <circle cx="490" cy="330" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1.5s"/>
+            </g>
+
+            {/* Enhanced Connection Labels with professional styling */}
+            <g class="connection-labels">
+              <rect x="350" y="90" width="100" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="400" y="102" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">EXTERNAL DATA</text>
+              <rect x="280" y="190" width="80" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="320" y="202" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">COMPLIANCE</text>
+              <rect x="520" y="190" width="80" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="560" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">ANALYTICS</text>
+              <rect x="320" y="330" width="80" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="360" y="342" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">AUDIT TRAIL</text>
+            </g>
           </svg>
         `;
         title = 'Segmented DMZ + Data Lake Overlay';
-        description = 'Compliance-focused data segregation with audit trail';
+        description = 'Compliance-focused data segregation with immutable audit trail';
         break;
 
       case 'itil-itsm':
         svgContent = `
-          <svg viewBox="0 0 600 360" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <filter id="nodeShadow4" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+              <filter id="networkShadow4" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
               </filter>
-              <marker id="zeroTrustFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#EF4444"/>
+              <filter id="serverGlow4" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <marker id="zeroTrustFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#EF4444" filter="url(#serverGlow4)"/>
               </marker>
-              <marker id="bastionFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+              <marker id="bastionFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#serverGlow4)"/>
               </marker>
-              <radialGradient id="serviceDeskGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="rgba(59, 130, 246, 0.2)"/>
-                <stop offset="100%" stopColor="rgba(59, 130, 246, 0.05)"/>
+              <marker id="itilFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#3B82F6" filter="url(#serverGlow4)"/>
+              </marker>
+              <pattern id="meshPattern4" patternUnits="userSpaceOnUse" width="20" height="20">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
+                <circle cx="0" cy="0" r="0.5" fill="#EF4444" opacity="0.2"/>
+              </pattern>
+              <linearGradient id="ztnaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.1)"/>
+              </linearGradient>
+              <linearGradient id="serviceDeskGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+              <radialGradient id="bastionGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.4)"/>
+                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.2)"/>
               </radialGradient>
+              <linearGradient id="microsegmentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(139, 92, 246, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(139, 92, 246, 0.1)"/>
+              </linearGradient>
             </defs>
 
-            {/* Zero Trust Network Access Gateway */}
-            <g filter="url(#nodeShadow4)">
-              <rect x="220" y="30" width="160" height="45" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" stroke-width="3" class="animated-status"/>
-              <text x="300" y="55" text-anchor="middle" fill="#EF4444" font-size="24" class="animated-icon-pulse">🛡️</text>
-              <text x="300" y="75" text-anchor="middle" fill="#F87171" font-size="14" font-weight="600">ZTNA Gateway</text>
+            {/* Enhanced Background with depth */}
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            <rect width="100%" height="100%" fill="url(#meshPattern4)" opacity="0.4"/>
+
+            {/* Floating data particles */}
+            <g opacity="0.6">
+              <circle cx="150" cy="100" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 0s"/>
+              <circle cx="650" cy="150" r="1.5" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="400" cy="300" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 2s"/>
+              <circle cx="200" cy="250" r="1" fill="#9333EA" class="animated-data-packet" style="animation-delay: 0.5s"/>
             </g>
 
-            {/* ITIL Service Desk Cluster - Primary */}
-            <g filter="url(#nodeShadow4)">
-              <rect x="180" y="100" width="240" height="80" rx="20" fill="url(#serviceDeskGradient)" stroke="#3B82F6" stroke-width="3" class="animated-node"/>
-              <text x="300" y="125" text-anchor="middle" fill="#3B82F6" font-size="24" class="animated-icon">👤</text>
-              <text x="300" y="150" text-anchor="middle" fill="#3B82F6" font-size="24" class="animated-icon-pulse">🔄</text>
-              <text x="300" y="175" text-anchor="middle" fill="#60A5FA" font-size="14" font-weight="600">ITIL Service Desk</text>
+            {/* Identity Provider Zone */}
+            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(139, 92, 246, 0.1)" stroke="#9333EA" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="40" y="45" fill="#9333EA" font-size="16" font-weight="bold" class="jump-icon">🔐</text>
+            <text x="90" y="45" fill="#A855F7" font-size="14" font-weight="bold">IDENTITY PROVIDER</text>
+            <text x="400" y="60" text-anchor="middle" fill="#C084FC" font-size="12" font-weight="600">Enterprise Active Directory & Identity Management</text>
+
+            {/* Identity performance indicators */}
+            <g class="performance-indicators">
+              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
+              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="720" y="52" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="600">SESSIONS: 342</text>
             </g>
 
-            {/* Bastion Jump Hosts */}
-            <g filter="url(#nodeShadow4)">
-              <rect x="80" y="210" width="120" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="140" y="235" text-anchor="middle" fill="#F59E0B" font-size="20">🔑</text>
-              <text x="170" y="235" text-anchor="middle" fill="#FBBF24" font-size="12" font-weight="600">Bastion</text>
-              <text x="140" y="250" text-anchor="middle" fill="#FCD34D" font-size="10">Jump Host</text>
+            {/* Enhanced Zero Trust Network Access Layer */}
+            <g class="network-component">
+              <rect x="250" y="100" width="300" height="80" rx="12" fill="url(#ztnaGradient)" stroke="#EF4444" stroke-width="4" stroke-dasharray="12,6" class="animated-security-shield"/>
+              <text x="260" y="125" fill="#F87171" font-size="14" font-weight="bold">ZERO TRUST NETWORK ACCESS</text>
+
+              {/* Enhanced Identity Verification */}
+              <g transform="translate(270, 130)" class="animated-security-shield">
+                <rect width="70" height="40" rx="8" fill="url(#ztnaGradient)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow4)"/>
+                <path d="M35 8 L40 12 L35 20 L30 12 Z" fill="none" stroke="#FCA5A5" stroke-width="2" class="animated-security-shield"/>
+                <circle cx="35" cy="14" r="3" fill="#EF4444" opacity="0.8"/>
+                <rect x="8" y="22" width="54" height="3" rx="1" fill="#FCA5A5" opacity="0.9"/>
+                <rect x="8" y="27" width="54" height="2" rx="1" fill="#F87171" opacity="0.7"/>
+                <text x="35" y="54" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Identity Check</text>
+              </g>
+
+              {/* Enhanced Policy Engine */}
+              <g transform="translate(350, 130)" class="animated-server">
+                <rect width="70" height="40" rx="8" fill="url(#ztnaGradient)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="54" height="6" rx="3" fill="#EF4444" opacity="0.8"/>
+                <rect x="8" y="16" width="54" height="4" rx="2" fill="#F87171" opacity="0.6"/>
+                <rect x="8" y="22" width="54" height="4" rx="2" fill="#FCA5A5" opacity="0.4"/>
+                <circle cx="15" cy="32" r="2" fill="#EF4444" class="animated-status"/>
+                <circle cx="25" cy="32" r="2" fill="#F87171" class="animated-status"/>
+                <circle cx="35" cy="32" r="2" fill="#FCA5A5" class="animated-status"/>
+                <circle cx="45" cy="32" r="2" fill="#FECACA" class="animated-status"/>
+                <text x="35" y="54" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Policy Engine</text>
+              </g>
+
+              {/* Enhanced Microsegmentation Controller */}
+              <g transform="translate(430, 130)" class="animated-server">
+                <rect width="70" height="40" rx="8" fill="url(#ztnaGradient)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow4)"/>
+                <circle cx="35" cy="18" r="12" fill="none" stroke="#FCA5A5" stroke-width="1.5" class="animated-router"/>
+                <circle cx="35" cy="18" r="6" fill="#EF4444" opacity="0.8"/>
+                <rect x="30" y="28" width="10" height="3" rx="1" fill="#FCA5A5" opacity="0.9"/>
+                <rect x="28" y="33" width="14" height="2" rx="1" fill="#F87171" opacity="0.7"/>
+                <text x="35" y="54" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Microseg Ctrl</text>
+              </g>
             </g>
 
-            <g filter="url(#nodeShadow4)">
-              <rect x="400" y="210" width="120" height="40" rx="20" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="460" y="235" text-anchor="middle" fill="#F59E0B" font-size="20">🔑</text>
-              <text x="490" y="235" text-anchor="middle" fill="#FBBF24" font-size="12" font-weight="600">Bastion</text>
-              <text x="460" y="250" text-anchor="middle" fill="#FCD34D" font-size="10">Jump Host</text>
+            {/* Enhanced ITIL Service Desk Cluster */}
+            <g class="network-component">
+              <rect x="200" y="200" width="400" height="100" rx="12" fill="url(#serviceDeskGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="10,5" class="animated-connection"/>
+              <text x="210" y="225" fill="#60A5FA" font-size="14" font-weight="bold">ITIL SERVICE DESK CLUSTER</text>
+
+              {/* Enhanced Incident Management */}
+              <g transform="translate(220, 240)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#serviceDeskGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="64" height="8" rx="4" fill="#3B82F6" opacity="0.9"/>
+                <rect x="8" y="18" width="64" height="6" rx="3" fill="#60A5FA" opacity="0.7"/>
+                <rect x="8" y="26" width="64" height="6" rx="3" fill="#93C5FD" opacity="0.5"/>
+                <circle cx="15" cy="38" r="2" fill="#3B82F6" class="animated-status"/>
+                <circle cx="30" cy="38" r="2" fill="#60A5FA" class="animated-status"/>
+                <circle cx="45" cy="38" r="2" fill="#93C5FD" class="animated-status"/>
+                <circle cx="60" cy="38" r="2" fill="#BFDBFE" class="animated-status"/>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Incident Mgmt</text>
+              </g>
+
+              {/* Enhanced Change Management */}
+              <g transform="translate(320, 240)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#serviceDeskGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="25" height="30" rx="4" fill="#3B82F6" opacity="0.8"/>
+                <rect x="37" y="8" width="25" height="30" rx="4" fill="#60A5FA" opacity="0.6"/>
+                <circle cx="20" cy="18" r="2" fill="#BFDBFE"/>
+                <circle cx="50" cy="18" r="2" fill="#BFDBFE"/>
+                <path d="M23 25 L47 25" stroke="#60A5FA" stroke-width="2" marker-end="url(#itilFlow)" class="animated-connection"/>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Change Mgmt</text>
+              </g>
+
+              {/* Enhanced Asset Management */}
+              <g transform="translate(420, 240)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#serviceDeskGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="20" height="25" rx="3" fill="#3B82F6" opacity="0.8"/>
+                <rect x="32" y="8" width="20" height="25" rx="3" fill="#60A5FA" opacity="0.6"/>
+                <rect x="56" y="8" width="16" height="25" rx="3" fill="#93C5FD" opacity="0.4"/>
+                <circle cx="18" cy="38" r="1.5" fill="#BFDBFE"/>
+                <circle cx="42" cy="38" r="1.5" fill="#BFDBFE"/>
+                <circle cx="64" cy="38" r="1.5" fill="#BFDBFE"/>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Asset Mgmt</text>
+              </g>
+
+              {/* Enhanced Knowledge Base */}
+              <g transform="translate(520, 240)" class="animated-server">
+                <rect width="60" height="50" rx="8" fill="url(#serviceDeskGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="44" height="8" rx="2" fill="#3B82F6" opacity="0.9"/>
+                <rect x="8" y="18" width="44" height="6" rx="1" fill="#60A5FA" opacity="0.7"/>
+                <rect x="8" y="26" width="44" height="6" rx="1" fill="#93C5FD" opacity="0.5"/>
+                <circle cx="15" cy="38" r="1.5" fill="#3B82F6" class="animated-icon-pulse"/>
+                <circle cx="30" cy="38" r="1.5" fill="#60A5FA" class="animated-icon-pulse" style="animation-delay: 0.5s"/>
+                <circle cx="45" cy="38" r="1.5" fill="#93C5FD" class="animated-icon-pulse" style="animation-delay: 1s"/>
+                <text x="30" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Knowledge</text>
+              </g>
             </g>
 
-            {/* Microsegmented Networks */}
-            <g filter="url(#nodeShadow4)">
-              <rect x="60" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="130" y="305" text-anchor="middle" fill="#9333EA" font-size="22">👥</text>
-              <text x="130" y="325" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Production LAN</text>
-              <text x="130" y="338" text-anchor="middle" fill="#C084FC" font-size="10">Critical Systems</text>
+            {/* Enhanced Bastion Host Layer */}
+            <g class="network-component">
+              <rect x="50" y="320" width="180" height="80" rx="12" fill="url(#bastionGradient)" stroke="#F59E0B" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="60" y="340" fill="#FBBF24" font-size="13" font-weight="bold">BASTION HOSTS</text>
+
+              {/* Enhanced Primary Bastion */}
+              <g transform="translate(70, 350)" class="animated-network-glow">
+                <rect width="60" height="40" rx="8" fill="url(#bastionGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow4)"/>
+                <circle cx="30" cy="15" r="8" fill="none" stroke="#FBBF24" stroke-width="1.5" class="animated-router"/>
+                <circle cx="30" cy="15" r="4" fill="#F59E0B" opacity="0.8"/>
+                <rect x="25" y="25" width="10" height="3" rx="1" fill="#FBBF24" opacity="0.9"/>
+                <rect x="23" y="30" width="14" height="2" rx="1" fill="#FCD34D" opacity="0.7"/>
+                <text x="30" y="55" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Primary</text>
+              </g>
+
+              {/* Enhanced Backup Bastion */}
+              <g transform="translate(140, 350)" class="animated-server">
+                <rect width="60" height="40" rx="8" fill="url(#bastionGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow4)"/>
+                <circle cx="30" cy="15" r="8" fill="none" stroke="#FBBF24" stroke-width="1.5" class="animated-router"/>
+                <circle cx="30" cy="15" r="4" fill="#F59E0B" opacity="0.6"/>
+                <rect x="25" y="25" width="10" height="3" rx="1" fill="#FBBF24" opacity="0.7"/>
+                <rect x="23" y="30" width="14" height="2" rx="1" fill="#FCD34D" opacity="0.5"/>
+                <text x="30" y="55" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Backup</text>
+              </g>
             </g>
 
-            <g filter="url(#nodeShadow4)">
-              <rect x="230" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="300" y="305" text-anchor="middle" fill="#9333EA" font-size="22">🔄</text>
-              <text x="300" y="325" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Management</text>
-              <text x="300" y="338" text-anchor="middle" fill="#C084FC" font-size="10">Admin Network</text>
+            {/* Enhanced Microsegmented Network Zones */}
+            <g class="network-component">
+              <rect x="250" y="320" width="500" height="110" rx="12" fill="rgba(139, 92, 246, 0.08)" stroke="#9333EA" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
+              <text x="260" y="340" fill="#A855F7" font-size="13" font-weight="bold">MICROSEGMENTED NETWORKS</text>
+
+              {/* Enhanced Production Systems */}
+              <g transform="translate(270, 350)" class="animated-server">
+                <rect width="100" height="60" rx="8" fill="url(#microsegmentGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="84" height="10" rx="5" fill="#9333EA" opacity="0.9"/>
+                <rect x="8" y="20" width="84" height="8" rx="4" fill="#A855F7" opacity="0.7"/>
+                <rect x="8" y="30" width="84" height="8" rx="4" fill="#C084FC" opacity="0.5"/>
+                <circle cx="20" cy="45" r="2" fill="#9333EA" class="animated-status"/>
+                <circle cx="35" cy="45" r="2" fill="#A855F7" class="animated-status"/>
+                <circle cx="50" cy="45" r="2" fill="#C084FC" class="animated-status"/>
+                <circle cx="65" cy="45" r="2" fill="#DDD6FE" class="animated-status"/>
+                <circle cx="80" cy="45" r="2" fill="#F3F4F6" class="animated-status"/>
+                <text x="50" y="75" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Production Systems</text>
+              </g>
+
+              {/* Enhanced Management Network */}
+              <g transform="translate(390, 350)" class="animated-server">
+                <rect width="100" height="60" rx="8" fill="url(#microsegmentGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="35" height="40" rx="5" fill="#9333EA" opacity="0.8"/>
+                <rect x="47" y="8" width="35" height="40" rx="5" fill="#A855F7" opacity="0.6"/>
+                <circle cx="25" cy="20" r="3" fill="#C084FC"/>
+                <circle cx="65" cy="20" r="3" fill="#C084FC"/>
+                <path d="M28 35 L62 35" stroke="#A855F7" stroke-width="2" marker-end="url(#itilFlow)" class="animated-connection"/>
+                <text x="50" y="75" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Management Net</text>
+              </g>
+
+              {/* Enhanced OOB Management */}
+              <g transform="translate(510, 350)" class="animated-server">
+                <rect width="100" height="60" rx="8" fill="url(#microsegmentGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="25" height="35" rx="4" fill="#9333EA" opacity="0.8"/>
+                <rect x="37" y="8" width="25" height="35" rx="4" fill="#A855F7" opacity="0.6"/>
+                <rect x="66" y="8" width="25" height="35" rx="4" fill="#C084FC" opacity="0.4"/>
+                <circle cx="18" cy="48" r="1.5" fill="#DDD6FE"/>
+                <circle cx="42" cy="48" r="1.5" fill="#DDD6FE"/>
+                <circle cx="64" cy="48" r="1.5" fill="#DDD6FE"/>
+                <text x="50" y="75" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Out-of-Band Mgmt</text>
+              </g>
             </g>
 
-            <g filter="url(#nodeShadow4)">
-              <rect x="400" y="280" width="140" height="60" rx="16" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="470" y="305" text-anchor="middle" fill="#9333EA" font-size="22">👤</text>
-              <text x="470" y="325" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Out-of-Band</text>
-              <text x="470" y="338" text-anchor="middle" fill="#C084FC" font-size="10">Emergency Access</text>
+            {/* Enhanced Network Connections with data flow visualization */}
+            <g class="network-connections">
+              {/* Identity to ZTNA flow */}
+              <path d="M400 80 L400 100" stroke="#9333EA" stroke-width="4" fill="none" marker-end="url(#zeroTrustFlow)" class="animated-high-traffic"/>
+              <circle cx="400" cy="90" r="3" fill="#9333EA" class="animated-data-packet"/>
+
+              {/* ZTNA to Service Desk flow */}
+              <path d="M400 180 L400 200" stroke="#3B82F6" stroke-width="4" fill="none" marker-end="url(#itilFlow)" class="animated-high-traffic"/>
+              <circle cx="400" cy="190" r="3" fill="#3B82F6" class="animated-data-packet"/>
+
+              {/* Service Desk to Bastion flows */}
+              <path d="M250 250 Q200 285 140 320" stroke="#F59E0B" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#bastionFlow)"/>
+
+              {/* Bastion to Microsegments */}
+              <path d="M200 360 Q225 360 250 360" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="10,5" class="animated-encrypted-connection" marker-end="url(#zeroTrustFlow)"/>
+
+              {/* Service Desk direct to Management */}
+              <path d="M450 300 L450 320" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#itilFlow)"/>
+
+              {/* Data flow particles */}
+              <circle cx="325" cy="270" r="2" fill="#F59E0B" class="animated-data-packet"/>
+              <circle cx="450" cy="310" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="225" cy="340" r="2" fill="#9333EA" class="animated-data-packet" style="animation-delay: 0.5s"/>
             </g>
 
-            {/* Zero Trust Control Flow */}
-            <path d="M300 75 L300 100" stroke="#EF4444" stroke-width="4" fill="none" marker-end="url(#zeroTrustFlow)" opacity="0.9"/>
-
-            {/* Bastion Access Control */}
-            <path d="M140 250 L130 280" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#bastionFlow)" opacity="0.8"/>
-            <path d="M460 250 L470 280" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#bastionFlow)" opacity="0.8"/>
-
-            {/* Service Desk to Bastions */}
-            <path d="M220 160 Q150 185 140 210" stroke="#3B82F6" stroke-width="2" fill="none" stroke-dasharray="8,4" opacity="0.7"/>
-            <path d="M380 160 Q450 185 460 210" stroke="#3B82F6" stroke-width="2" fill="none" stroke-dasharray="8,4" opacity="0.7"/>
-
-            {/* Connection Labels */}
-            <text x="320" y="90" fill="#EF4444" font-size="11" font-weight="500">Zero Trust Policy</text>
-            <text x="120" y="270" fill="#F59E0B" font-size="10" font-weight="500">Controlled Access</text>
-            <text x="440" y="270" fill="#F59E0B" font-size="10" font-weight="500">Controlled Access</text>
-
-            {/* Legend */}
-            <g transform="translate(20, 20)">
-              <rect x="0" y="0" width="160" height="70" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
-              <text x="10" y="15" fill="#FFFFFF" font-size="11" font-weight="600">Access Control</text>
-              <line x1="10" y1="25" x2="30" y2="25" stroke="#EF4444" stroke-width="3"/>
-              <text x="35" y="28" fill="#F87171" font-size="9">Zero Trust</text>
-              <line x1="10" y1="40" x2="30" y2="40" stroke="#F59E0B" stroke-width="2"/>
-              <text x="35" y="43" fill="#FBBF24" font-size="9">Bastion Control</text>
-              <line x1="10" y1="55" x2="30" y2="55" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,2"/>
-              <text x="35" y="58" fill="#60A5FA" font-size="9">Service Mgmt</text>
+            {/* Enhanced Connection Labels with professional styling */}
+            <g class="connection-labels">
+              <rect x="350" y="90" width="100" height="20" rx="10" fill="rgba(139, 92, 246, 0.2)" stroke="#9333EA" stroke-width="1"/>
+              <text x="400" y="102" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">IDENTITY VERIFY</text>
+              <rect x="350" y="190" width="100" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="400" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">ITIL SERVICE</text>
+              <rect x="240" y="280" width="80" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="280" y="292" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">BASTION</text>
+              <rect x="370" y="310" width="80" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="410" y="322" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">DIRECT ACCESS</text>
             </g>
           </svg>
         `;
-        title = 'ITIL Service Management Framework';
-        description = 'Comprehensive IT service management with ITIL best practices';
+        title = 'Zero-Trust Access Fabric';
+        description = 'Identity-based microsegmentation with ITIL service management';
         break;
 
       case 'operational-playbooks':
         svgContent = `
-          <svg viewBox="0 0 500 340" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <filter id="nodeShadow5" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+              <filter id="networkShadow5" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
               </filter>
-              <marker id="workflowFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#9333EA"/>
+              <filter id="serverGlow5" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <marker id="workflowFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#9333EA" filter="url(#serverGlow5)"/>
               </marker>
-              <marker id="secureAccess" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+              <marker id="cicdFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#serverGlow5)"/>
               </marker>
-              <radialGradient id="managementGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="rgba(245, 158, 11, 0.2)"/>
-                <stop offset="100%" stopColor="rgba(245, 158, 11, 0.05)"/>
+              <marker id="bastionFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#EF4444" filter="url(#serverGlow5)"/>
+              </marker>
+              <pattern id="meshPattern5" patternUnits="userSpaceOnUse" width="20" height="20">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
+                <circle cx="0" cy="0" r="0.5" fill="#9333EA" opacity="0.2"/>
+              </pattern>
+              <linearGradient id="managementGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
+              </linearGradient>
+              <linearGradient id="orchestrationGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
+              </linearGradient>
+              <radialGradient id="bastionGradient5" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.4)"/>
+                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.2)"/>
               </radialGradient>
-              <radialGradient id="productionGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)"/>
-                <stop offset="100%" stopColor="rgba(16, 185, 129, 0.05)"/>
-              </radialGradient>
+              <linearGradient id="productionGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(16, 185, 129, 0.1)"/>
+              </linearGradient>
             </defs>
 
-            {/* Management VPC - CI/CD Platform */}
-            <g filter="url(#nodeShadow5)">
-              <ellipse cx="130" cy="100" rx="80" ry="60" fill="url(#managementGradient)" stroke="#F59E0B" stroke-width="3" class="animated-node"/>
-              <text x="130" y="80" text-anchor="middle" fill="#F59E0B" font-size="24" class="animated-icon-pulse">☁️</text>
-              <text x="130" y="105" text-anchor="middle" fill="#F59E0B" font-size="20" class="animated-icon">📘</text>
-              <text x="130" y="130" text-anchor="middle" fill="#FBBF24" font-size="13" font-weight="600">CI/CD Management</text>
-              <text x="130" y="145" text-anchor="middle" fill="#FCD34D" font-size="10">DevOps Orchestration</text>
+            {/* Enhanced Background with depth */}
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            <rect width="100%" height="100%" fill="url(#meshPattern5)" opacity="0.4"/>
+
+            {/* Floating data particles */}
+            <g opacity="0.6">
+              <circle cx="150" cy="100" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0s"/>
+              <circle cx="650" cy="150" r="1.5" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="400" cy="300" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 2s"/>
+              <circle cx="200" cy="250" r="1" fill="#10B981" class="animated-data-packet" style="animation-delay: 0.5s"/>
             </g>
 
-            {/* Bastion Security Gateway */}
-            <g filter="url(#nodeShadow5)">
-              <rect x="240" y="110" width="60" height="40" rx="20" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" stroke-width="3"/>
-              <text x="270" y="135" text-anchor="middle" fill="#EF4444" font-size="20">🔑</text>
-              <text x="270" y="155" text-anchor="middle" fill="#F87171" font-size="11" font-weight="600">Gateway</text>
+            {/* DevOps Gateway Zone */}
+            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(139, 92, 246, 0.1)" stroke="#9333EA" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="40" y="45" fill="#9333EA" font-size="16" font-weight="bold" class="jump-icon">🔧</text>
+            <text x="90" y="45" fill="#A855F7" font-size="14" font-weight="bold">DEVOPS GATEWAY</text>
+            <text x="400" y="60" text-anchor="middle" fill="#C084FC" font-size="12" font-weight="600">Secure Development Operations Interface</text>
+
+            {/* DevOps performance indicators */}
+            <g class="performance-indicators">
+              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
+              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="720" y="52" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="600">PIPELINES: 24</text>
             </g>
 
-            {/* Production VPC */}
-            <g filter="url(#nodeShadow5)">
-              <ellipse cx="370" cy="100" rx="80" ry="60" fill="url(#productionGradient)" stroke="#10B981" stroke-width="3" class="animated-node"/>
-              <text x="370" y="80" text-anchor="middle" fill="#10B981" font-size="24" class="animated-icon-pulse">☁️</text>
-              <text x="370" y="105" text-anchor="middle" fill="#10B981" font-size="20" class="animated-icon">🔄</text>
-              <text x="370" y="130" text-anchor="middle" fill="#34D399" font-size="13" font-weight="600">Production Cluster</text>
-              <text x="370" y="145" text-anchor="middle" fill="#6EE7B7" font-size="10">Live Workloads</text>
+            {/* Enhanced Management VPC Zone */}
+            <g class="network-component">
+              <rect x="50" y="100" width="300" height="120" rx="12" fill="url(#managementGradient5)" stroke="#F59E0B" stroke-width="4" stroke-dasharray="12,6" class="animated-secure-connection"/>
+              <text x="60" y="125" fill="#FBBF24" font-size="14" font-weight="bold">MANAGEMENT VPC</text>
+
+              {/* Enhanced CI/CD Pipeline Engine */}
+              <g transform="translate(70, 140)" class="animated-server">
+                <rect width="80" height="60" rx="8" fill="url(#managementGradient5)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="64" height="10" rx="5" fill="#F59E0B" opacity="0.9"/>
+                <rect x="8" y="20" width="64" height="8" rx="4" fill="#FBBF24" opacity="0.7"/>
+                <rect x="8" y="30" width="64" height="8" rx="4" fill="#FCD34D" opacity="0.5"/>
+                <circle cx="15" cy="45" r="2" fill="#F59E0B" class="animated-status"/>
+                <circle cx="30" cy="45" r="2" fill="#FBBF24" class="animated-status"/>
+                <circle cx="45" cy="45" r="2" fill="#FCD34D" class="animated-status"/>
+                <circle cx="60" cy="45" r="2" fill="#FEF3C7" class="animated-status"/>
+                <text x="40" y="75" text-anchor="middle" fill="#FCD34D" font-size="8" font-weight="600">CI/CD Engine</text>
+              </g>
+
+              {/* Enhanced Automation Controllers */}
+              <g transform="translate(160, 140)" class="animated-server">
+                <rect width="80" height="60" rx="8" fill="url(#managementGradient5)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="25" height="40" rx="4" fill="#F59E0B" opacity="0.8"/>
+                <rect x="37" y="8" width="25" height="40" rx="4" fill="#FBBF24" opacity="0.6"/>
+                <circle cx="20" cy="20" r="3" fill="#FEF3C7"/>
+                <circle cx="50" cy="20" r="3" fill="#FEF3C7"/>
+                <path d="M23 35 L47 35" stroke="#F59E0B" stroke-width="2" marker-end="url(#cicdFlow)" class="animated-connection"/>
+                <text x="40" y="75" text-anchor="middle" fill="#FCD34D" font-size="8" font-weight="600">Automation Ctrl</text>
+              </g>
+
+              {/* Enhanced Repository Manager */}
+              <g transform="translate(250, 140)" class="animated-server">
+                <rect width="80" height="60" rx="8" fill="url(#managementGradient5)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="20" height="35" rx="3" fill="#F59E0B" opacity="0.8"/>
+                <rect x="32" y="8" width="20" height="35" rx="3" fill="#FBBF24" opacity="0.6"/>
+                <rect x="56" y="8" width="16" height="35" rx="3" fill="#FCD34D" opacity="0.4"/>
+                <circle cx="18" cy="48" r="1.5" fill="#FEF3C7"/>
+                <circle cx="42" cy="48" r="1.5" fill="#FEF3C7"/>
+                <circle cx="64" cy="48" r="1.5" fill="#FEF3C7"/>
+                <text x="40" y="75" text-anchor="middle" fill="#FCD34D" font-size="8" font-weight="600">Git Repository</text>
+              </g>
             </g>
 
-            {/* Automated Workflow Controllers */}
-            <g filter="url(#nodeShadow5)">
-              <rect x="150" y="210" width="200" height="60" rx="20" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="200" y="235" text-anchor="middle" fill="#9333EA" font-size="20">🔄</text>
-              <text x="250" y="235" text-anchor="middle" fill="#9333EA" font-size="20">📖</text>
-              <text x="300" y="235" text-anchor="middle" fill="#9333EA" font-size="20">🔄</text>
-              <text x="250" y="255" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Workflow Orchestration</text>
-              <text x="250" y="270" text-anchor="middle" fill="#C084FC" font-size="10">Automated Playbooks</text>
+            {/* Enhanced Bastion Security Layer */}
+            <g class="network-component">
+              <rect x="370" y="100" width="220" height="120" rx="12" fill="url(#bastionGradient5)" stroke="#EF4444" stroke-width="4" stroke-dasharray="10,5" class="animated-security-shield"/>
+              <text x="380" y="125" fill="#F87171" font-size="14" font-weight="bold">BASTION SECURITY LAYER</text>
+
+              {/* Enhanced Role-Based Access Gateway */}
+              <g transform="translate(390, 140)" class="animated-security-shield">
+                <rect width="80" height="60" rx="8" fill="url(#bastionGradient5)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow4)"/>
+                <path d="M40 15 L45 20 L40 35 L35 20 Z" fill="none" stroke="#FCA5A5" stroke-width="2" class="animated-security-shield"/>
+                <circle cx="40" cy="25" r="4" fill="#EF4444" opacity="0.8"/>
+                <rect x="8" y="40" width="64" height="4" rx="2" fill="#FCA5A5" opacity="0.9"/>
+                <rect x="8" y="46" width="64" height="3" rx="1" fill="#F87171" opacity="0.7"/>
+                <text x="40" y="75" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">RBAC Gateway</text>
+              </g>
+
+              {/* Enhanced Network Policy Engine */}
+              <g transform="translate(480, 140)" class="animated-server">
+                <rect width="80" height="60" rx="8" fill="url(#bastionGradient5)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow4)"/>
+                <rect x="8" y="8" width="64" height="8" rx="4" fill="#EF4444" opacity="0.8"/>
+                <rect x="8" y="16" width="64" height="6" rx="3" fill="#F87171" opacity="0.6"/>
+                <rect x="8" y="22" width="64" height="6" rx="3" fill="#FCA5A5" opacity="0.4"/>
+                <circle cx="15" cy="32" r="2" fill="#EF4444" class="animated-status"/>
+                <circle cx="25" cy="32" r="2" fill="#F87171" class="animated-status"/>
+                <circle cx="35" cy="32" r="2" fill="#FCA5A5" class="animated-status"/>
+                <circle cx="45" cy="32" r="2" fill="#FECACA" class="animated-status"/>
+                <text x="35" y="54" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Policy Engine</text>
+              </g>
             </g>
 
-            {/* Role-based Access Control */}
-            <path d="M210 100 Q225 105 240 125" stroke="#F59E0B" stroke-width="3" stroke-dasharray="8,4" fill="none" marker-end="url(#secureAccess)" opacity="0.9" class="animated-high-traffic"/>
-            <path d="M300 125 Q335 115 340 100" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" fill="none" marker-end="url(#secureAccess)" opacity="0.9" class="animated-high-traffic"/>
-            <path d="M270 150 L250 210" stroke="#9333EA" stroke-width="3" fill="none" marker-end="url(#workflowFlow)" opacity="0.8" class="animated-connection"/>
+            {/* Enhanced Orchestration Cluster */}
+            <g class="network-component">
+              <rect x="220" y="240" width="360" height="100" rx="12" fill="url(#orchestrationGradient)" stroke="#9333EA" stroke-width="4" stroke-dasharray="10,5" class="animated-connection"/>
+              <text x="230" y="265" fill="#A855F7" font-size="14" font-weight="bold">ORCHESTRATION CLUSTER</text>
 
-            {/* Policy Management */}
-            <g filter="url(#nodeShadow5)">
-              <rect x="40" y="290" width="120" height="30" rx="15" fill="rgba(148, 163, 184, 0.12)" stroke="#64748B" stroke-width="2"/>
-              <text x="70" y="310" text-anchor="middle" fill="#64748B" font-size="16">🛡️</text>
-              <text x="130" y="310" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="600">Policy Engine</text>
+              {/* Enhanced Workflow Engine */}
+              <g transform="translate(240, 280)" class="animated-server">
+                <rect width="100" height="50" rx="8" fill="url(#orchestrationGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="84" height="8" rx="4" fill="#9333EA" opacity="0.9"/>
+                <rect x="8" y="18" width="84" height="6" rx="3" fill="#A855F7" opacity="0.7"/>
+                <rect x="8" y="26" width="84" height="6" rx="3" fill="#C084FC" opacity="0.5"/>
+                <circle cx="20" cy="38" r="2" fill="#9333EA" class="animated-status"/>
+                <circle cx="40" cy="38" r="2" fill="#A855F7" class="animated-status"/>
+                <circle cx="60" cy="38" r="2" fill="#C084FC" class="animated-status"/>
+                <circle cx="80" cy="38" r="2" fill="#DDD6FE" class="animated-status"/>
+                <text x="50" y="65" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Workflow Engine</text>
+              </g>
+
+              {/* Enhanced SOP Generator */}
+              <g transform="translate(360, 280)" class="animated-server">
+                <rect width="100" height="50" rx="8" fill="url(#orchestrationGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="35" height="30" rx="4" fill="#9333EA" opacity="0.8"/>
+                <rect x="47" y="8" width="35" height="30" rx="4" fill="#A855F7" opacity="0.6"/>
+                <circle cx="25" cy="18" r="2" fill="#DDD6FE"/>
+                <circle cx="65" cy="18" r="2" fill="#DDD6FE"/>
+                <path d="M28 35 L62 35" stroke="#A855F7" stroke-width="2" marker-end="url(#workflowFlow)" class="animated-connection"/>
+                <text x="50" y="65" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">SOP Generator</text>
+              </g>
+
+              {/* Enhanced Playbook Library */}
+              <g transform="translate(480, 280)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#orchestrationGradient)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="20" height="30" rx="3" fill="#9333EA" opacity="0.8"/>
+                <rect x="32" y="8" width="20" height="30" rx="3" fill="#A855F7" opacity="0.6"/>
+                <rect x="56" y="8" width="16" height="30" rx="3" fill="#C084FC" opacity="0.4"/>
+                <circle cx="18" cy="42" r="1.5" fill="#DDD6FE"/>
+                <circle cx="42" cy="42" r="1.5" fill="#DDD6FE"/>
+                <circle cx="64" cy="42" r="1.5" fill="#DDD6FE"/>
+                <text x="40" y="65" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Playbook Lib</text>
+              </g>
             </g>
 
-            {/* Monitoring & Logging */}
-            <g filter="url(#nodeShadow5)">
-              <rect x="340" y="290" width="120" height="30" rx="15" fill="rgba(148, 163, 184, 0.12)" stroke="#64748B" stroke-width="2"/>
-              <text x="370" y="310" text-anchor="middle" fill="#64748B" font-size="16">📖</text>
-              <text x="430" y="310" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="600">Audit Logs</text>
+            {/* Enhanced Production Network */}
+            <g class="network-component">
+              <rect x="620" y="240" width="160" height="160" rx="12" fill="url(#productionGradient5)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="630" y="265" fill="#34D399" font-size="13" font-weight="bold">PRODUCTION NET</text>
+
+              {/* Enhanced Production Workloads */}
+              <g transform="translate(640, 280)" class="animated-server">
+                <rect width="60" height="80" rx="8" fill="url(#productionGradient5)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow5)"/>
+                <rect x="8" y="8" width="44" height="12" rx="6" fill="#10B981" opacity="0.9"/>
+                <rect x="8" y="22" width="44" height="10" rx="5" fill="#34D399" opacity="0.7"/>
+                <rect x="8" y="34" width="44" height="10" rx="5" fill="#6EE7B7" opacity="0.5"/>
+                <rect x="8" y="46" width="44" height="10" rx="5" fill="#A7F3D0" opacity="0.3"/>
+                <circle cx="15" cy="62" r="2" fill="#10B981" class="animated-status"/>
+                <circle cx="30" cy="62" r="2" fill="#34D399" class="animated-status"/>
+                <circle cx="45" cy="62" r="2" fill="#6EE7B7" class="animated-status"/>
+                <circle cx="60" cy="62" r="2" fill="#A7F3D0" class="animated-status"/>
+                <text x="30" y="85" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Live Workloads</text>
+              </g>
+
+              {/* Enhanced Monitoring Stack */}
+              <g transform="translate(710, 280)" class="animated-server">
+                <rect width="60" height="80" rx="8" fill="url(#productionGradient5)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow5)"/>
+                <circle cx="30" cy="25" r="12" fill="none" stroke="#34D399" stroke-width="1.5" class="animated-router"/>
+                <circle cx="30" cy="25" r="6" fill="#10B981" opacity="0.8"/>
+                <rect x="25" y="40" width="10" height="4" rx="2" fill="#34D399" opacity="0.9"/>
+                <rect x="23" y="46" width="14" height="3" rx="1" fill="#6EE7B7" opacity="0.7"/>
+                <rect x="21" y="51" width="18" height="3" rx="1" fill="#A7F3D0" opacity="0.5"/>
+                <text x="30" y="85" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Monitoring</text>
+              </g>
             </g>
 
-            {/* Connection Labels */}
-            <text x="210" y="95" fill="#F59E0B" font-size="10" font-weight="500">Secure CI/CD</text>
-            <text x="320" y="95" fill="#10B981" font-size="10" font-weight="500">Deploy</text>
-            <text x="275" y="185" fill="#9333EA" font-size="10" font-weight="500">Orchestrate</text>
+            {/* Enhanced Network Connections with data flow visualization */}
+            <g class="network-connections">
+              {/* DevOps Gateway to Management VPC */}
+              <path d="M200 80 L200 100" stroke="#F59E0B" stroke-width="4" fill="none" marker-end="url(#cicdFlow)" class="animated-high-traffic"/>
+              <circle cx="200" cy="90" r="3" fill="#F59E0B" class="animated-data-packet"/>
 
-            {/* Legend */}
-            <g transform="translate(20, 20)">
-              <rect x="0" y="0" width="150" height="55" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
-              <text x="10" y="15" fill="#FFFFFF" font-size="11" font-weight="600">Access Control</text>
-              <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" stroke-width="3" stroke-dasharray="4,2"/>
-              <text x="35" y="28" fill="#FBBF24" font-size="9">Secure</text>
-              <line x1="10" y1="40" x2="30" y2="40" stroke="#9333EA" stroke-width="2"/>
-              <text x="35" y="43" fill="#A855F7" font-size="9">Workflow</text>
+              {/* Management VPC to Bastion */}
+              <path d="M350 160 L370 160" stroke="#EF4444" stroke-width="4" fill="none" marker-end="url(#bastionFlow)" class="animated-high-traffic"/>
+
+              {/* Bastion to Production */}
+              <path d="M590 160 Q640 160 620 240" stroke="#10B981" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#workflowFlow)"/>
+
+              {/* Management to Orchestration */}
+              <path d="M200 220 L400 240" stroke="#9333EA" stroke-width="4" fill="none" class="animated-connection" marker-end="url(#workflowFlow)"/>
+
+              {/* Orchestration to Production */}
+              <path d="M580 290 Q620 290 640 320" stroke="#10B981" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#workflowFlow)"/>
+
+              {/* Data flow particles */}
+              <circle cx="400" cy="230" r="2" fill="#9333EA" class="animated-data-packet"/>
+              <circle cx="610" cy="280" r="2" fill="#10B981" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="605" cy="200" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 0.5s"/>
+            </g>
+
+            {/* Enhanced Connection Labels with professional styling */}
+            <g class="connection-labels">
+              <rect x="150" y="90" width="100" height="20" rx="10" fill="rgba(139, 92, 246, 0.2)" stroke="#9333EA" stroke-width="1"/>
+              <text x="200" y="102" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">CI/CD ACCESS</text>
+              <rect x="300" y="170" width="80" height="20" rx="10" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
+              <text x="340" y="182" text-anchor="middle" fill="#F87171" font-size="10" font-weight="700">RBAC</text>
+              <rect x="350" y="230" width="100" height="20" rx="10" fill="rgba(147, 51, 234, 0.2)" stroke="#9333EA" stroke-width="1"/>
+              <text x="400" y="242" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">ORCHESTRATE</text>
+              <rect x="580" y="300" width="80" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="620" y="312" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">DEPLOY</text>
             </g>
           </svg>
         `;
@@ -1147,110 +1496,309 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
 
       case 'enterprise-recovery':
         svgContent = `
-          <svg viewBox="0 0 500 340" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <filter id="nodeShadow6" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="3" floodOpacity="0.2"/>
+              <filter id="networkShadow6" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
               </filter>
-              <marker id="replicationFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#9333EA"/>
+              <filter id="serverGlow6" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <marker id="replicationFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#9333EA" filter="url(#serverGlow6)"/>
               </marker>
-              <marker id="failoverFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#F59E0B"/>
+              <marker id="failoverFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#serverGlow6)"/>
               </marker>
-              <linearGradient id="activeSiteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)"/>
-                <stop offset="100%" stopColor="rgba(16, 185, 129, 0.05)"/>
+              <marker id="sdwanFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#10B981" filter="url(#serverGlow6)"/>
+              </marker>
+              <pattern id="meshPattern6" patternUnits="userSpaceOnUse" width="20" height="20">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
+                <circle cx="0" cy="0" r="0.5" fill="#10B981" opacity="0.2"/>
+              </pattern>
+              <linearGradient id="activeSiteGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(16, 185, 129, 0.1)"/>
               </linearGradient>
-              <linearGradient id="drSiteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="rgba(239, 68, 68, 0.15)"/>
-                <stop offset="100%" stopColor="rgba(239, 68, 68, 0.03)"/>
+              <linearGradient id="drSiteGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.2)"/>
+              </linearGradient>
+              <radialGradient id="sdwanGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.4)"/>
+                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.2)"/>
+              </radialGradient>
+              <linearGradient id="orchestratorGradient6" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
               </linearGradient>
             </defs>
 
-            {/* Active Primary Site */}
-            <g filter="url(#nodeShadow6)">
-              <rect x="50" y="60" width="140" height="120" rx="20" fill="url(#activeSiteGradient)" stroke="#10B981" stroke-width="3" class="animated-node"/>
-              <text x="120" y="90" text-anchor="middle" fill="#10B981" font-size="24" class="animated-icon-pulse">🔄</text>
-              <text x="120" y="120" text-anchor="middle" fill="#10B981" font-size="20" class="animated-icon">👥</text>
-              <text x="120" y="145" text-anchor="middle" fill="#34D399" font-size="14" font-weight="600">Primary Site</text>
-              <text x="120" y="165" text-anchor="middle" fill="#6EE7B7" font-size="11">Active Production</text>
+            {/* Enhanced Background with depth */}
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            <rect width="100%" height="100%" fill="url(#meshPattern6)" opacity="0.4"/>
+
+            {/* Floating data particles */}
+            <g opacity="0.6">
+              <circle cx="150" cy="100" r="2" fill="#10B981" class="animated-data-packet" style="animation-delay: 0s"/>
+              <circle cx="650" cy="150" r="1.5" fill="#EF4444" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="400" cy="300" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 2s"/>
+              <circle cx="200" cy="250" r="1" fill="#9333EA" class="animated-data-packet" style="animation-delay: 0.5s"/>
             </g>
 
-            {/* Disaster Recovery Site */}
-            <g filter="url(#nodeShadow6)">
-              <rect x="310" y="60" width="140" height="120" rx="20" fill="url(#drSiteGradient)" stroke="#EF4444" stroke-width="3" stroke-dasharray="12,6" class="animated-status"/>
-              <text x="380" y="90" text-anchor="middle" fill="rgba(239, 68, 68, 0.8)" font-size="24" class="animated-icon">🔄</text>
-              <text x="380" y="120" text-anchor="middle" fill="rgba(239, 68, 68, 0.8)" font-size="20" class="animated-icon">👥</text>
-              <text x="380" y="145" text-anchor="middle" fill="rgba(248, 113, 113, 0.9)" font-size="14" font-weight="600">DR Site</text>
-              <text x="380" y="165" text-anchor="middle" fill="rgba(252, 165, 165, 0.8)" font-size="11">Passive Standby</text>
+            {/* Global Connectivity Zone */}
+            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(59, 130, 246, 0.1)" stroke="#3B82F6" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="40" y="45" fill="#3B82F6" font-size="16" font-weight="bold" class="jump-icon">🌐</text>
+            <text x="90" y="45" fill="#60A5FA" font-size="14" font-weight="bold">GLOBAL CONNECTIVITY</text>
+            <text x="400" y="60" text-anchor="middle" fill="#93C5FD" font-size="12" font-weight="600">Multi-Site Disaster Recovery Infrastructure</text>
+
+            {/* Global performance indicators */}
+            <g class="performance-indicators">
+              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
+              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="720" y="52" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="600">RTO: 15min</text>
             </g>
 
-            {/* Encrypted SD-WAN Tunnel */}
-            <g filter="url(#nodeShadow6)">
-              <path d="M190 120 Q250 80 310 120" stroke="#F59E0B" stroke-width="5" stroke-dasharray="12,6" fill="none" opacity="0.9" class="animated-high-traffic"/>
-              <ellipse cx="250" cy="95" rx="25" ry="15" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2" class="animated-status"/>
-              <text x="250" y="100" text-anchor="middle" fill="#F59E0B" font-size="16" class="animated-icon-pulse">🔒</text>
-              <text x="250" y="50" text-anchor="middle" fill="#FBBF24" font-size="12" font-weight="600">Encrypted SD-WAN</text>
-              <text x="250" y="65" text-anchor="middle" fill="#FCD34D" font-size="10">Multi-Protocol Link</text>
+            {/* Enhanced Primary Active Site */}
+            <g class="network-component">
+              <rect x="50" y="100" width="280" height="140" rx="12" fill="url(#activeSiteGradient6)" stroke="#10B981" stroke-width="4" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="60" y="125" fill="#34D399" font-size="14" font-weight="bold">PRIMARY ACTIVE SITE</text>
+
+              {/* Enhanced Production Cluster */}
+              <g transform="translate(70, 140)" class="animated-server">
+                <rect width="80" height="60" rx="8" fill="url(#activeSiteGradient6)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow6)"/>
+                <rect x="8" y="8" width="64" height="10" rx="5" fill="#10B981" opacity="0.9"/>
+                <rect x="8" y="20" width="64" height="8" rx="4" fill="#34D399" opacity="0.7"/>
+                <rect x="8" y="30" width="64" height="8" rx="4" fill="#6EE7B7" opacity="0.5"/>
+                <circle cx="15" cy="45" r="2" fill="#10B981" class="animated-status"/>
+                <circle cx="30" cy="45" r="2" fill="#34D399" class="animated-status"/>
+                <circle cx="45" cy="45" r="2" fill="#6EE7B7" class="animated-status"/>
+                <circle cx="60" cy="45" r="2" fill="#A7F3D0" class="animated-status"/>
+                <text x="40" y="75" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Production Apps</text>
+              </g>
+
+              {/* Enhanced Database Primary */}
+              <g transform="translate(160, 140)" class="animated-server">
+                <ellipse cx="30" cy="20" rx="30" ry="12" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
+                <rect x="0" y="20" width="60" height="25" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2"/>
+                <ellipse cx="30" cy="45" rx="30" ry="12" fill="rgba(16, 185, 129, 0.3)" stroke="#10B981" stroke-width="2"/>
+                <text x="30" y="35" text-anchor="middle" fill="#10B981" font-size="16" class="animated-icon-pulse">💾</text>
+                <text x="30" y="75" text-anchor="middle" fill="#34D399" font-size="8" font-weight="600">Primary DB</text>
+              </g>
+
+              {/* Enhanced Storage Primary */}
+              <g transform="translate(240, 140)" class="animated-server">
+                <rect width="60" height="60" rx="8" fill="url(#activeSiteGradient6)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow6)"/>
+                <rect x="8" y="8" width="16" height="40" rx="3" fill="#10B981" opacity="0.9"/>
+                <rect x="28" y="8" width="16" height="40" rx="3" fill="#34D399" opacity="0.6"/>
+                <rect x="48" y="8" width="8" height="40" rx="2" fill="#6EE7B7" opacity="0.4"/>
+                <circle cx="16" cy="52" r="1.5" fill="#ECFDF5"/>
+                <circle cx="36" cy="52" r="1.5" fill="#ECFDF5"/>
+                <circle cx="52" cy="52" r="1.5" fill="#ECFDF5"/>
+                <text x="30" y="75" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Storage Array</text>
+              </g>
             </g>
 
-            {/* Asynchronous Replication Layer */}
-            <g filter="url(#nodeShadow6)">
-              <rect x="150" y="210" width="200" height="50" rx="25" fill="rgba(147, 51, 234, 0.12)" stroke="#9333EA" stroke-width="2"/>
-              <text x="190" y="235" text-anchor="middle" fill="#9333EA" font-size="20">🔄</text>
-              <text x="250" y="235" text-anchor="middle" fill="#9333EA" font-size="20">📑</text>
-              <text x="310" y="235" text-anchor="middle" fill="#9333EA" font-size="20">🔄</text>
-              <text x="250" y="255" text-anchor="middle" fill="#A855F7" font-size="13" font-weight="600">Async Replication VLAN</text>
+            {/* Enhanced SD-WAN Encrypted Tunnel */}
+            <g class="network-component">
+              <ellipse cx="400" cy="170" rx="120" ry="40" fill="url(#sdwanGradient)" stroke="#F59E0B" stroke-width="4" stroke-dasharray="12,6" class="animated-high-traffic"/>
+              <text x="400" y="145" text             -anchor="middle" fill="#FBBF24" font-size="14" font-weight="bold">ENCRYPTED SD-WAN</text>
+
+              {/* Enhanced Primary Router */}
+              <g transform="translate(340, 150)" class="animated-network-glow">
+                <rect width="50" height="35" rx="6" fill="url(#sdwanGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow6)"/>
+                <circle cx="25" cy="12" r="8" fill="none" stroke="#FBBF24" stroke-width="1.5" class="animated-router"/>
+                <circle cx="25" cy="12" r="4" fill="#F59E0B" opacity="0.8"/>
+                <rect x="20" y="20" width="10" height="3" rx="1" fill="#FBBF24" opacity="0.9"/>
+                <rect x="18" y="25" width="14" height="2" rx="1" fill="#FCD34D" opacity="0.7"/>
+                <text x="25" y="50" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Router A</text>
+              </g>
+
+              {/* Enhanced Secondary Router */}
+              <g transform="translate(410, 150)" class="animated-network-glow">
+                <rect width="50" height="35" rx="6" fill="url(#sdwanGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#networkShadow6)"/>
+                <circle cx="25" cy="12" r="8" fill="none" stroke="#FBBF24" stroke-width="1.5" class="animated-router"/>
+                <circle cx="25" cy="12" r="4" fill="#F59E0B" opacity="0.8"/>
+                <rect x="20" y="20" width="10" height="3" rx="1" fill="#FBBF24" opacity="0.9"/>
+                <rect x="18" y="25" width="14" height="2" rx="1" fill="#FCD34D" opacity="0.7"/>
+                <text x="25" y="50" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Router B</text>
+              </g>
+
+              {/* Enhanced Traffic encryption indicator */}
+              <g transform="translate(375, 190)">
+                <rect width="50" height="15" rx="7" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+                <text x="25" y="10" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">AES-256</text>
+              </g>
             </g>
 
-            {/* Automated Failover Orchestrator */}
-            <g filter="url(#nodeShadow6)">
-              <ellipse cx="250" cy="300" rx="50" ry="30" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="3"/>
-              <text x="250" y="290" text-anchor="middle" fill="#F59E0B" font-size="20">🛠️</text>
-              <text x="250" y="310" text-anchor="middle" fill="#F59E0B" font-size="20">🔄</text>
-              <text x="250" y="330" text-anchor="middle" fill="#FBBF24" font-size="12" font-weight="600">Failover Orchestrator</text>
+            {/* Enhanced Disaster Recovery Site */}
+            <g class="network-component">
+              <rect x="470" y="100" width="280" height="140" rx="12" fill="url(#drSiteGradient6)" stroke="#EF4444" stroke-width="4" stroke-dasharray="10,5" class="animated-status"/>
+              <text x="480" y="125" fill="#F87171" font-size="14" font-weight="bold">DISASTER RECOVERY SITE</text>
+
+              {/* Enhanced Standby Cluster */}
+              <g transform="translate(490, 140)" class="animated-server">
+                <rect width="80" height="60" rx="8" fill="url(#drSiteGradient6)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow6)"/>
+                <rect x="8" y="8" width="64" height="10" rx="5" fill="rgba(239, 68, 68, 0.4)" opacity="0.6"/>
+                <rect x="8" y="20" width="64" height="8" rx="4" fill="rgba(248, 113, 113, 0.4)" opacity="0.5"/>
+                <rect x="8" y="30" width="64" height="8" rx="4" fill="rgba(252, 165, 165, 0.4)" opacity="0.4"/>
+                <circle cx="15" cy="45" r="2" fill="rgba(239, 68, 68, 0.7)" class="animated-status"/>
+                <circle cx="30" cy="45" r="2" fill="rgba(248, 113, 113, 0.7)" class="animated-status"/>
+                <circle cx="45" cy="45" r="2" fill="rgba(252, 165, 165, 0.7)" class="animated-status"/>
+                <circle cx="60" cy="45" r="2" fill="rgba(254, 202, 202, 0.7)" class="animated-status"/>
+                <text x="40" y="75" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Standby Apps</text>
+              </g>
+
+              {/* Enhanced Database Replica */}
+              <g transform="translate(580, 140)" class="animated-server">
+                <ellipse cx="30" cy="20" rx="30" ry="12" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,2"/>
+                <rect x="0" y="20" width="60" height="25" fill="rgba(239, 68, 68, 0.1)" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,2"/>
+                <ellipse cx="30" cy="45" rx="30" ry="12" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,2"/>
+                <text x="30" y="35" text-anchor="middle" fill="rgba(239, 68, 68, 0.8)" font-size="16" class="animated-icon">💾</text>
+                <text x="30" y="75" text-anchor="middle" fill="#F87171" font-size="8" font-weight="600">Replica DB</text>
+              </g>
+
+              {/* Enhanced Storage Replica */}
+              <g transform="translate(660, 140)" class="animated-server">
+                <rect width="60" height="60" rx="8" fill="url(#drSiteGradient6)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow6)" stroke-dasharray="6,3"/>
+                <rect x="8" y="8" width="16" height="40" rx="3" fill="rgba(239, 68, 68, 0.4)" opacity="0.6"/>
+                <rect x="28" y="8" width="16" height="40" rx="3" fill="rgba(248, 113, 113, 0.4)" opacity="0.5"/>
+                <rect x="48" y="8" width="8" height="40" rx="2" fill="rgba(252, 165, 165, 0.4)" opacity="0.4"/>
+                <circle cx="16" cy="52" r="1.5" fill="rgba(254, 202, 202, 0.8)"/>
+                <circle cx="36" cy="52" r="1.5" fill="rgba(254, 202, 202, 0.8)"/>
+                <circle cx="52" cy="52" r="1.5" fill="rgba(254, 202, 202, 0.8)"/>
+                <text x="30" y="75" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Storage Mirror</text>
+              </g>
             </g>
 
-            {/* Health Monitoring */}
-            <g filter="url(#nodeShadow6)">
-              <rect x="20" y="250" width="80" height="30" rx="15" fill="rgba(34, 197, 94, 0.12)" stroke="#10B981" stroke-width="2"/>
-              <text x="60" y="270" text-anchor="middle" fill="#10B981" font-size="16">🔄</text>
-              <text x="85" y="270" text-anchor="middle" fill="#34D399" font-size="10" font-weight="600">Monitor</text>
+            {/* Enhanced Asynchronous Replication VLAN */}
+            <g class="network-component">
+              <rect x="160" y="260" width="480" height="80" rx="12" fill="url(#orchestratorGradient6)" stroke="#9333EA" stroke-width="3" stroke-dasharray="8,4" class="animated-connection"/>
+              <text x="170" y="285" fill="#A855F7" font-size="14" font-weight="bold">ASYNC REPLICATION VLAN</text>
+
+              {/* Enhanced Data Sync Engine */}
+              <g transform="translate(180, 300)" class="animated-server">
+                <rect width="100" height="30" rx="6" fill="url(#orchestratorGradient6)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow6)"/>
+                <rect x="8" y="6" width="84" height="6" rx="3" fill="#9333EA" opacity="0.9"/>
+                <rect x="8" y="14" width="84" height="4" rx="2" fill="#A855F7" opacity="0.7"/>
+                <rect x="8" y="20" width="84" height="4" rx="2" fill="#C084FC" opacity="0.5"/>
+                <text x="50" y="45" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Data Sync Engine</text>
+              </g>
+
+              {/* Enhanced Queue Manager */}
+              <g transform="translate(300, 300)" class="animated-server">
+                <rect width="100" height="30" rx="6" fill="url(#orchestratorGradient6)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow6)"/>
+                <rect x="8" y="6" width="25" height="18" rx="3" fill="#9333EA" opacity="0.8"/>
+                <rect x="37" y="6" width="25" height="18" rx="3" fill="#A855F7" opacity="0.6"/>
+                <rect x="66" y="6" width="25" height="18" rx="3" fill="#C084FC" opacity="0.4"/>
+                <text x="50" y="45" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Queue Manager</text>
+              </g>
+
+              {/* Enhanced Log Shipping */}
+              <g transform="translate(420, 300)" class="animated-server">
+                <rect width="100" height="30" rx="6" fill="url(#orchestratorGradient6)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow6)"/>
+                <circle cx="25" cy="15" r="8" fill="none" stroke="#A855F7" stroke-width="1.5" class="animated-router"/>
+                <circle cx="75" cy="15" r="8" fill="none" stroke="#A855F7" stroke-width="1.5" class="animated-router"/>
+                <path d="M33 15 L67 15" stroke="#9333EA" stroke-width="2" marker-end="url(#replicationFlow)" class="animated-connection"/>
+                <text x="50" y="45" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Log Shipping</text>
+              </g>
+
+              {/* Enhanced Compression Engine */}
+              <g transform="translate(540, 300)" class="animated-server">
+                <rect width="80" height="30" rx="6" fill="url(#orchestratorGradient6)" stroke="#9333EA" stroke-width="2" filter="url(#networkShadow6)"/>
+                <rect x="8" y="6" width="64" height="6" rx="3" fill="#9333EA" opacity="0.9"/>
+                <rect x="8" y="14" width="64" height="4" rx="2" fill="#A855F7" opacity="0.7"/>
+                <rect x="8" y="20" width="64" height="4" rx="2" fill="#C084FC" opacity="0.5"/>
+                <text x="40" y="45" text-anchor="middle" fill="#C084FC" font-size="8" font-weight="600">Compression</text>
+              </g>
             </g>
 
-            <g filter="url(#nodeShadow6)">
-              <rect x="400" y="250" width="80" height="30" rx="15" fill="rgba(239, 68, 68, 0.12)" stroke="#EF4444" stroke-width="2"/>
-              <text x="440" y="270" text-anchor="middle" fill="#EF4444" font-size="16">🔄</text>
-              <text x="465" y="270" text-anchor="middle" fill="#F87171" font-size="10" font-weight="600">Standby</text>
+            {/* Enhanced Failover Orchestrator */}
+            <g class="network-component">
+              <ellipse cx="400" cy="380" rx="120" ry="40" fill="rgba(245, 158, 11, 0.08)" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6,3" class="animated-connection"/>
+              <text x="400" y="365" text-anchor="middle" fill="#FBBF24" font-size="14" font-weight="bold">AUTOMATED FAILOVER ORCHESTRATOR</text>
+
+              {/* Enhanced Health Monitor */}
+              <g transform="translate(320, 370)" class="animated-server">
+                <rect width="60" height="20" rx="6" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2"/>
+                <circle cx="15" cy="10" r="3" fill="#10B981" class="animated-status"/>
+                <circle cx="30" cy="10" r="3" fill="#F59E0B" class="animated-status"/>
+                <circle cx="45" cy="10" r="3" fill="#EF4444" class="animated-status"/>
+                <text x="30" y="35" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Health Monitor</text>
+              </g>
+
+              {/* Enhanced Decision Engine */}
+              <g transform="translate(390, 370)" class="animated-server">
+                <rect width="60" height="20" rx="6" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2"/>
+                <rect x="8" y="4" width="44" height="4" rx="2" fill="#F59E0B" opacity="0.9"/>
+                <rect x="8" y="10" width="44" height="3" rx="1" fill="#FBBF24" opacity="0.7"/>
+                <rect x="8" y="15" width="44" height="3" rx="1" fill="#FCD34D" opacity="0.5"/>
+                <text x="30" y="35" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Decision Engine</text>
+              </g>
+
+              {/* Enhanced Switch Controller */}
+              <g transform="translate(460, 370)" class="animated-server">
+                <rect width="60" height="20" rx="6" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2"/>
+                <circle cx="30" cy="10" r="8" fill="none" stroke="#FBBF24" stroke-width="1.5" class="animated-router"/>
+                <text x="30" y="35" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="600">Switch Control</text>
+              </g>
             </g>
 
-            {/* Data Replication Flows */}
-            <path d="M120 180 Q150 195 170 210" stroke="#9333EA" stroke-width="3" fill="none" marker-end="url(#replicationFlow)" opacity="0.8" class="animated-connection"/>
-            <path d="M380 180 Q350 195 330 210" stroke="#9333EA" stroke-width="3" fill="none" marker-end="url(#replicationFlow)" opacity="0.8" class="animated-connection"/>
+            {/* Enhanced Network Connections with data flow visualization */}
+            <g class="network-connections">
+              {/* Global to Primary */}
+              <path d="M190 80 L190 100" stroke="#10B981" stroke-width="4" fill="none" marker-end="url(#sdwanFlow)" class="animated-high-traffic"/>
+              <circle cx="190" cy="90" r="3" fill="#10B981" class="animated-data-packet"/>
 
-            {/* Orchestrator Control */}
-            <path d="M250 260 L250 270" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#failoverFlow)" opacity="0.8"/>
+              {/* Primary to SD-WAN */}
+              <path d="M330 170 L340 170" stroke="#F59E0B" stroke-width="4" fill="none" marker-end="url(#failoverFlow)" class="animated-high-traffic"/>
 
-            {/* Health Check Connections */}
-            <path d="M100 250 Q175 235 200 210" stroke="#10B981" stroke-width="2" fill="none" stroke-dasharray="6,3" opacity="0.6"/>
-            <path d="M400 250 Q325 235 300 210" stroke="#EF4444" stroke-width="2" fill="none" stroke-dasharray="6,3" opacity="0.6"/>
+              {/* SD-WAN to DR */}
+              <path d="M460 170 L470 170" stroke="#F59E0B" stroke-width="4" fill="none" marker-end="url(#failoverFlow)" class="animated-high-traffic"/>
 
-            {/* Connection Labels */}
-            <text x="200" y="25" fill="#F59E0B" font-size="11" font-weight="500">Primary Connection</text>
-            <text x="135" y="195" fill="#9333EA" font-size="10" font-weight="500">Data Sync</text>
-            <text x="345" y="195" fill="#9333EA" font-size="10" font-weight="500">Data Sync</text>
+              {/* Primary to Replication */}
+              <path d="M190 240 L220 260" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#replicationFlow)"/>
 
-            {/* Legend */}
-            <g transform="translate(20, 20)">
-              <rect x="0" y="0" width="160" height="70" rx="8" fill="rgba(0, 0, 0, 0.7)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
-              <text x="10" y="15" fill="#FFFFFF" font-size="11" font-weight="600">Recovery Types</text>
-              <line x1="10" y1="25" x2="30" y2="25" stroke="#F59E0B" stroke-width="3" stroke-dasharray="4,2"/>
-              <text x="35" y="28" fill="#FBBF24" font-size="9">Encrypted</text>
-              <line x1="10" y1="40" x2="30" y2="40" stroke="#9333EA" stroke-width="2"/>
-              <text x="35" y="43" fill="#A855F7" font-size="9">Replication</text>
-              <line x1="10" y1="55" x2="30" y2="55" stroke="#10B981" stroke-width="2" stroke-dasharray="3,2"/>
-              <text x="35" y="58" fill="#34D399" font-size="9">Health Check</text>
+              {/* DR to Replication */}
+              <path d="M610 240 L580 260" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#replicationFlow)"/>
+
+              {/* Replication to Orchestrator */}
+              <path d="M400 340 L400 360" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#failoverFlow)" class="animated-connection"/>
+
+              {/* Data flow particles */}
+              <circle cx="365" cy="170" r="2" fill="#F59E0B" class="animated-data-packet"/>
+              <circle cx="450" cy="170" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="225" cy="325" r="2" fill="#9333EA" class="animated-data-packet" style="animation-delay: 0.5s"/>
+              <circle cx="500" cy="325" r="2" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1.5s"/>
+            </g>
+
+            {/* Enhanced Connection Labels with professional styling */}
+            <g class="connection-labels">
+              <rect x="140" y="90" width="100" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="190" y="102" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">PRIMARY LINK</text>
+              <rect x="315" y="180" width="130" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="380" y="192" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">ENCRYPTED TUNNEL</text>
+              <rect x="240" y="250" width="100" height="20" rx="10" fill="rgba(147, 51, 234, 0.2)" stroke="#9333EA" stroke-width="1"/>
+              <text x="290" y="262" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">DATA SYNC</text>
+              <rect x="460" y="250" width="100" height="20" rx="10" fill="rgba(147, 51, 234, 0.2)" stroke="#9333EA" stroke-width="1"/>
+              <text x="510" y="262" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">DATA SYNC</text>
+              <rect x="350" y="350" width="100" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
+              <text x="400" y="362" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">ORCHESTRATION</text>
             </g>
           </svg>
         `;
@@ -1258,15 +1806,654 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         description = 'Automated failover orchestration with encrypted replication';
         break;
 
-      default:
-        return <div className="h-80 bg-slate-900/30 rounded-xl border border-gray-700/50 p-6 flex items-center justify-center">
-          <span className="text-gray-400">Topology diagram not available</span>
-        </div>;
-    }
-    return <InteractiveTopology svgContent={svgContent} title={title} description={description} />;
-  };
+      case 'defi-launch':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <filter id="defiShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <filter id="defiGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <marker id="defiFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#EC4899" filter="url(#defiGlow)"/>
+              </marker>
+              <marker id="blockchainFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#9333EA" filter="url(#defiGlow)"/>
+              </marker>
+              <marker id="secureFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#EF4444" filter="url(#defiGlow)"/>
+              </marker>
+              <pattern id="defiMeshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#EC4899" stroke-width="0.5" opacity="0.3"/>
+                <circle cx="0" cy="0" r="0.5" fill="#EC4899" opacity="0.2"/>
+              </pattern>
+              <linearGradient id="defiAwsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(236, 72, 153, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(236, 72, 153, 0.1)"/>
+              </linearGradient>
+              <linearGradient id="defiAzureGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+              <linearGradient id="hsmGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.4)"/>
+                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.9)"/>
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.2)"/>
+              </linearGradient>
+              <radialGradient id="blockchainGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.4)"/>
+                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.2)"/>
+              </radialGradient>
+            </defs>
 
-  return renderTopology();
+            {/* Enhanced Background with depth */}
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            <rect width="100%" height="100%" fill="url(#defiMeshPattern)" opacity="0.4"/>
+
+            {/* Floating blockchain particles */}
+            <g opacity="0.6">
+              <circle cx="150" cy="100" r="2" fill="#EC4899" class="animated-data-packet" style="animation-delay: 0s"/>
+              <circle cx="650" cy="150" r="1.5" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="400" cy="300" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 2s"/>
+              <circle cx="200" cy="250" r="1" fill="#10B981" class="animated-data-packet" style="animation-delay: 0.5s"/>
+            </g>
+
+            {/* Load Balancer Layer */}
+            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(16, 185, 129, 0.1)" stroke="#10B981" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="40" y="45" fill="#10B981" font-size="16" font-weight="bold" class="jump-icon">🪙</text>
+            <text x="90" y="45" fill="#34D399" font-size="14" font-weight="bold">GLOBAL LOAD BALANCER</text>
+            <text x="400" y="60" text-anchor="middle" fill="#6EE7B7" font-size="12" font-weight="600">Active/Active Multi-Cloud Distribution</text>
+
+            {/* Performance indicators */}
+            <g class="performance-indicators">
+              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
+              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="1"/>
+              <text x="720" y="52" text-anchor="middle" fill="#EC4899" font-size="8" font-weight="600">TVL: $2.4B 🔗</text>
+            </g>
+
+            {/* Enhanced AWS Multi-Cloud Region */}
+            <g class="network-component">
+              <rect x="50" y="100" width="250" height="150" rx="12" fill="url(#defiAwsGradient)" stroke="#EC4899" stroke-width="4" stroke-dasharray="8,4" class="animated-secure-connection"/>
+              <text x="60" y="125" fill="#F472B6" font-size="14" font-weight="bold">AWS MULTI-AZ REGION</text>
+
+              {/* Enhanced DeFi Protocol Engine */}
+              <g transform="translate(70, 140)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#defiAwsGradient)" stroke="#EC4899" stroke-width="2" filter="url(#defiShadow)"/>
+                <rect x="8" y="8" width="64" height="8" rx="4" fill="#EC4899" opacity="0.9"/>
+                <rect x="8" y="18" width="64" height="6" rx="3" fill="#F472B6" opacity="0.7"/>
+                <rect x="8" y="26" width="64" height="6" rx="3" fill="#FBCFE8" opacity="0.5"/>
+                <circle cx="15" cy="38" r="2" fill="#EC4899" class="animated-status"/>
+                <circle cx="30" cy="38" r="2" fill="#F472B6" class="animated-status"/>
+                <circle cx="45" cy="38" r="2" fill="#FBCFE8" class="animated-status"/>
+                <circle cx="60" cy="38" r="2" fill="#FDF2F8" class="animated-status"/>
+                <text x="40" y="64" text-anchor="middle" fill="#FBCFE8" font-size="8" font-weight="600">DeFi Protocols</text>
+              </g>
+
+              {/* Enhanced Liquidity Pools */}
+              <g transform="translate(160, 140)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#defiAwsGradient)" stroke="#EC4899" stroke-width="2" filter="url(#defiShadow)"/>
+                <rect x="8" y="8" width="25" height="30" rx="4" fill="#EC4899" opacity="0.8"/>
+                <rect x="37" y="8" width="25" height="30" rx="4" fill="#F472B6" opacity="0.6"/>
+                <circle cx="20" cy="18" r="2" fill="#FDF2F8"/>
+                <circle cx="50" cy="18" r="2" fill="#FDF2F8"/>
+                <path d="M23 25 L47 25" stroke="#EC4899" stroke-width="2" marker-end="url(#defiFlow)" class="animated-connection"/>
+                <text x="40" y="64" text-anchor="middle" fill="#FBCFE8" font-size="8" font-weight="600">Liquidity Pools</text>
+              </g>
+
+              {/* Enhanced Yield Farming */}
+              <g transform="translate(250, 140)" class="animated-server">
+                <rect width="70" height="50" rx="8" fill="url(#defiAwsGradient)" stroke="#EC4899" stroke-width="2" filter="url(#defiShadow)"/>
+                <rect x="8" y="8" width="20" height="25" rx="3" fill="#EC4899" opacity="0.8"/>
+                <rect x="32" y="8" width="20" height="25" rx="3" fill="#F472B6" opacity="0.6"/>
+                <rect x="56" y="8" width="8" height="25" rx="2" fill="#FBCFE8" opacity="0.4"/>
+                <circle cx="18" cy="38" r="1.5" fill="#FDF2F8"/>
+                <circle cx="42" cy="38" r="1.5" fill="#FDF2F8"/>
+                <circle cx="60" cy="38" r="1.5" fill="#FDF2F8"/>
+                <text x="35" y="64" text-anchor="middle" fill="#FBCFE8" font-size="8" font-weight="600">Yield Farm</text>
+              </g>
+            </g>
+
+            {/* Enhanced Azure Multi-Cloud Region */}
+            <g class="network-component">
+              <rect x="450" y="100" width="300" height="150" rx="12" fill="url(#defiAzureGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="10,5" class="animated-connection"/>
+              <text x="460" y="125" fill="#60A5FA" font-size="14" font-weight="bold">AZURE MULTI-REGION</text>
+
+              {/* Enhanced DEX Engine */}
+              <g transform="translate(470, 140)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#defiAzureGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#defiShadow)"/>
+                <rect x="8" y="8" width="64" height="8" rx="4" fill="#3B82F6" opacity="0.9"/>
+                <rect x="8" y="18" width="64" height="6" rx="3" fill="#60A5FA" opacity="0.7"/>
+                <rect x="8" y="26" width="64" height="6" rx="3" fill="#93C5FD" opacity="0.5"/>
+                <circle cx="15" cy="38" r="2" fill="#3B82F6" class="animated-status"/>
+                <circle cx="30" cy="38" r="2" fill="#60A5FA" class="animated-status"/>
+                <circle cx="45" cy="38" r="2" fill="#93C5FD" class="animated-status"/>
+                <circle cx="60" cy="38" r="2" fill="#BFDBFE" class="animated-status"/>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">DEX Engine</text>
+              </g>
+
+              {/* Enhanced Staking Pools */}
+              <g transform="translate(560, 140)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#defiAzureGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#defiShadow)"/>
+                <ellipse cx="25" cy="20" rx="15" ry="8" fill="rgba(59, 130, 246, 0.3)" stroke="#3B82F6" stroke-width="1"/>
+                <rect x="10" y="20" width="30" height="15" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="1"/>
+                <ellipse cx="25" cy="35" rx="15" ry="8" fill="rgba(59, 130, 246, 0.3)" stroke="#3B82F6" stroke-width="1"/>
+                <text x="25" y="28" text-anchor="middle" fill="#3B82F6" font-size="12" class="animated-icon-pulse">🪙</text>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Staking Pools</text>
+              </g>
+
+              {/* Enhanced AMM Engine */}
+              <g transform="translate(650, 140)" class="animated-server">
+                <rect width="80" height="50" rx="8" fill="url(#defiAzureGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#defiShadow)"/>
+                <circle cx="40" cy="20" r="12" fill="none" stroke="#60A5FA" stroke-width="1.5" class="animated-router"/>
+                <circle cx="40" cy="20" r="6" fill="#3B82F6" opacity="0.8"/>
+                <rect x="35" y="30" width="10" height="3" rx="1" fill="#60A5FA" opacity="0.9"/>
+                <rect x="33" y="35" width="14" height="2" rx="1" fill="#93C5FD" opacity="0.7"/>
+                <text x="40" y="64" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">AMM Engine</text>
+              </g>
+            </g>
+
+            {/* Enhanced Blockchain P2P Overlay Network */}
+            <g class="network-component">
+              <ellipse cx="400" cy="320" rx="200" ry="60" fill="url(#blockchainGradient)" stroke="#9333EA" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
+              <text x="400" y="305" text-anchor="middle" fill="#A855F7" font-size="16" font-weight="bold">BLOCKCHAIN P2P OVERLAY</text>
+              <text x="400" y="320" text-anchor="middle" fill="#C4B5FD" font-size="11">Cross-Chain Protocol Integration</text>
+              <text x="400" y="335" text-anchor="middle" fill="#DDD6FE" font-size="9">Ethereum • Polygon • Binance Smart Chain • Avalanche</text>
+
+              {/* Blockchain Network Nodes */}
+              <g class="animated-node">
+                <circle cx="280" cy="290" r="15" fill="#9333EA" class="animated-status"/>
+                <text x="280" y="295" text-anchor="middle" fill="white" font-size="8" font-weight="bold">ETH</text>
+
+                <circle cx="350" cy="280" r="15" fill="#8B5CF6" class="animated-status"/>
+                <text x="350" y="285" text-anchor="middle" fill="white" font-size="8" font-weight="bold">POL</text>
+
+                <circle cx="450" cy="280" r="15" fill="#A855F7" class="animated-status"/>
+                <text x="450" y="285" text-anchor="middle" fill="white" font-size="8" font-weight="bold">BSC</text>
+
+                <circle cx="520" cy="290" r="15" fill="#C4B5FD" class="animated-status"/>
+                <text x="520" y="295" text-anchor="middle" fill="white" font-size="8" font-weight="bold">AVAX</text>
+              </g>
+
+              {/* Cross-chain bridges */}
+              <g class="animated-connection">
+                <path d="M295 290 L335 280" stroke="#9333EA" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#blockchainFlow)"/>
+                <path d="M365 280 L435 280" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#blockchainFlow)"/>
+                <path d="M465 280 L505 290" stroke="#A855F7" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#blockchainFlow)"/>
+              </g>
+            </g>
+
+            {/* Enhanced HSM Security Infrastructure */}
+            <g class="network-component">
+              <rect x="250" y="380" width="300" height="50" rx="12" fill="url(#hsmGradient)" stroke="#EF4444" stroke-width="3" stroke-dasharray="6,3" class="animated-security-shield"/>
+              <text x="260" y="400" fill="#F87171" font-size="14" font-weight="bold">HSM SECURITY INFRASTRUCTURE</text>
+              <text x="260" y="415" fill="#FCA5A5" font-size="10">Hardware Security Modules & Private Key Management</text>
+
+              {/* HSM Clusters */}
+              <g class="animated-server">
+                <rect x="270" y="395" width="30" height="20" rx="4" fill="#EF4444" opacity="0.8"/>
+                <rect x="310" y="395" width="30" height="20" rx="4" fill="#F87171" opacity="0.6"/>
+                <rect x="350" y="395" width="30" height="20" rx="4" fill="#FCA5A5" opacity="0.4"/>
+                <rect x="390" y="395" width="30" height="20" rx="4" fill="#EF4444" opacity="0.8"/>
+                <rect x="430" y="395" width="30" height="20" rx="4" fill="#F87171" opacity="0.6"/>
+                <rect x="470" y="395" width="30" height="20" rx="4" fill="#FCA5A5" opacity="0.4"/>
+                <rect x="510" y="395" width="30" height="20" rx="4" fill="#EF4444" opacity="0.8"/>
+              </g>
+            </g>
+
+            {/* Enhanced Network Connections with data flow */}
+            <g class="network-connections">
+              {/* Load Balancer to Cloud Regions */}
+              <path d="M150 80 L150 100" stroke="#10B981" stroke-width="4" fill="none" marker-end="url(#defiFlow)" class="animated-high-traffic"/>
+              <path d="M600 80 L600 100" stroke="#10B981" stroke-width="4" fill="none" marker-end="url(#defiFlow)" class="animated-high-traffic"/>
+
+              {/* Cross-Region Sync */}
+              <path d="M300 175 Q400 160 450 175" stroke="#EC4899" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-secure-connection" marker-end="url(#defiFlow)"/>
+
+              {/* Cloud to Blockchain */}
+              <path d="M175 250 Q200 285 280 290" stroke="#9333EA" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#blockchainFlow)"/>
+              <path d="M575 250 Q550 285 520 290" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#blockchainFlow)"/>
+
+              {/* Blockchain to HSM */}
+              <path d="M400 360 L400 380" stroke="#EF4444" stroke-width="4" fill="none" marker-end="url(#secureFlow)" class="animated-security-shield"/>
+
+              {/* Data flow particles */}
+              <circle cx="375" cy="165" r="2" fill="#EC4899" class="animated-data-packet"/>
+              <circle cx="350" cy="270" r="2" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1s"/>
+              <circle cx="450" cy="270" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 0.5s"/>
+              <circle cx="400" cy="370" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 1.5s"/>
+            </g>
+
+            {/* Enhanced Connection Labels */}
+            <g class="connection-labels">
+              <rect x="100" y="90" width="100" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="150" y="102" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">ACTIVE SYNC</text>
+              <rect x="550" y="90" width="100" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+              <text x="600" y="102" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">ACTIVE SYNC</text>
+              <rect x="320" y="165" width="100" height="20" rx="10" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="1"/>
+              <text x="370" y="177" text-anchor="middle" fill="#F472B6" font-size="10" font-weight="700">CROSS-REGION</text>
+              <rect x="240" y="270" width="80" height="20" rx="10" fill="rgba(147, 51, 234, 0.2)" stroke="#9333EA" stroke-width="1"/>
+              <text x="280" y="282" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">BRIDGE</text>
+              <rect x="470" y="270" width="80" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
+              <text x="510" y="282" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">BRIDGE</text>
+              <rect x="350" y="370" width="100" height="20" rx="10" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
+              <text x="400" y="382" text-anchor="middle" fill="#F87171" font-size="10" font-weight="700">SECURE VAULT</text>
+            </g>
+          </svg>
+        `;
+        title = 'Multi-Cloud Active/Active + Blockchain Overlay';
+        description = 'Distributed DeFi infrastructure with HSM security and P2P blockchain networking';
+        break;
+
+      case 'nft-marketplace':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="nftGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.3)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+
+            {/* CDN + Edge Cache Layer */}
+            <ellipse cx="400" cy="80" rx="180" ry="40" fill="url(#nftGradient)" stroke="#A855F7" stroke-width="3" class="animated-cloud-float"/>
+            <text x="400" y="75" text-anchor="middle" fill="#C4B5FD" font-size="14" font-weight="bold">🎫 EDGE-ACCELERATED CDN</text>
+            <text x="400" y="90" text-anchor="middle" fill="#DDD6FE" font-size="10">Global Content Delivery Network</text>
+
+            {/* API Gateway Layer */}
+            <rect x="250" y="150" width="300" height="60" rx="12" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2" class="animated-server"/>
+            <text x="260" y="175" fill="#60A5FA" font-size="12" font-weight="bold">CENTRAL API GATEWAY</text>
+            <text x="260" y="190" fill="#93C5FD" font-size="10">Microservices Orchestration</text>
+
+            {/* Microservices Layer */}
+            <g class="animated-server">
+              <rect x="100" y="250" width="120" height="80" rx="8" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2"/>
+              <text x="110" y="270" fill="#34D399" font-size="11" font-weight="bold">🎨 NFT Service</text>
+
+              <rect x="250" y="250" width="120" height="80" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="260" y="270" fill="#FBBF24" font-size="11" font-weight="bold">🪙 Payment Service</text>
+
+              <rect x="400" y="250" width="120" height="80" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="#EC4899" stroke-width="2"/>
+              <text x="410" y="270" fill="#F472B6" font-size="11" font-weight="bold">🎫 Auction Service</text>
+
+              <rect x="550" y="250" width="120" height="80" rx="8" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="2"/>
+              <text x="560" y="270" fill="#A78BFA" font-size="11" font-weight="bold">👤 User Service</text>
+            </g>
+
+            {/* Secure Wallet Node Cluster */}
+            <rect x="300" y="360" width="200" height="60" rx="8" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
+            <text x="310" y="380" fill="#F87171" font-size="12" font-weight="bold">🔗 WALLET NODE CLUSTER</text>
+            <text x="310" y="395" fill="#FCA5A5" font-size="10">Segregated Security Subnets</text>
+
+            {/* Network connections */}
+            <path d="M400 120 L400 150" stroke="#A855F7" stroke-width="3" class="animated-connection"/>
+            <path d="M400 210 L160 250" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M400 210 L310 250" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M400 210 L460 250" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M400 210 L610 250" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M400 330 L400 360" stroke="#EF4444" stroke-width="3" class="animated-secure-connection"/>
+          </svg>
+        `;
+        title = 'Edge-Accelerated CDN + API Gateway Topology';
+        description = 'NFT marketplace with global CDN, microservices, and secure wallet infrastructure';
+        break;
+
+      case 'quant-trading':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="quantGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(34, 197, 94, 0.3)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+
+            {/* Colocated Leaf-Spine Network */}
+            <rect x="50" y="50" width="300" height="150" rx="12" fill="url(#quantGradient)" stroke="#22C55E" stroke-width="3" class="animated-network-glow"/>
+            <text x="60" y="75" fill="#4ADE80" font-size="14" font-weight="bold">📊 COLOCATED LEAF-SPINE</text>
+            <text x="60" y="90" fill="#86EFAC" font-size="10">Deterministic Switching Fabric</text>
+
+            {/* Spine Switches */}
+            <circle cx="120" cy="120" r="15" fill="#22C55E" class="animated-router"/>
+            <circle cx="180" cy="120" r="15" fill="#22C55E" class="animated-router"/>
+            <circle cx="240" cy="120" r="15" fill="#22C55E" class="animated-router"/>
+            <text x="200" y="105" text-anchor="middle" fill="#86EFAC" font-size="9">SPINE</text>
+
+            {/* Leaf Switches */}
+            <rect x="100" y="160" width="25" height="15" rx="3" fill="#4ADE80"/>
+            <rect x="160" y="160" width="25" height="15" rx="3" fill="#4ADE80"/>
+            <rect x="220" y="160" width="25" height="15" rx="3" fill="#4ADE80"/>
+            <text x="180" y="190" text-anchor="middle" fill="#86EFAC" font-size="9">LEAF SWITCHES</text>
+
+            {/* Market Data Multicast Network */}
+            <rect x="450" y="50" width="300" height="100" rx="12" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" class="animated-high-traffic"/>
+            <text x="460" y="75" fill="#FBBF24" font-size="14" font-weight="bold">MARKET DATA MULTICAST</text>
+            <text x="460" y="90" fill="#FCD34D" font-size="10">Separate High-Speed Network</text>
+
+            {/* DMA Fabric */}
+            <rect x="150" y="250" width="500" height="80" rx="12" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <text x="160" y="275" fill="#60A5FA" font-size="14" font-weight="bold">DIRECT MARKET ACCESS (DMA) FABRIC</text>
+            <text x="160" y="290" fill="#93C5FD" font-size="10">Hardware Timestamping & Ultra-Low Latency</text>
+
+            {/* Hardware Timestamping Nodes */}
+            <g class="animated-server">
+              <rect x="200" y="300" width="60" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="300" y="300" width="60" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="400" y="300" width="60" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="500" y="300" width="60" height="20" rx="4" fill="#3B82F6"/>
+              <text x="400" y="345" text-anchor="middle" fill="#93C5FD" font-size="9">HARDWARE TIMESTAMPING</text>
+            </g>
+
+            {/* Trading Algorithms */}
+            <rect x="50" y="360" width="200" height="60" rx="8" fill="rgba(139, 92, 246, 0.15)" stroke="#8B5CF6" stroke-width="2" class="animated-server"/>
+            <text x="60" y="380" fill="#A78BFA" font-size="12" font-weight="bold">TRADING ALGORITHMS</text>
+            <text x="60" y="395" fill="#C4B5FD" font-size="10">Ultra-Low Latency Execution</text>
+
+            {/* Risk Management */}
+            <rect x="550" y="360" width="200" height="60" rx="8" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
+            <text x="560" y="380" fill="#F87171" font-size="12" font-weight="bold">RISK MANAGEMENT</text>
+            <text x="560" y="395" fill="#FCA5A5" font-size="10">Real-time Position Monitoring</text>
+
+            {/* Network Connections */}
+            <path d="M350 100 L450 100" stroke="#22C55E" stroke-width="4" class="animated-high-traffic"/>
+            <path d="M200 200 L200 250" stroke="#22C55E" stroke-width="3" class="animated-connection"/>
+            <path d="M600 150 L600 250" stroke="#F59E0B" stroke-width="3" class="animated-connection"/>
+            <path d="M250 330 L150 360" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <path d="M550 330 L650 360" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Leaf-Spine Low-Latency Fabric (Colo + DMA)';
+        description = 'Ultra-low latency trading infrastructure with hardware timestamping and direct market access';
+        break;
+
+      case 'fraud-detection':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="fraudGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.3)"/>
+                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+
+            {/* Data Collectors Layer */}
+            <rect x="50" y="50" width="700" height="60" rx="8" fill="url(#fraudGradient)" stroke="#EF4444" stroke-width="2" class="animated-server"/>
+            <text x="60" y="75" fill="#F87171" font-size="14" font-weight="bold">🔍 HIGH-THROUGHPUT DATA COLLECTORS</text>
+            <text x="60" y="90" fill="#FCA5A5" font-size="10">TAP/SPAN Network Feeds & Transaction Monitoring</text>
+
+            {/* Pub/Sub Overlay Network */}
+            <ellipse cx="400" cy="180" rx="200" ry="50" fill="rgba(147, 51, 234, 0.15)" stroke="#9333EA" stroke-width="3" stroke-dasharray="8,4" class="animated-connection"/>
+            <text x="400" y="175" text-anchor="middle" fill="#A855F7" font-size="14" font-weight="bold">KAFKA/MQ PUB/SUB OVERLAY</text>
+            <text x="400" y="190" text-anchor="middle" fill="#C4B5FD" font-size="10">Event-Driven Stream Processing Mesh</text>
+
+            {/* Stream Processors */}
+            <g class="animated-server">
+              <rect x="100" y="250" width="120" height="70" rx="8" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="110" y="270" fill="#60A5FA" font-size="11" font-weight="bold">Pattern Analysis</text>
+              <text x="110" y="285" fill="#93C5FD" font-size="9">Real-time Detection</text>
+
+              <rect x="250" y="250" width="120" height="70" rx="8" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2"/>
+              <text x="260" y="270" fill="#34D399" font-size="11" font-weight="bold">Anomaly Scoring</text>
+              <text x="260" y="285" fill="#6EE7B7" font-size="9">ML Risk Assessment</text>
+
+              <rect x="400" y="250" width="120" height="70" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="410" y="270" fill="#FBBF24" font-size="11" font-weight="bold">Fraud Correlation</text>
+              <text x="410" y="285" fill="#FCD34D" font-size="9">Cross-Channel Analytics</text>
+
+              <rect x="550" y="250" width="120" height="70" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="#A855F7" stroke-width="2"/>
+              <text x="560" y="270" fill="#C4B5FD" font-size="11" font-weight="bold">Behavioral AI</text>
+              <text x="560" y="285" fill="#DDD6FE" font-size="9">User Profiling</text>
+            </g>
+
+            {/* Analytics Cluster */}
+            <rect x="200" y="350" width="400" height="70" rx="8" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" class="animated-network-glow"/>
+            <text x="210" y="375" fill="#4ADE80" font-size="14" font-weight="bold">ANALYTICS CLUSTER</text>
+            <text x="210" y="390" fill="#86EFAC" font-size="10">Real-time Dashboard & Alert Generation</text>
+
+            {/* SIEM Ingestion Lanes */}
+            <rect x="650" y="300" width="120" height="100" rx="8" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
+            <text x="660" y="320" fill="#F87171" font-size="12" font-weight="bold">SIEM</text>
+            <text x="660" y="335" fill="#F87171" font-size="12" font-weight="bold">INGESTION</text>
+            <text x="660" y="355" fill="#FCA5A5" font-size="9">Security Event</text>
+            <text x="660" y="370" fill="#FCA5A5" font-size="9">Log Aggregation</text>
+
+            {/* Network Connections */}
+            <path d="M400 110 L400 130" stroke="#EF4444" stroke-width="4" class="animated-high-traffic"/>
+            <path d="M400 230 L160 250" stroke="#9333EA" stroke-width="3" class="animated-connection"/>
+            <path d="M400 230 L310 250" stroke="#9333EA" stroke-width="3" class="animated-connection"/>
+            <path d="M400 230 L460 250" stroke="#9333EA" stroke-width="3" class="animated-connection"/>
+            <path d="M400 230 L610 250" stroke="#9333EA" stroke-width="3" class="animated-connection"/>
+            <path d="M400 320 L400 350" stroke="#22C55E" stroke-width="4" class="animated-connection"/>
+            <path d="M600 285 L650 350" stroke="#EF4444" stroke-width="3" class="animated-secure-connection"/>
+          </svg>
+        `;
+        title = 'Event-Driven Stream Processing Mesh';
+        description = 'High-throughput fraud detection with real-time analytics and SIEM integration';
+        break;
+
+      case 'rug-pull-detection':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="rugGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.3)"/>
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+
+            {/* Edge Telemetry Collectors */}
+            <g class="animated-server">
+              <ellipse cx="150" cy="80" rx="60" ry="30" fill="url(#rugGradient)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="150" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">⚠️ DEX Endpoint</text>
+              <text x="150" y="88" text-anchor="middle" fill="#FCD34D" font-size="8">Uniswap</text>
+
+              <ellipse cx="400" cy="80" rx="60" ry="30" fill="url(#rugGradient)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="400" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">⚠️ DEX Endpoint</text>
+              <text x="400" y="88" text-anchor="middle" fill="#FCD34D" font-size="8">PancakeSwap</text>
+
+              <ellipse cx="650" cy="80" rx="60" ry="30" fill="url(#rugGradient)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="650" y="75" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="bold">⚠️ DEX Endpoint</text>
+              <text x="650" y="88" text-anchor="middle" fill="#FCD34D" font-size="8">SushiSwap</text>
+            </g>
+
+            {/* Lightweight Data Collectors */}
+            <rect x="100" y="130" width="600" height="40" rx="8" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2" class="animated-connection"/>
+            <text x="110" y="150" fill="#34D399" font-size="12" font-weight="bold">DISTRIBUTED LIGHTWEIGHT COLLECTORS</text>
+            <text x="110" y="162" fill="#6EE7B7" font-size="9">Real-time Contract & Transaction Monitoring</text>
+
+            {/* Secure Overlay Network */}
+            <ellipse cx="400" cy="220" rx="180" ry="40" fill="rgba(147, 51, 234, 0.15)" stroke="#9333EA" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
+            <text x="400" y="215" text-anchor="middle" fill="#A855F7" font-size="14" font-weight="bold">SECURE OVERLAY NETWORK</text>
+            <text x="400" y="228" text-anchor="middle" fill="#C4B5FD" font-size="10">Encrypted Data Feeds & ML Model Distribution</text>
+
+            {/* Central GPU Training Cluster */}
+            <rect x="200" y="290" width="400" height="80" rx="12" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="3" class="animated-server"/>
+            <text x="210" y="315" fill="#60A5FA" font-size="14" font-weight="bold">🤖 CENTRAL GPU TRAINING CLUSTER</text>
+            <text x="210" y="330" fill="#93C5FD" font-size="10">Advanced ML Models for Rug Pull Pattern Recognition</text>
+
+            {/* GPU Nodes */}
+            <g class="animated-node">
+              <rect x="230" y="340" width="40" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="290" y="340" width="40" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="350" y="340" width="40" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="410" y="340" width="40" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="470" y="340" width="40" height="20" rx="4" fill="#3B82F6"/>
+              <rect x="530" y="340" width="40" height="20" rx="4" fill="#3B82F6"/>
+            </g>
+
+            {/* Edge Inference Nodes */}
+            <g class="animated-server">
+              <rect x="50" y="390" width="120" height="40" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
+              <text x="60" y="408" fill="#4ADE80" font-size="10" font-weight="bold">Edge Inference</text>
+              <text x="60" y="420" fill="#86EFAC" font-size="8">Low Latency Detection</text>
+
+              <rect x="200" y="390" width="120" height="40" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
+              <text x="210" y="408" fill="#4ADE80" font-size="10" font-weight="bold">Edge Inference</text>
+              <text x="210" y="420" fill="#86EFAC" font-size="8">Real-time Scoring</text>
+
+              <rect x="480" y="390" width="120" height="40" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
+              <text x="490" y="408" fill="#4ADE80" font-size="10" font-weight="bold">Edge Inference</text>
+              <text x="490" y="420" fill="#86EFAC" font-size="8">Alert Generation</text>
+
+              <rect x="630" y="390" width="120" height="40" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
+              <text x="640" y="408" fill="#4ADE80" font-size="10" font-weight="bold">Edge Inference</text>
+              <text x="640" y="420" fill="#86EFAC" font-size="8">Mobile Alerts</text>
+            </g>
+
+            {/* Network Connections */}
+            <path d="M150 110 L150 130" stroke="#F59E0B" stroke-width="3" class="animated-connection"/>
+            <path d="M400 110 L400 130" stroke="#F59E0B" stroke-width="3" class="animated-connection"/>
+            <path d="M650 110 L650 130" stroke="#F59E0B" stroke-width="3" class="animated-connection"/>
+            <path d="M400 170 L400 180" stroke="#9333EA" stroke-width="4" class="animated-high-traffic"/>
+            <path d="M400 230 L160 250" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <path d="M400 230 L310 250" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <path d="M400 230 L460 250" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <path d="M400 230 L610 250" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <path d="M400 330 L400 360" stroke="#22C55E" stroke-width="4" class="animated-connection"/>
+            <path d="M600 285 L650 350" stroke="#EF4444" stroke-width="3" class="animated-secure-connection"/>
+          </svg>
+        `;
+        title = 'Edge Telemetry + Central ML Training Cluster';
+        description = 'Distributed rug pull detection with edge inference and centralized AI training';
+        break;
+
+      case 'dao-governance':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="daoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
+                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+
+            {/* P2P Blockchain Overlay Network */}
+            <ellipse cx="400" cy="120" rx="300" ry="60" fill="url(#daoGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
+            <text x="400" y="110" text-anchor="middle" fill="#60A5FA" font-size="16" font-weight="bold">🏛️ P2P BLOCKCHAIN OVERLAY NETWORK</text>
+            <text x="400" y="125" text-anchor="middle" fill="#93C5FD" font-size="11">Fully Decentralized On-Chain Voting Infrastructure</text>
+            <text x="400" y="140" text-anchor="middle" fill="#BFDBFE" font-size="9">Ethereum • Polygon • Arbitrum • Base</text>
+
+            {/* Blockchain Nodes */}
+            <g class="animated-node">
+              <circle cx="200" cy="80" r="20" fill="#3B82F6" class="animated-status"/>
+              <text x="200" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ETH</text>
+
+              <circle cx="350" cy="60" r="20" fill="#8B5CF6" class="animated-status"/>
+              <text x="350" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">POL</text>
+
+              <circle cx="450" cy="60" r="20" fill="#06B6D4" class="animated-status"/>
+              <text x="450" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ARB</text>
+
+              <circle cx="600" cy="80" r="20" fill="#0EA5E9" class="animated-status"/>
+              <text x="600" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">BASE</text>
+            </g>
+
+            {/* API Gateway & Relay Nodes */}
+            <rect x="250" y="200" width="300" height="70" rx="12" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="3" class="animated-server"/>
+            <text x="260" y="225" fill="#34D399" font-size="14" font-weight="bold">API GATEWAY & RELAY NODES</text>
+            <text x="260" y="240" fill="#6EE7B7" font-size="10">Web3 Interface & Transaction Broadcasting</text>
+            <text x="260" y="255" fill="#A7F3D0" font-size="9">IPFS Integration • MetaMask • WalletConnect</text>
+
+            {/* UI & Indexing Services */}
+            <g class="animated-server">
+              <rect x="100" y="300" width="180" height="80" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="110" y="325" fill="#FBBF24" font-size="12" font-weight="bold">GOVERNANCE UI</text>
+              <text x="110" y="340" fill="#FCD34D" font-size="10">Web Interface</text>
+              <text x="110" y="355" fill="#FEF3C7" font-size="9">• Proposal Creation</text>
+              <text x="110" y="368" fill="#FEF3C7" font-size="9">• Voting Interface</text>
+
+              <rect x="320" y="300" width="160" height="80" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="#A855F7" stroke-width="2"/>
+              <text x="330" y="325" fill="#C4B5FD" font-size="12" font-weight="bold">INDEXING SERVICE</text>
+              <text x="330" y="340" fill="#DDD6FE" font-size="10">Data Aggregation</text>
+              <text x="330" y="355" fill="#F3F4F6" font-size="9">• Vote Tracking</text>
+              <text x="330" y="368" fill="#F3F4F6" font-size="9">• Analytics</text>
+
+              <rect x="520" y="300" width="180" height="80" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="#EC4899" stroke-width="2"/>
+              <text x="530" y="325" fill="#F472B6" font-size="12" font-weight="bold">NOTIFICATION SYS</text>
+              <text x="530" y="340" fill="#FBBF24" font-size="10">Alert Distribution</text>
+              <text x="530" y="355" fill="#FEF3C7" font-size="9">• Discord Bots</text>
+              <text x="530" y="368" fill="#FEF3C7" font-size="9">• Email Alerts</text>
+            </g>
+
+            {/* Segregated Network Subnets */}
+            <rect x="50" y="410" width="200" height="30" rx="6" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
+            <text x="60" y="428" fill="#F87171" font-size="10" font-weight="bold">Security Subnet</text>
+
+            <rect x="300" y="410" width="200" height="30" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
+            <text x="310" y="428" fill="#4ADE80" font-size="10" font-weight="bold">Application Subnet</text>
+
+            <rect x="550" y="410" width="200" height="30" rx="6" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="560" y="428" fill="#60A5FA" font-size="10" font-weight="bold">Data Subnet</text>
+
+            {/* Network Connections */}
+            <path d="M200 100 L300 180" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
+            <path d="M350 80 L400 180" stroke="#8B5CF6" stroke-width="3" class="animated-connection"/>
+            <path d="M450 80 L610 180" stroke="#0EA5E9" stroke-width="3" class="animated-connection"/>
+
+            <path d="M300 270 L190 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
+            <path d="M400 270 L400 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
+            <path d="M500 270 L610 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
+
+            <path d="M150 380 L150 410" stroke="#EF4444" stroke-width="2" class="animated-secure-connection"/>
+            <path d="M400 380 L400 410" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+            <path d="M610 380 L650 410" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'P2P Overlay + API Gateway';
+        description = 'Decentralized governance platform with multi-chain voting and UI services';
+        break;
+
+      default:
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" style="background: #0F172A;">
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            <rect x="50" y="150" width="200" height="150" rx="20" fill="rgba(59, 130, 246, 0.1)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="150" y="200" text-anchor="middle" fill="#60A5FA" font-size="14">Application Layer</text>
+            <rect x="300" y="150" width="200" height="150" rx="20" fill="rgba(16, 185, 129, 0.1)" stroke="#10B981" stroke-width="2"/>
+            <text x="400" y="200" text-anchor="middle" fill="#34D399" font-size="14">Service Layer</text>
+            <rect x="550" y="150" width="200" height="150" rx="20" fill="rgba(239, 68, 68, 0.1)" stroke="#EF4444" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#F87171" font-size="14">Data Layer</text>
+            <line x1="250" y1="225" x2="300" y2="225" stroke="#60A5FA" stroke-width="3"/>
+            <line x1="500" y1="225" x2="550" y2="225" stroke="#34D399" stroke-width="3"/>
+          </svg>
+        `;
+        title = 'Standard Network Topology';
+        description = 'Basic three-tier architecture';
+        break;
+    }
+    
+    return (
+      <InteractiveTopology
+        svgContent={svgContent}
+        title={title}
+        description={description}
+        className="h-80"
+        enablePerformanceMode={true}
+        animationQuality="medium"
+      />
+    );
+  }, [solutionId]);
+
+  return renderTopology;
 };
 
 const SolutionCard = ({ solution, isActive, onHover }: {
@@ -1278,7 +2465,7 @@ const SolutionCard = ({ solution, isActive, onHover }: {
 
   return (
     <div
-      className="solution-card bg-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+      className="solution-card bg-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 group cursor-pointer relative"
       onMouseEnter={() => onHover(solution.id)}
       onMouseLeave={() => onHover(null)}
     >
@@ -1297,7 +2484,9 @@ const SolutionCard = ({ solution, isActive, onHover }: {
         {solution.description}
       </p>
 
-      <TopologyDiagram solutionId={solution.id} />
+      <div className="relative">
+        <TopologyDiagram solutionId={solution.id} />
+      </div>
     </div>
   );
 };
