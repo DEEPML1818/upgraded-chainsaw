@@ -3,7 +3,7 @@
 // Combines sophisticated SVG topologies with pan/zoom controls and node inspection
 
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, ZoomOut, ZoomIn, Target, Info, Monitor } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ZoomOut, ZoomIn, Target, Info, Monitor, Maximize2, Minimize2 } from 'lucide-react';
 
 interface InteractiveTopologyProps {
   svgContent: string;
@@ -12,6 +12,9 @@ interface InteractiveTopologyProps {
   className?: string;
   enablePerformanceMode?: boolean;
   animationQuality?: 'high' | 'medium' | 'low';
+  minScale?: number;
+  maxScale?: number;
+  initialFit?: boolean;
 }
 
 interface TooltipState {
@@ -28,17 +31,24 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
   description,
   className = '',
   enablePerformanceMode = true,
-  animationQuality = 'medium'
+  animationQuality = 'medium',
+  minScale = 0.2,
+  maxScale = 6,
+  initialFit = true
 }) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const tooltipTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const containerBounds = useRef({ width: 0, height: 0 });
   
   // Pan/Zoom state
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(initialFit ? 0.8 : 1);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Mobile touch gesture state
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0, distance: 0, scale: 1 });
@@ -130,51 +140,193 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
     return svgContent.replace('<svg', `${animationCSS}<svg`);
   }, [svgContent, animationQuality]);
 
+  // Smooth animation helper
+  const animateToTransform = useCallback((targetScale: number, targetX: number, targetY: number, duration: number = 300) => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    
+    const startScale = scale;
+    const startX = panX;
+    const startY = panY;
+    const startTime = Date.now();
+    setIsAnimating(true);
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      
+      const currentScale = startScale + (targetScale - startScale) * easeOut;
+      const currentX = startX + (targetX - startX) * easeOut;
+      const currentY = startY + (targetY - startY) * easeOut;
+      
+      setScale(currentScale);
+      setPanX(currentX);
+      setPanY(currentY);
+      
+      if (progress < 1) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      } else {
+        setIsAnimating(false);
+        animationFrameRef.current = null;
+      }
+    };
+    
+    animationFrameRef.current = requestAnimationFrame(animate);
+  }, [scale, panX, panY]);
+
+  // Calculate pan boundaries based on scale and container size
+  const calculatePanBounds = useCallback((currentScale: number) => {
+    if (!svgContainerRef.current) return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
+    
+    const containerRect = svgContainerRef.current.getBoundingClientRect();
+    const scaledWidth = containerRect.width * currentScale;
+    const scaledHeight = containerRect.height * currentScale;
+    
+    const maxX = Math.max(0, (scaledWidth - containerRect.width) / 2);
+    const maxY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+    
+    return {
+      minX: -maxX,
+      maxX: maxX,
+      minY: -maxY,
+      maxY: maxY
+    };
+  }, []);
+
+  // Clamp pan position to boundaries
+  const clampPan = useCallback((x: number, y: number, currentScale: number) => {
+    const bounds = calculatePanBounds(currentScale);
+    return {
+      x: Math.max(bounds.minX, Math.min(bounds.maxX, x)),
+      y: Math.max(bounds.minY, Math.min(bounds.maxY, y))
+    };
+  }, [calculatePanBounds]);
+
   // Enhanced zoom controls with smooth transitions
   const handleZoomIn = useCallback(() => {
-    setScale(prev => Math.min(prev * 1.3, 4));
-  }, []);
+    const newScale = Math.min(scale * 1.3, maxScale);
+    const clampedPan = clampPan(panX, panY, newScale);
+    animateToTransform(newScale, clampedPan.x, clampedPan.y);
+  }, [scale, panX, panY, maxScale, clampPan, animateToTransform]);
 
   const handleZoomOut = useCallback(() => {
-    setScale(prev => Math.max(prev / 1.3, 0.2));
-  }, []);
+    const newScale = Math.max(scale / 1.3, minScale);
+    const clampedPan = clampPan(panX, panY, newScale);
+    animateToTransform(newScale, clampedPan.x, clampedPan.y);
+  }, [scale, panX, panY, minScale, clampPan, animateToTransform]);
 
   const handleZoomReset = useCallback(() => {
-    setScale(1);
-    setPanX(0);
-    setPanY(0);
-  }, []);
+    animateToTransform(1, 0, 0);
+  }, [animateToTransform]);
 
   const handleFitToView = useCallback(() => {
-    setScale(0.8);
-    setPanX(0);
-    setPanY(0);
+    animateToTransform(0.8, 0, 0);
+  }, [animateToTransform]);
+
+  // Full-screen functionality
+  const handleFullScreen = useCallback(async () => {
+    if (!svgContainerRef.current) return;
+    
+    try {
+      if (!document.fullscreenElement) {
+        await svgContainerRef.current.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (error) {
+      console.warn('Fullscreen not supported:', error);
+    }
   }, []);
 
-  // Cleanup timeouts on unmount
+  // Mouse wheel zoom with cursor-centered behavior
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    if (!svgContainerRef.current || isAnimating) return;
+    
+    e.preventDefault();
+    
+    const containerRect = svgContainerRef.current.getBoundingClientRect();
+    const cursorX = e.clientX - containerRect.left;
+    const cursorY = e.clientY - containerRect.top;
+    
+    // Calculate zoom factor
+    const zoomFactor = Math.exp(-e.deltaY * 0.0015);
+    const newScale = Math.max(minScale, Math.min(maxScale, scale * zoomFactor));
+    
+    if (newScale === scale) return;
+    
+    // Cursor-centered zoom calculation
+    const scaleRatio = newScale / scale;
+    const newPanX = cursorX - (cursorX - panX) * scaleRatio;
+    const newPanY = cursorY - (cursorY - panY) * scaleRatio;
+    
+    // Apply bounds clamping
+    const clampedPan = clampPan(newPanX, newPanY, newScale);
+    
+    setScale(newScale);
+    setPanX(clampedPan.x);
+    setPanY(clampedPan.y);
+  }, [scale, panX, panY, minScale, maxScale, clampPan, isAnimating]);
+
+  // Container bounds observation
+  useEffect(() => {
+    if (!svgContainerRef.current) return;
+    
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        containerBounds.current = {
+          width: entry.contentRect.width,
+          height: entry.contentRect.height
+        };
+      }
+    });
+    
+    resizeObserver.observe(svgContainerRef.current);
+    
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  // Full-screen state tracking
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+    
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullScreenChange);
+  }, []);
+
+  // Cleanup timeouts and animations on unmount
   useEffect(() => {
     return () => {
       if (tooltipTimeoutRef.current) {
         clearTimeout(tooltipTimeoutRef.current);
       }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
   }, []);
 
-  // Pan controls
+  // Enhanced pan controls with boundary checking
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (e.button === 0) { // Left mouse button only
+    if (e.button === 0 && scale > 1) { // Left mouse button only and only when zoomed
       setIsDragging(true);
       setDragStart({ x: e.clientX - panX, y: e.clientY - panY });
       e.preventDefault();
     }
-  }, [panX, panY]);
+  }, [panX, panY, scale]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDragging) {
-      setPanX(e.clientX - dragStart.x);
-      setPanY(e.clientY - dragStart.y);
+      const newPanX = e.clientX - dragStart.x;
+      const newPanY = e.clientY - dragStart.y;
+      const clampedPan = clampPan(newPanX, newPanY, scale);
+      setPanX(clampedPan.x);
+      setPanY(clampedPan.y);
     }
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, scale, clampPan]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
@@ -300,21 +452,43 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
             e.preventDefault();
             handleZoomReset();
             break;
-          case 'ArrowLeft':
+          case 'f':
+          case 'F':
+            if (e.ctrlKey || e.metaKey) return; // Don't interfere with browser fullscreen
             e.preventDefault();
-            setPanX(prev => prev + 20);
+            handleFullScreen();
+            break;
+          case 'ArrowLeft':
+            if (scale > 1) {
+              e.preventDefault();
+              const newX = panX + 20;
+              const clampedPan = clampPan(newX, panY, scale);
+              setPanX(clampedPan.x);
+            }
             break;
           case 'ArrowRight':
-            e.preventDefault();
-            setPanX(prev => prev - 20);
+            if (scale > 1) {
+              e.preventDefault();
+              const newX = panX - 20;
+              const clampedPan = clampPan(newX, panY, scale);
+              setPanX(clampedPan.x);
+            }
             break;
           case 'ArrowUp':
-            e.preventDefault();
-            setPanY(prev => prev + 20);
+            if (scale > 1) {
+              e.preventDefault();
+              const newY = panY + 20;
+              const clampedPan = clampPan(panX, newY, scale);
+              setPanY(clampedPan.y);
+            }
             break;
           case 'ArrowDown':
-            e.preventDefault();
-            setPanY(prev => prev - 20);
+            if (scale > 1) {
+              e.preventDefault();
+              const newY = panY - 20;
+              const clampedPan = clampPan(panX, newY, scale);
+              setPanY(clampedPan.y);
+            }
             break;
         }
       }
@@ -322,7 +496,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleZoomIn, handleZoomOut, handleZoomReset]);
+  }, [handleZoomIn, handleZoomOut, handleZoomReset, handleFullScreen, scale, panX, panY, clampPan]);
 
   // Enhanced node inspection
   const handleSVGClick = useCallback((e: React.MouseEvent) => {
@@ -396,7 +570,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
   return (
     <div 
       ref={svgContainerRef}
-      className={`relative w-full h-80 bg-slate-900/30 rounded-xl border border-gray-700/50 overflow-hidden group ${className}`}
+      className={`relative w-full ${isFullScreen ? 'h-screen' : 'h-80'} bg-slate-900/30 rounded-xl border border-gray-700/50 overflow-hidden group ${className} ${isFullScreen ? 'fixed inset-0 z-50 rounded-none border-none' : ''}`}
       tabIndex={0}
     >
       {/* Enhanced Control Panel - Mobile optimized */}
@@ -434,6 +608,18 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
           >
             <Monitor className="w-5 h-5 md:w-4 md:h-4 text-purple-400" />
           </button>
+          <button
+            onClick={handleFullScreen}
+            className="p-3 md:p-2 hover:bg-slate-700/70 active:bg-slate-600/80 rounded-md transition-colors touch-manipulation"
+            title={isFullScreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
+            data-testid="interactive-topology-fullscreen"
+          >
+            {isFullScreen ? (
+              <Minimize2 className="w-5 h-5 md:w-4 md:h-4 text-orange-400" />
+            ) : (
+              <Maximize2 className="w-5 h-5 md:w-4 md:h-4 text-orange-400" />
+            )}
+          </button>
         </div>
         
         <div className="flex gap-1 bg-slate-800/90 backdrop-blur-sm rounded-lg p-1 border border-gray-600/50 md:flex hidden">
@@ -467,8 +653,9 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
           <div className="space-y-1 text-xs text-gray-500">
             <div>🖱️ <strong>Mouse:</strong> Drag to pan, scroll to zoom</div>
             <div>📱 <strong>Touch:</strong> Drag to pan, pinch to zoom</div>
-            <div>⌨️ <strong>Keys:</strong> +/- zoom, arrows pan, 0 reset</div>
+            <div>⌨️ <strong>Keys:</strong> +/- zoom, arrows pan, 0 reset, F fullscreen</div>
             <div>🎯 <strong>Click:</strong> Inspect network components</div>
+            <div className="text-xs text-blue-400 mt-1">Scale: {Math.round(scale * 100)}% | {isFullScreen ? 'Fullscreen' : 'Windowed'}</div>
           </div>
         </div>
       </div>
@@ -484,21 +671,22 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
 
       {/* Interactive SVG Container - Direct Integration */}
       <div 
-        className="absolute inset-0 cursor-grab active:cursor-grabbing"
+        className={`absolute inset-0 ${scale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'} ${isAnimating ? 'pointer-events-none' : ''}`}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onWheel={handleWheel}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         style={{ touchAction: 'none' }}
       >
         <div
-          className="w-full h-full origin-center transition-transform duration-200 ease-out"
+          className={`w-full h-full origin-center ${isAnimating ? '' : 'transition-transform duration-200 ease-out'}`}
           style={{
             transform: `translate(${panX}px, ${panY}px) scale(${scale})`,
-            willChange: isDragging || isPinching ? 'transform' : 'auto'
+            willChange: isDragging || isPinching || isAnimating ? 'transform' : 'auto'
           }}
           onClick={handleSVGClick}
         >
@@ -538,7 +726,7 @@ export const InteractiveTopology: React.FC<InteractiveTopologyProps> = ({
 
       {/* Accessibility Instructions */}
       <div className="sr-only">
-        Interactive network topology diagram. Use arrow keys to pan, +/- to zoom, 0 to reset view. On mobile: single finger to pan, pinch to zoom, tap components for details.
+        Interactive network topology diagram. Use arrow keys to pan, +/- to zoom, 0 to reset view, F for fullscreen. On mobile: single finger to pan, pinch to zoom, tap components for details. Current zoom: {Math.round(scale * 100)}%. {isFullScreen ? 'Fullscreen mode active.' : 'Windowed mode.'}
       </div>
     </div>
   );

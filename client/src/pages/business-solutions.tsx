@@ -4373,179 +4373,6 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         description = 'High-throughput pub/sub overlay (Kafka/MQ) connecting collectors → stream processors → analytics cluster, with TAP/SPAN feeds and SIEM ingestion lanes';
         break;
 
-      case 'dao-governance':
-        svgContent = `
-          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <linearGradient id="daoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
-              </linearGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="#0F172A"/>
-
-            {/* P2P Blockchain Overlay Network */}
-            <ellipse cx="400" cy="120" rx="300" ry="60" fill="url(#daoGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
-            <text x="400" y="110" text-anchor="middle" fill="#60A5FA" font-size="16" font-weight="bold">🏛️ P2P BLOCKCHAIN OVERLAY NETWORK</text>
-            <text x="400" y="125" text-anchor="middle" fill="#93C5FD" font-size="11">Fully Decentralized On-Chain Voting Infrastructure</text>
-            <text x="400" y="140" text-anchor="middle" fill="#BFDBFE" font-size="9">Ethereum • Polygon • Arbitrum • Base</text>
-
-            {/* Blockchain Nodes */}
-            <g class="animated-node">
-              <circle cx="200" cy="80" r="20" fill="#3B82F6" class="animated-status"/>
-              <text x="200" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ETH</text>
-
-              <circle cx="350" cy="60" r="20" fill="#8B5CF6" class="animated-status"/>
-              <text x="350" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">POL</text>
-
-              <circle cx="450" cy="60" r="20" fill="#06B6D4" class="animated-status"/>
-              <text x="450" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ARB</text>
-
-              <circle cx="600" cy="80" r="20" fill="#0EA5E9" class="animated-status"/>
-              <text x="600" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">BASE</text>
-            </g>
-
-            {/* API Gateway & Relay Nodes */}
-            <rect x="250" y="200" width="300" height="70" rx="12" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="3" class="animated-server"/>
-            <text x="260" y="225" fill="#34D399" font-size="14" font-weight="bold">API GATEWAY & RELAY NODES</text>
-            <text x="260" y="240" fill="#6EE7B7" font-size="10">Web3 Interface & Transaction Broadcasting</text>
-            <text x="260" y="255" fill="#A7F3D0" font-size="9">IPFS Integration • MetaMask • WalletConnect</text>
-
-            {/* UI & Indexing Services */}
-            <g class="animated-server">
-              <rect x="100" y="300" width="180" height="80" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="110" y="325" fill="#FBBF24" font-size="12" font-weight="bold">GOVERNANCE UI</text>
-              <text x="110" y="340" fill="#FCD34D" font-size="10">Web Interface</text>
-              <text x="110" y="355" fill="#FEF3C7" font-size="9">• Proposal Creation</text>
-              <text x="110" y="368" fill="#FEF3C7" font-size="9">• Voting Interface</text>
-
-              <rect x="320" y="300" width="160" height="80" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="#A855F7" stroke-width="2"/>
-              <text x="330" y="325" fill="#C4B5FD" font-size="12" font-weight="bold">INDEXING SERVICE</text>
-              <text x="330" y="340" fill="#DDD6FE" font-size="10">Data Aggregation</text>
-              <text x="330" y="355" fill="#F3F4F6" font-size="9">• Vote Tracking</text>
-              <text x="330" y="368" fill="#F3F4F6" font-size="9">• Analytics</text>
-
-              <rect x="520" y="300" width="180" height="80" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="#EC4899" stroke-width="2"/>
-              <text x="530" y="325" fill="#F472B6" font-size="12" font-weight="bold">NOTIFICATION SYS</text>
-              <text x="530" y="340" fill="#FBBF24" font-size="10">Alert Distribution</text>
-              <text x="530" y="355" fill="#FEF3C7" font-size="9">• Discord Bots</text>
-              <text x="530" y="368" fill="#FEF3C7" font-size="9">• Email Alerts</text>
-            </g>
-
-            {/* Segregated Network Subnets */}
-            <rect x="50" y="410" width="200" height="30" rx="6" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
-            <text x="60" y="428" fill="#F87171" font-size="10" font-weight="bold">Security Subnet</text>
-
-            <rect x="300" y="410" width="200" height="30" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
-            <text x="310" y="428" fill="#4ADE80" font-size="10" font-weight="bold">Application Subnet</text>
-
-            <rect x="550" y="410" width="200" height="30" rx="6" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2"/>
-            <text x="560" y="428" fill="#60A5FA" font-size="10" font-weight="bold">Data Subnet</text>
-
-            {/* Network Connections */}
-            <path d="M200 100 L300 180" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
-            <path d="M350 80 L400 180" stroke="#8B5CF6" stroke-width="3" class="animated-connection"/>
-            <path d="M450 80 L610 180" stroke="#0EA5E9" stroke-width="3" class="animated-connection"/>
-
-            <path d="M300 270 L190 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-            <path d="M400 270 L400 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-            <path d="M500 270 L610 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-
-            <path d="M150 380 L150 410" stroke="#EF4444" stroke-width="2" class="animated-secure-connection"/>
-            <path d="M400 380 L400 410" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
-            <path d="M610 380 L650 410" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
-          </svg>
-        `;
-        title = 'P2P Overlay + API Gateway';
-        description = 'Fully decentralized P2P blockchain overlay for on-chain votes, with an API gateway and relay nodes for UIs and indexing services in separate subnets';
-        break;
-
-      default:
-        svgContent = `
-          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <linearGradient id="daoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
-              </linearGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="#0F172A"/>
-
-            {/* P2P Blockchain Overlay Network */}
-            <ellipse cx="400" cy="120" rx="300" ry="60" fill="url(#daoGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
-            <text x="400" y="110" text-anchor="middle" fill="#60A5FA" font-size="16" font-weight="bold">🏛️ P2P BLOCKCHAIN OVERLAY NETWORK</text>
-            <text x="400" y="125" text-anchor="middle" fill="#93C5FD" font-size="11">Fully Decentralized On-Chain Voting Infrastructure</text>
-            <text x="400" y="140" text-anchor="middle" fill="#BFDBFE" font-size="9">Ethereum • Polygon • Arbitrum • Base</text>
-
-            {/* Blockchain Nodes */}
-            <g class="animated-node">
-              <circle cx="200" cy="80" r="20" fill="#3B82F6" class="animated-status"/>
-              <text x="200" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ETH</text>
-
-              <circle cx="350" cy="60" r="20" fill="#8B5CF6" class="animated-status"/>
-              <text x="350" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">POL</text>
-
-              <circle cx="450" cy="60" r="20" fill="#06B6D4" class="animated-status"/>
-              <text x="450" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ARB</text>
-
-              <circle cx="600" cy="80" r="20" fill="#0EA5E9" class="animated-status"/>
-              <text x="600" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">BASE</text>
-            </g>
-
-            {/* API Gateway & Relay Nodes */}
-            <rect x="250" y="200" width="300" height="70" rx="12" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="3" class="animated-server"/>
-            <text x="260" y="225" fill="#34D399" font-size="14" font-weight="bold">API GATEWAY & RELAY NODES</text>
-            <text x="260" y="240" fill="#6EE7B7" font-size="10">Web3 Interface & Transaction Broadcasting</text>
-            <text x="260" y="255" fill="#A7F3D0" font-size="9">IPFS Integration • MetaMask • WalletConnect</text>
-
-            {/* UI & Indexing Services */}
-            <g class="animated-server">
-              <rect x="100" y="300" width="180" height="80" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="110" y="325" fill="#FBBF24" font-size="12" font-weight="bold">GOVERNANCE UI</text>
-              <text x="110" y="340" fill="#FCD34D" font-size="10">Web Interface</text>
-              <text x="110" y="355" fill="#FEF3C7" font-size="9">• Proposal Creation</text>
-              <text x="110" y="368" fill="#FEF3C7" font-size="9">• Voting Interface</text>
-
-              <rect x="320" y="300" width="160" height="80" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="#A855F7" stroke-width="2"/>
-              <text x="330" y="325" fill="#C4B5FD" font-size="12" font-weight="bold">INDEXING SERVICE</text>
-              <text x="330" y="340" fill="#DDD6FE" font-size="10">Data Aggregation</text>
-              <text x="330" y="355" fill="#F3F4F6" font-size="9">• Vote Tracking</text>
-              <text x="330" y="368" fill="#F3F4F6" font-size="9">• Analytics</text>
-
-              <rect x="520" y="300" width="180" height="80" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="#EC4899" stroke-width="2"/>
-              <text x="530" y="325" fill="#F472B6" font-size="12" font-weight="bold">NOTIFICATION SYS</text>
-              <text x="530" y="340" fill="#FBBF24" font-size="10">Alert Distribution</text>
-              <text x="530" y="355" fill="#FEF3C7" font-size="9">• Discord Bots</text>
-              <text x="530" y="368" fill="#FEF3C7" font-size="9">• Email Alerts</text>
-            </g>
-
-            {/* Segregated Network Subnets */}
-            <rect x="50" y="410" width="200" height="30" rx="6" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
-            <text x="60" y="428" fill="#F87171" font-size="10" font-weight="bold">Security Subnet</text>
-
-            <rect x="300" y="410" width="200" height="30" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
-            <text x="310" y="428" fill="#4ADE80" font-size="10" font-weight="bold">Application Subnet</text>
-
-            <rect x="550" y="410" width="200" height="30" rx="6" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2"/>
-            <text x="560" y="428" fill="#60A5FA" font-size="10" font-weight="bold">Data Subnet</text>
-
-            {/* Network Connections */}
-            <path d="M200 100 L300 180" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
-            <path d="M350 80 L400 180" stroke="#8B5CF6" stroke-width="3" class="animated-connection"/>
-            <path d="M450 80 L610 180" stroke="#0EA5E9" stroke-width="3" class="animated-connection"/>
-
-            <path d="M300 270 L190 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-            <path d="M400 270 L400 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-            <path d="M500 270 L610 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-
-            <path d="M150 380 L150 410" stroke="#EF4444" stroke-width="2" class="animated-secure-connection"/>
-            <path d="M400 380 L400 410" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
-            <path d="M610 380 L650 410" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
-          </svg>
-        `;
-        title = 'P2P Overlay + API Gateway';
-        description = 'Fully decentralized P2P blockchain overlay for on-chain votes, with an API gateway and relay nodes for UIs and indexing services in separate subnets';
-        break;
     }
 
     return (
@@ -4576,6 +4403,9 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         )}
       </div>
     );
+  }, [solutionId, isExpanded]);
+
+  return renderTopology;
 };
 
 const SolutionCard = ({ solution, isActive, onHover }: {
@@ -4622,7 +4452,7 @@ const SolutionCard = ({ solution, isActive, onHover }: {
         {/* Render original TopologyDiagram for general solutions */}
         {solution.category === 'general' && (
           <div className="relative">
-            <InteractiveTopology solutionId={solution.id} className="h-80" />
+            <ExpandableTopologyDiagram solutionId={solution.id} />
           </div>
         )}
       </div>
