@@ -69,8 +69,6 @@ import { InteractiveTopology } from '@/components/topology/InteractiveTopology';
 
 // Define ExpandableTopologyDiagram component
 const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const renderTopology = useMemo(() => {
     let svgContent = '';
@@ -3166,292 +3164,6 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         description = 'Distributed lightweight collectors at exchange endpoints feeding a central GPU training cluster over secure overlays; inference nodes at edge for low latency';
         break;
 
-      case 'rug-pull-detection':
-        svgContent = `
-          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <filter id="rugShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <filter id="rugGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <marker id="rugFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#rugGlow)"/>
-              </marker>
-              <marker id="mlFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#3B82F6" filter="url(#rugGlow)"/>
-              </marker>
-              <marker id="alertFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#22C55E" filter="url(#rugGlow)"/>
-              </marker>
-              <pattern id="rugMeshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#F59E0B" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="0" cy="0" r="0.5" fill="#F59E0B" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="dexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="collectorGridGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(16, 185, 129, 0.1)"/>
-              </linearGradient>
-              <radialGradient id="secureOverlayGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.4)"/>
-                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.2)"/>
-              </radialGradient>
-              <linearGradient id="gpuClusterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-            </defs>
-
-            {/* Enhanced Background with depth */}
-            <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#rugMeshPattern)" opacity="0.4"/>
-
-            {/* Floating fraud detection particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#22C55E" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
-
-            {/* DEX Exchange Endpoints */}
-            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="40" y="45" fill="#F59E0B" font-size="16" font-weight="bold" class="jump-icon">⚠️</text>
-            <text x="90" y="45" fill="#FBBF24" font-size="14" font-weight="bold">DECENTRALIZED EXCHANGE ENDPOINTS</text>
-            <text x="30" y="60" fill="#FCA5A5" font-size="12">Real-time Contract Monitoring • Liquidity Pool Analysis • Transaction Pattern Detection</text>
-
-            {/* Enhanced DEX Endpoint Monitors */}
-            <g class="animated-server">
-              <ellipse cx="120" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="120" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">🦄</text>
-              <text x="120" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">Uniswap V3</text>
-
-              <ellipse cx="250" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="250" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">🥞</text>
-              <text x="250" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">PancakeSwap</text>
-
-              <ellipse cx="380" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="380" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">🍣</text>
-              <text x="380" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">SushiSwap</text>
-
-              <ellipse cx="510" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="510" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">📈</text>
-              <text x="510" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">1inch</text>
-
-              <ellipse cx="640" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="640" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">⚖️</text>
-              <text x="640" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">Balancer</text>
-            </g>
-
-            {/* Enhanced Distributed Lightweight Collectors */}
-            <g class="network-component">
-              <rect x="80" y="120" width="640" height="60" rx="12" fill="url(#collectorGridGradient)" stroke="#10B981" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
-              <text x="90" y="145" fill="#34D399" font-size="14" font-weight="bold">DISTRIBUTED LIGHTWEIGHT COLLECTORS</text>
-              <text x="90" y="160" fill="#6EE7B7" font-size="10">Smart Contract Monitoring • Transaction Analysis • Behavioral Tracking</text>
-
-              {/* Enhanced Collector Grid */}
-              <g class="animated-server">
-                <rect x="100" y="155" width="80" height="15" rx="4" fill="#10B981" opacity="0.8"/>
-                <text x="140" y="165" text-anchor="middle" fill="white" font-size="8">CONTRACT-MON</text>
-
-                <rect x="190" y="155" width="80" height="15" rx="4" fill="#34D399" opacity="0.8"/>
-                <text x="230" y="165" text-anchor="middle" fill="white" font-size="8">LIQ-TRACKER</text>
-
-                <rect x="280" y="155" width="80" height="15" rx="4" fill="#6EE7B7" opacity="0.8"/>
-                <text x="320" y="165" text-anchor="middle" fill="white" font-size="8">TX-ANALYZER</text>
-
-                <rect x="370" y="155" width="80" height="15" rx="4" fill="#A7F3D0" opacity="0.8"/>
-                <text x="410" y="165" text-anchor="middle" fill="white" font-size="8">GAS-MONITOR</text>
-
-                <rect x="460" y="155" width="80" height="15" rx="4" fill="#ECFDF5" opacity="0.8"/>
-                <text x="500" y="165" text-anchor="middle" fill="black" font-size="8">WHALE-DETECT</text>
-
-                <rect x="550" y="155" width="80" height="15" rx="4" fill="#10B981" opacity="0.8"/>
-                <text x="590" y="165" text-anchor="middle" fill="white" font-size="8">RUG-SIGNAL</text>
-
-                <rect x="640" y="155" width="70" height="15" rx="4" fill="#34D399" opacity="0.8"/>
-                <text x="675" y="165" text-anchor="middle" fill="white" font-size="8">API-RELAY</text>
-              </g>
-            </g>
-
-            {/* Enhanced Secure Overlay Network */}
-            <g class="network-component">
-              <ellipse cx="400" cy="220" rx="200" ry="50" fill="url(#secureOverlayGradient)" stroke="#9333EA" stroke-width="4" stroke-dasharray="12,6" class="animated-secure-connection"/>
-              <text x="400" y="210" text-anchor="middle" fill="#A855F7" font-size="16" font-weight="bold">SECURE OVERLAY NETWORK</text>
-              <text x="400" y="225" text-anchor="middle" fill="#C4B5FD" font-size="12">Encrypted Data Distribution • ML Model Sync</text>
-              <text x="400" y="240" text-anchor="middle" fill="#DDD6FE" font-size="10">End-to-End Encryption • Zero-Trust Architecture</text>
-
-              {/* Enhanced Overlay Nodes */}
-              <g class="animated-node">
-                <circle cx="320" cy="200" r="12" fill="rgba(147, 51, 234, 0.4)" stroke="#9333EA" stroke-width="2"/>
-                <text x="320" y="205" text-anchor="middle" fill="#A855F7" font-size="8">E1</text>
-
-                <circle cx="400" cy="185" r="12" fill="rgba(168, 85, 247, 0.4)" stroke="#A855F7" stroke-width="2"/>
-                <text x="400" y="190" text-anchor="middle" fill="#C4B5FD" font-size="8">E2</text>
-
-                <circle cx="480" cy="200" r="12" fill="rgba(196, 181, 253, 0.4)" stroke="#C4B5FD" stroke-width="2"/>
-                <text x="480" y="205" text-anchor="middle" fill="#DDD6FE" font-size="8">E3</text>
-
-                {/* Encrypted connections */}
-                <path d="M332 200 L388 185" stroke="#9333EA" stroke-width="2" stroke-dasharray="4,2" class="animated-secure-connection"/>
-                <path d="M412 185 L468 200" stroke="#A855F7" stroke-width="2" stroke-dasharray="4,2" class="animated-secure-connection"/>
-              </g>
-            </g>
-
-            {/* Enhanced Central GPU Training Cluster */}
-            <g class="network-component">
-              <rect x="150" y="280" width="500" height="90" rx="12" fill="url(#gpuClusterGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-server"/>
-              <text x="160" y="305" fill="#60A5FA" font-size="16" font-weight="bold">🤖 CENTRAL GPU TRAINING CLUSTER</text>
-              <text x="160" y="320" fill="#93C5FD" font-size="12">Advanced ML Models • Pattern Recognition • Behavioral Analysis</text>
-              <text x="160" y="335" fill="#BFDBFE" font-size="10">PyTorch • TensorFlow • CUDA Acceleration • Real-time Inference</text>
-
-              {/* Enhanced GPU Node Array */}
-              <g class="animated-node">
-                <rect x="170" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="175" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="175" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="175" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="200" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-1</text>
-
-                <rect x="240" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="245" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="245" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="245" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="270" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-2</text>
-
-                <rect x="310" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="315" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="315" y="353" width="50" height="3" rx="1" fill="#93CFD" opacity="0.6"/>
-                <rect x="315" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="340" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-3</text>
-
-                <rect x="380" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="385" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="385" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="385" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="410" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-4</text>
-
-                <rect x="450" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="455" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="455" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="455" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="480" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-5</text>
-
-                <rect x="520" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="525" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="525" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="525" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="550" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-6</text>
-
-                <rect x="590" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="595" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="595" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="595" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="620" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-7</text>
-              </g>
-            </g>
-
-            {/* Enhanced Edge Inference Infrastructure */}
-            <g class="network-component">
-              <rect x="40" y="390" width="720" height="50" rx="12" fill="rgba(34, 197, 94, 0.08)" stroke="#22C55E" stroke-width="3" stroke-dasharray="8,4" class="animated-network-glow"/>
-              <text x="50" y="410" fill="#4ADE80" font-size="14" font-weight="bold">EDGE INFERENCE INFRASTRUCTURE</text>
-              <text x="50" y="425" fill="#86EFAC" font-size="10">Low-Latency Detection • Real-time Alerts • Mobile Notifications</text>
-
-              {/* Enhanced Edge Inference Nodes */}
-              <g class="animated-server">
-                <rect x="60" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="80" cy="422" r="3" fill="#22C55E" class="animated-status"/>
-                <text x="100" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-DETECT-1</text>
-                <text x="100" y="428" fill="#86EFAC" font-size="7">Instant Detection</text>
-
-                <rect x="200" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="220" cy="422" r="3" fill="#34D399" class="animated-status"/>
-                <text x="240" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-SCORE-2</text>
-                <text x="240" y="428" fill="#86EFAC" font-size="7">Risk Scoring</text>
-
-                <rect x="340" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="360" cy="422" r="3" fill="#6EE7B7" class="animated-status"/>
-                <text x="380" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-ALERT-3</text>
-                <text x="380" y="428" fill="#86EFAC" font-size="7">Alert Generation</text>
-
-                <rect x="480" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="500" cy="422" r="3" fill="#A7F3D0" class="animated-status"/>
-                <text x="520" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-MOBILE-4</text>
-                <text x="520" y="428" fill="#86EFAC" font-size="7">Mobile Push</text>
-
-                <rect x="620" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="640" cy="422" r="3" fill="#ECFDF5" class="animated-status"/>
-                <text x="660" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-API-5</text>
-                <text x="660" y="428" fill="#86EFAC" font-size="7">API Gateway</text>
-              </g>
-            </g>
-
-            {/* Enhanced Network Connections */}
-            <g class="network-connections">
-              {/* DEX to Collectors */}
-              <path d="M120 105 L120 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M250 105 L250 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M380 105 L380 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M510 105 L510 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M640 105 L640 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-
-              {/* Collectors to Overlay */}
-              <path d="M400 180 L400 195" stroke="#10B981" stroke-width="4" fill="none" marker-end="url(#streamFlow)" class="animated-high-traffic"/>
-              <circle cx="400" cy="190" r="3" fill="#10B981" class="animated-data-packet"/>
-
-              {/* Stream processors to Analytics */}
-              <path d="M280 340 L300 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-              <path d="M420 340 L400 360" stroke="#10B981" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-              <path d="M560 340 L500 360" stroke="#F59E0B" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-
-              {/* Analytics to SIEM */}
-              <path d="M600 395 L620 350" stroke="#22C55E" stroke-width="3" fill="none" stroke-dasharray="6,3" class="animated-secure-connection" marker-end="url(#fraudFlow)"/>
-
-              {/* Cross-processor correlation */}
-              <path d="M200 307 L360 307" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-              <path d="M480 307 L620 307" stroke="#A855F7" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-
-              {/* Data flow particles */}
-              <circle cx="375" cy="260" r="2" fill="#9333EA" class="animated-data-packet"/>
-              <circle cx="300" cy="307" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="450" cy="350" r="2" fill="#22C55E" class="animated-data-packet" style="animation-delay: 0.5s"/>
-              <circle cx="610" cy="372" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 1.5s"/>
-            </g>
-
-            {/* Enhanced Connection Labels with professional styling */}
-            <g class="connection-labels">
-              <rect x="350" y="90" width="100" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="400" y="102" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">STREAM FEED</text>
-              <rect x="280" y="190" width="80" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
-              <text x="320" y="202" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">EVENT BUS</text>
-              <rect x="520" y="190" width="80" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
-              <text x="560" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">ANALYTICS</text>
-              <rect x="320" y="330" width="80" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="360" y="342" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">SIEM</text>
-            </g>
-          </svg>
-        `;
-        title = 'Event-Driven Stream Processing Mesh';
-        description = 'High-throughput pub/sub overlay (Kafka/MQ) connecting collectors → stream processors → analytics cluster, with TAP/SPAN feeds and SIEM ingestion lanes';
-        break;
 
       case 'dao-governance':
         svgContent = `
@@ -3540,870 +3252,113 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         description = 'Fully decentralized P2P blockchain overlay for on-chain votes, with an API gateway and relay nodes for UIs and indexing services in separate subnets';
         break;
 
-      case 'quant-trading':
+      case 'custom-security-appliances':
         svgContent = `
           <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <filter id="quantShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <filter id="applianceShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
               </filter>
-              <filter id="quantGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <marker id="quantFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#22C55E" filter="url(#quantGlow)"/>
+              <marker id="trafficFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#3B82F6"/>
               </marker>
-              <marker id="marketDataFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#quantGlow)"/>
-              </marker>
-              <marker id="dmaFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#3B82F6" filter="url(#quantGlow)"/>
-              </marker>
-              <pattern id="quantMeshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#22C55E" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="0" cy="0" r="0.5" fill="#22C55E" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="leafSpineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(34, 197, 94, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(34, 197, 94, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="marketDataGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
-              </linearGradient>
-              <radialGradient id="dmaGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.4)"/>
-                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.2)"/>
-              </radialGradient>
-              <linearGradient id="algoTradingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(139, 92, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(139, 92, 246, 0.1)"/>
-              </linearGradient>
             </defs>
-
-            {/* Enhanced Background with depth */}
+            
             <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#quantMeshPattern)" opacity="0.4"/>
-
-            {/* Floating trading particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#22C55E" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#8B5CF6" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
-
-            {/* Exchange Colocation Zone */}
-            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(22, 163, 74, 0.1)" stroke="#16A34A" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="40" y="45" fill="#16A34A" font-size="16" font-weight="bold" class="jump-icon">📈</text>
-            <text x="90" y="45" fill="#4ADE80" font-size="14" font-weight="bold">EXCHANGE COLOCATION</text>
-            <text x="400" y="60" text-anchor="middle" fill="#86EFAC" font-size="12" font-weight="600">Ultra-Low Latency Trading Infrastructure</text>
-
-            {/* Exchange performance indicators */}
-            <g class="performance-indicators">
-              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="1"/>
-              <text x="720" y="35" text-anchor="middle" fill="#22C55E" font-size="8" font-weight="600">LATENCY: 50μs</text>
-              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="720" y="52" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="600">JITTER: 2μs</text>
-            </g>
-
-            {/* Enhanced Colocated Leaf-Spine Network */}
-            <g class="network-component">
-              <rect x="50" y="100" width="320" height="130" rx="12" fill="url(#leafSpineGradient)" stroke="#22C55E" stroke-width="4" stroke-dasharray="8,4" class="animated-network-glow"/>
-              <text x="60" y="125" fill="#4ADE80" font-size="14" font-weight="bold">COLOCATED LEAF-SPINE FABRIC</text>
-              <text x="60" y="140" fill="#86EFAC" font-size="10">Deterministic Switching • Non-blocking Architecture</text>
-
-              {/* Enhanced Spine Layer */}
-              <g class="animated-node">
-                <circle cx="120" cy="170" r="18" fill="url(#leafSpineGradient)" stroke="#22C55E" stroke-width="3" filter="url(#quantShadow)" class="animated-router"/>
-                <circle cx="120" cy="170" r="8" fill="#22C55E" opacity="0.8"/>
-                <text x="120" y="175" text-anchor="middle" fill="white" font-size="8" font-weight="bold">S1</text>
-
-                <circle cx="210" cy="170" r="18" fill="url(#leafSpineGradient)" stroke="#22C55E" stroke-width="3" filter="url(#quantShadow)" class="animated-router"/>
-                <circle cx="210" cy="170" r="8" fill="#22C55E" opacity="0.8"/>
-                <text x="210" y="175" text-anchor="middle" fill="white" font-size="8" font-weight="bold">S2</text>
-
-                <circle cx="300" cy="170" r="18" fill="url(#leafSpineGradient)" stroke="#22C55E" stroke-width="3" filter="url(#quantShadow)" class="animated-router"/>
-                <circle cx="300" cy="170" r="8" fill="#22C55E" opacity="0.8"/>
-                <text x="300" y="175" text-anchor="middle" fill="white" font-size="8" font-weight="bold">S3</text>
-              </g>
-              <text x="210" y="150" text-anchor="middle" fill="#86EFAC" font-size="11" font-weight="600">SPINE SWITCHES</text>
-
-              {/* Enhanced Leaf Layer */}
-              <g class="animated-server">
-                <rect x="90" y="200" width="40" height="20" rx="4" fill="#4ADE80" stroke="#22C55E" stroke-width="2" filter="url(#quantShadow)"/>
-                <text x="110" y="212" text-anchor="middle" fill="white" font-size="8" font-weight="bold">L1</text>
-
-                <rect x="170" y="200" width="40" height="20" rx="4" fill="#4ADE80" stroke="#22C55E" stroke-width="2" filter="url(#quantShadow)"/>
-                <text x="190" y="212" text-anchor="middle" fill="white" font-size="8" font-weight="bold">L2</text>
-
-                <rect x="250" y="200" width="40" height="20" rx="4" fill="#4ADE80" stroke="#22C55E" stroke-width="2" filter="url(#quantShadow)"/>
-                <text x="270" y="212" text-anchor="middle" fill="white" font-size="8" font-weight="bold">L3</text>
-
-                <rect x="330" y="200" width="40" height="20" rx="4" fill="#4ADE80" stroke="#22C55E" stroke-width="2" filter="url(#quantShadow)"/>
-                <text x="350" y="212" text-anchor="middle" fill="white" font-size="8" font-weight="bold">L4</text>
-              </g>
-
-              {/* Spine-Leaf connections */}
-              <g class="animated-connection">
-                <path d="M120 188 L110 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M120 188 L190 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M210 188 L110 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M210 188 L190 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M210 188 L270 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M210 188 L350 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M300 188 L270 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-                <path d="M300 188 L350 200" stroke="#22C55E" stroke-width="2" marker-end="url(#quantFlow)"/>
-              </g>
-            </g>
-
-            {/* Enhanced Market Data Multicast Network */}
-            <g class="network-component">
-              <rect x="420" y="100" width="330" height="80" rx="12" fill="url(#marketDataGradient)" stroke="#F59E0B" stroke-width="3" stroke-dasharray="10,5" class="animated-high-traffic"/>
-              <text x="430" y="125" fill="#FBBF24" font-size="14" font-weight="bold">MARKET DATA MULTICAST NETWORK</text>
-              <text x="430" y="140" fill="#FCD34D" font-size="10">Dedicated High-Speed Market Feed Distribution</text>
-
-              {/* Enhanced Multicast Groups */}
-              <g class="animated-server">
-                <ellipse cx="470" cy="160" rx="25" ry="15" fill="rgba(245, 158, 11, 0.3)" stroke="#F59E0B" stroke-width="2"/>
-                <text x="470" y="165" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">NYSE</text>
-
-                <ellipse cx="530" cy="160" rx="25" ry="15" fill="rgba(245, 158, 11, 0.3)" stroke="#F59E0B" stroke-width="2"/>
-                <text x="530" y="165" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">NASDAQ</text>
-
-                <ellipse cx="590" cy="160" rx="25" ry="15" fill="rgba(245, 158, 11, 0.3)" stroke="#F59E0B" stroke-width="2"/>
-                <text x="590" y="165" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">ARCA</text>
-
-                <ellipse cx="650" cy="160" rx="25" ry="15" fill="rgba(245, 158, 11, 0.3)" stroke="#F59E0B" stroke-width="2"/>
-                <text x="650" y="165" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">BATS</text>
-
-                <ellipse cx="710" cy="160" rx="25" ry="15" fill="rgba(245, 158, 11, 0.3)" stroke="#F59E0B" stroke-width="2"/>
-                <text x="710" y="165" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">CME</text>
-              </g>
-            </g>
-
-            {/* Enhanced DMA Fabric */}
-            <g class="network-component">
-              <rect x="100" y="250" width="600" height="80" rx="12" fill="url(#dmaGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
-              <text x="110" y="275" fill="#60A5FA" font-size="14" font-weight="bold">DIRECT MARKET ACCESS (DMA) FABRIC</text>
-              <text x="110" y="290" fill="#93C5FD" font-size="10">Hardware Timestamping • Ultra-Low Latency Execution</text>
-
-              {/* Enhanced Hardware Timestamping Nodes */}
-              <g class="animated-server">
-                <rect x="140" y="305" width="80" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#quantShadow)"/>
-                <rect x="145" y="307" width="70" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="145" y="313" width="70" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="145" y="318" width="70" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="180" y="340" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">HW-TS-1</text>
-
-                <rect x="240" y="305" width="80" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#quantShadow)"/>
-                <rect x="245" y="307" width="70" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="245" y="313" width="70" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="245" y="318" width="70" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="280" y="340" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">HW-TS-2</text>
-
-                <rect x="340" y="305" width="80" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#quantShadow)"/>
-                <rect x="345" y="307" width="70" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="345" y="313" width="70" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="345" y="318" width="70" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="380" y="340" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">HW-TS-3</text>
-
-                <rect x="440" y="305" width="80" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#quantShadow)"/>
-                <rect x="445" y="307" width="70" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="445" y="313" width="70" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="445" y="318" width="70" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="480" y="340" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">HW-TS-4</text>
-
-                <rect x="540" y="305" width="80" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#quantShadow)"/>
-                <rect x="545" y="307" width="70" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="545" y="313" width="70" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="545" y="318" width="70" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="580" y="340" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">HW-TS-5</text>
-              </g>
-            </g>
-
-            {/* Enhanced Trading Algorithm Engines */}
-            <g class="network-component">
-              <rect x="50" y="360" width="220" height="70" rx="12" fill="url(#algoTradingGradient)" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="8,4" class="animated-server"/>
-              <text x="60" y="385" fill="#A78BFA" font-size="14" font-weight="bold">TRADING ALGORITHM ENGINES</text>
-              <text x="60" y="400" fill="#C4B5FD" font-size="10">Ultra-Low Latency Strategy Execution</text>
-
-              {/* Enhanced Algorithm Instances */}
-              <g class="animated-server">
-                <rect x="70" y="405" width="40" height="15" rx="4" fill="#8B5CF6" opacity="0.8"/>
-                <text x="90" y="415" text-anchor="middle" fill="white" font-size="8">ALGO-1</text>
-
-                <rect x="120" y="405" width="40" height="15" rx="4" fill="#A855F7" opacity="0.8"/>
-                <text x="140" y="415" text-anchor="middle" fill="white" font-size="8">ALGO-2</text>
-
-                <rect x="170" y="405" width="40" height="15" rx="4" fill="#C084FC" opacity="0.8"/>
-                <text x="190" y="415" text-anchor="middle" fill="white" font-size="8">ALGO-3</text>
-
-                <rect x="220" y="405" width="40" height="15" rx="4" fill="#DDD6FE" opacity="0.8"/>
-                <text x="240" y="415" text-anchor="middle" fill="white" font-size="8">ALGO-4</text>
-              </g>
-            </g>
-
-            {/* Enhanced Risk Management System */}
-            <g class="network-component">
-              <rect x="530" y="360" width="220" height="70" rx="12" fill="rgba(239, 68, 68, 0.08)" stroke="#EF4444" stroke-width="3" stroke-dasharray="6,3" class="animated-security-shield"/>
-              <text x="540" y="385" fill="#F87171" font-size="14" font-weight="bold">RISK MANAGEMENT SYSTEM</text>
-              <text x="540" y="400" fill="#FCA5A5" font-size="10">Real-time Position & Risk Monitoring</text>
-
-              {/* Enhanced Risk Components */}
-              <g class="animated-server">
-                <rect x="550" y="405" width="45" height="15" rx="4" fill="#EF4444" opacity="0.8"/>
-                <text x="572" y="415" text-anchor="middle" fill="white" font-size="7">PRE-TRADE</text>
-
-                <rect x="605" y="405" width="45" height="15" rx="4" fill="#F87171" opacity="0.8"/>
-                <text x="627" y="415" text-anchor="middle" fill="white" font-size="7">POST-TRADE</text>
-
-                <rect x="660" y="405" width="45" height="15" rx="4" fill="#FCA5A5" opacity="0.8"/>
-                <text x="682" y="415" text-anchor="middle" fill="white" font-size="7">REAL-TIME</text>
-              </g>
-            </g>
-
-            {/* Enhanced Network Connections */}
-            <g class="network-connections">
-              {/* Leaf-Spine to Market Data */}
-              <path d="M370 140 L420 140" stroke="#22C55E" stroke-width="4" fill="none" marker-end="url(#marketDataFlow)" class="animated-high-traffic"/>
-              <circle cx="395" cy="140" r="3" fill="#22C55E" class="animated-data-packet"/>
-
-              {/* Leaf-Spine to DMA */}
-              <path d="M210 230 L210 250" stroke="#22C55E" stroke-width="4" fill="none" marker-end="url(#dmaFlow)" class="animated-high-traffic"/>
-
-              {/* Market Data to DMA */}
-              <path d="M600 180 L580 250" stroke="#F59E0B" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#dmaFlow)"/>
-
-              {/* DMA to Trading Algorithms */}
-              <path d="M180 330 L160 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#quantFlow)"/>
-              <path d="M280 330 L200 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#quantFlow)"/>
-
-              {/* DMA to Risk Management */}
-              <path d="M580 330 L640 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#quantFlow)"/>
-              <path d="M480 330 L600 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#quantFlow)"/>
-
-              {/* Trading to Risk bidirectional */}
-              <path d="M270 395 Q400 350 530 395" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-
-              {/* Data flow particles */}
-              <circle cx="500" cy="140" r="2" fill="#F59E0B" class="animated-data-packet"/>
-              <circle cx="590" cy="215" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="230" cy="345" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 0.5s"/>
-              <circle cx="610" cy="345" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 1.5s"/>
-            </g>
-
-            {/* Enhanced Connection Labels with professional styling */}
-            <g class="connection-labels">
-              <rect x="150" y="90" width="100" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
-              <text x="200" y="102" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">PRIMARY LINK</text>
-              <rect x="315" y="180" width="130" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="380" y="192" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">ENCRYPTED TUNNEL</text>
-              <rect x="240" y="250" width="100" height="20" rx="10" fill="rgba(147, 51, 234, 0.2)" stroke="#9333EA" stroke-width="1"/>
-              <text x="290" y="262" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">DATA SYNC</text>
-              <rect x="460" y="250" width="100" height="20" rx="10" fill="rgba(147, 51, 234, 0.2)" stroke="#9333EA" stroke-width="1"/>
-              <text x="510" y="262" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="700">DATA SYNC</text>
-              <rect x="350" y="370" width="100" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="400" y="382" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">ORCHESTRATION</text>
+            
+            {/* Internet Traffic */}
+            <rect x="50" y="50" width="700" height="80" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2"/>
+            <text x="70" y="75" fill="#FBBF24" font-size="14" font-weight="bold">INTERNET TRAFFIC</text>
+            
+            {/* Security Appliances */}
+            <g transform="translate(200, 180)" class="animated-server">
+              <rect width="80" height="50" rx="6" fill="rgba(30, 41, 59, 0.8)" stroke="#EF4444" stroke-width="2" filter="url(#applianceShadow)"/>
+              <text x="40" y="25" text-anchor="middle" fill="#EF4444" font-size="12">🛡️</text>
+              <text x="40" y="40" text-anchor="middle" fill="#FCA5A5" font-size="9">Firewall</text>
             </g>
           </svg>
         `;
-        title = 'Multi-Cloud Active/Passive DR with SD-WAN';
-        description = 'Automated failover orchestration with encrypted replication';
+        title = 'Custom Security Appliances - Inline Traffic Inspection';
+        description = 'Security appliances deployed in inline DMZ with traffic inspection capabilities and dedicated management VLAN for secure administration';
         break;
 
-      case 'fraud-detection':
+      case 'ha-storage-solutions':
         svgContent = `
           <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <filter id="fraudShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <filter id="fraudGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <marker id="fraudFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#EF4444" filter="url(#fraudGlow)"/>
-              </marker>
-              <marker id="streamFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#9333EA" filter="url(#fraudGlow)"/>
-              </marker>
-              <marker id="analyticsFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#22C55E" filter="url(#fraudGlow)"/>
-              </marker>
-              <pattern id="fraudMeshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#EF4444" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="0" cy="0" r="0.5" fill="#EF4444" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="collectorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.1)"/>
-              </linearGradient>
-              <radialGradient id="streamGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.4)"/>
-                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.2)"/>
-              </radialGradient>
-              <linearGradient id="siemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(185, 28, 28, 0.4)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.9)"/>
-                <stop offset="100%" stop-color="rgba(185, 28, 28, 0.2)"/>
-              </linearGradient>
-            </defs>
-
-            {/* Enhanced Background with depth */}
             <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#fraudMeshPattern)" opacity="0.4"/>
-
-            {/* Floating fraud detection particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#22C55E" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
-
-            {/* TAP/SPAN Data Ingestion Zone */}
-            <rect x="20" y="20" width="760" height="80" rx="12" fill="url(#collectorGradient)" stroke="#EF4444" stroke-width="4" stroke-dasharray="8,4" class="animated-server"/>
-            <text x="30" y="45" fill="#F87171" font-size="16" font-weight="bold">🕵️ HIGH-THROUGHPUT DATA COLLECTORS</text>
-            <text x="30" y="60" fill="#FCA5A5" font-size="12">TAP/SPAN Network Feeds • Transaction Monitoring • Pattern Recognition</text>
-
-            {/* Enhanced Data Collection Points */}
-            <g class="animated-server">
-              <rect x="40" y="70" width="80" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="80" y="83" text-anchor="middle" fill="#F87171" font-size="9">NETWORK TAP</text>
-
-              <rect x="140" y="70" width="80" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="180" y="83" text-anchor="middle" fill="#F87171" font-size="9">ATM FEEDS</text>
-
-              <rect x="240" y="70" width="80" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="280" y="83" text-anchor="middle" fill="#F87171" font-size="9">CARD SYSTEMS</text>
-
-              <rect x="340" y="70" width="80" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="380" y="83" text-anchor="middle" fill="#F87171" font-size="9">WIRE XFERS</text>
-
-              <rect x="440" y="70" width="80" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="480" y="83" text-anchor="middle" fill="#F87171" font-size="9">MOBILE APPS</text>
-
-              <rect x="540" y="70" width="80" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="580" y="83" text-anchor="middle" fill="#F87171" font-size="9">WEB PORTALS</text>
-
-              <rect x="640" y="70" width="100" height="20" rx="6" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
-              <text x="690" y="83" text-anchor="middle" fill="#F87171" font-size="9">PARTNER APIs</text>
-            </g>
-
-            {/* Enhanced Kafka/MQ Pub/Sub Overlay */}
-            <g class="network-component">
-              <ellipse cx="400" cy="170" rx="220" ry="60" fill="url(#streamGradient)" stroke="#9333EA" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
-              <text x="400" y="155" text-anchor="middle" fill="#A855F7" font-size="16" font-weight="bold">KAFKA/MQ PUB/SUB OVERLAY</text>
-              <text x="400" y="175" text-anchor="middle" fill="#C4B5FD" font-size="12">Event-Driven Stream Processing Mesh</text>
-              <text x="400" y="190" text-anchor="middle" fill="#DDD6FE" font-size="10">High-Velocity Transaction Processing • Real-time Event Correlation</text>
-
-              {/* Enhanced Topic Partitions */}
-              <g class="animated-node">
-                <ellipse cx="320" cy="150" rx="25" ry="12" fill="rgba(147, 51, 234, 0.3)" stroke="#9333EA" stroke-width="2"/>
-                <text x="320" y="155" text-anchor="middle" fill="#A855F7" font-size="8" font-weight="bold">TOPIC-1</text>
-
-                <ellipse cx="400" cy="140" rx="25" ry="12" fill="rgba(168, 85, 247, 0.3)" stroke="#A855F7" stroke-width="2"/>
-                <text x="400" y="145" text-anchor="middle" fill="#C4B5FD" font-size="8" font-weight="bold">TOPIC-2</text>
-
-                <ellipse cx="480" cy="150" rx="25" ry="12" fill="rgba(196, 181, 253, 0.3)" stroke="#C4B5FD" stroke-width="2"/>
-                <text x="480" y="155" text-anchor="middle" fill="#DDD6FE" font-size="8" font-weight="bold">TOPIC-3</text>
-              </g>
-            </g>
-
-            {/* Enhanced Stream Processing Engines */}
-            <g class="network-component">
-              <rect x="50" y="250" width="700" height="90" rx="12" fill="rgba(30, 58, 138, 0.08)" stroke="#1E3A8A" stroke-width="3" stroke-dasharray="10,5" class="animated-server"/>
-              <text x="60" y="275" fill="#3B82F6" font-size="14" font-weight="bold">STREAM PROCESSING ENGINES</text>
-
-              {/* Enhanced Pattern Analysis Engine */}
-              <g transform="translate(80, 285)" class="animated-server">
-                <rect width="120" height="45" rx="8" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2" filter="url(#fraudShadow)"/>
-                <rect x="8" y="8" width="104" height="6" rx="3" fill="#3B82F6" opacity="0.8"/>
-                <rect x="8" y="16" width="104" height="4" rx="2" fill="#60A5FA" opacity="0.6"/>
-                <rect x="8" y="22" width="104" height="4" rx="2" fill="#93C5FD" opacity="0.4"/>
-                <circle cx="20" cy="32" r="2" fill="#3B82F6" class="animated-status"/>
-                <circle cx="35" cy="32" r="2" fill="#60A5FA" class="animated-status"/>
-                <circle cx="50" cy="32" r="2" fill="#93C5FD" class="animated-status"/>
-                <circle cx="65" cy="32" r="2" fill="#BFDBFE" class="animated-status"/>
-                <text x="60" y="55" text-anchor="middle" fill="#93C5FD" font-size="10" font-weight="600">Pattern Analysis</text>
-                <text x="60" y="65" text-anchor="middle" fill="#BFDBFE" font-size="8">Real-time Detection</text>
-              </g>
-
-              {/* Enhanced Anomaly Scoring Engine */}
-              <g transform="translate(220, 285)" class="animated-server">
-                <rect width="120" height="45" rx="8" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="2" filter="url(#fraudShadow)"/>
-                <rect x="8" y="8" width="104" height="6" rx="3" fill="#10B981" opacity="0.8"/>
-                <rect x="8" y="16" width="104" height="4" rx="2" fill="#34D399" opacity="0.6"/>
-                <rect x="8" y="22" width="104" height="4" rx="2" fill="#6EE7B7" opacity="0.4"/>
-                <circle cx="20" cy="32" r="2" fill="#10B981" class="animated-status"/>
-                <circle cx="35" cy="32" r="2" fill="#34D399" class="animated-status"/>
-                <circle cx="50" cy="32" r="2" fill="#6EE7B7" class="animated-status"/>
-                <circle cx="65" cy="32" r="2" fill="#A7F3D0" class="animated-status"/>
-                <text x="60" y="55" text-anchor="middle" fill="#6EE7B7" font-size="10" font-weight="600">Anomaly Scoring</text>
-                <text x="60" y="65" text-anchor="middle" fill="#A7F3D0" font-size="8">ML Risk Assessment</text>
-              </g>
-
-              {/* Enhanced Fraud Correlation Engine */}
-              <g transform="translate(360, 285)" class="animated-server">
-                <rect width="120" height="45" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#fraudShadow)"/>
-                <rect x="8" y="8" width="104" height="6" rx="3" fill="#F59E0B" opacity="0.8"/>
-                <rect x="8" y="16" width="104" height="4" rx="2" fill="#FBBF24" opacity="0.6"/>
-                <rect x="8" y="22" width="104" height="4" rx="2" fill="#FCD34D" opacity="0.4"/>
-                <circle cx="20" cy="32" r="2" fill="#F59E0B" class="animated-status"/>
-                <circle cx="35" cy="32" r="2" fill="#FBBF24" class="animated-status"/>
-                <circle cx="50" cy="32" r="2" fill="#FCD34D" class="animated-status"/>
-                <circle cx="65" cy="32" r="2" fill="#FEF3C7" class="animated-status"/>
-                <text x="60" y="55" text-anchor="middle" fill="#FCD34D" font-size="10" font-weight="600">Fraud Correlation</text>
-                <text x="60" y="65" text-anchor="middle" fill="#FEF3C7" font-size="8">Cross-Channel Analytics</text>
-              </g>
-
-              {/* Enhanced Behavioral AI Engine */}
-              <g transform="translate(500, 285)" class="animated-server">
-                <rect width="120" height="45" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="#A855F7" stroke-width="2" filter="url(#fraudShadow)"/>
-                <rect x="8" y="8" width="104" height="6" rx="3" fill="#A855F7" opacity="0.8"/>
-                <rect x="8" y="16" width="104" height="4" rx="2" fill="#C4B5FD" opacity="0.6"/>
-                <rect x="8" y="22" width="104" height="4" rx="2" fill="#DDD6FE" opacity="0.4"/>
-                <circle cx="20" cy="32" r="2" fill="#A855F7" class="animated-status"/>
-                <circle cx="35" cy="32" r="2" fill="#C4B5FD" class="animated-status"/>
-                <circle cx="50" cy="32" r="2" fill="#DDD6FE" class="animated-status"/>
-                <circle cx="65" cy="32" r="2" fill="#F3F4F6" class="animated-status"/>
-                <text x="60" y="55" text-anchor="middle" fill="#DDD6FE" font-size="10" font-weight="600">Behavioral AI</text>
-                <text x="60" y="65" text-anchor="middle" fill="#F3F4F6" font-size="8">User Profiling</text>
-              </g>
-            </g>
-
-            {/* Enhanced Analytics Dashboard Cluster */}
-            <g class="network-component">
-              <rect x="200" y="360" width="400" height="70" rx="12" fill="rgba(34, 197, 94, 0.08)" stroke="#22C55E" stroke-width="3" stroke-dasharray="8,4" class="animated-network-glow"/>
-              <text x="210" y="385" fill="#4ADE80" font-size="14" font-weight="bold">ANALYTICS DASHBOARD CLUSTER</text>
-              <text x="210" y="400" fill="#86EFAC" font-size="10">Real-time Visualization • Alert Generation • Executive Reporting</text>
-
-              {/* Enhanced Dashboard Components */}
-              <g class="animated-server">
-                <rect x="220" y="405" width="80" height="20" rx="6" fill="#22C55E" opacity="0.8"/>
-                <text x="260" y="418" text-anchor="middle" fill="white" font-size="8">REAL-TIME</text>
-
-                <rect x="310" y="405" width="80" height="20" rx="6" fill="#34D399" opacity="0.8"/>
-                <text x="350" y="418" text-anchor="middle" fill="white" font-size="8">FORENSICS</text>
-
-                <rect x="400" y="405" width="80" height="20" rx="6" fill="#6EE7B7" opacity="0.8"/>
-                <text x="440" y="418" text-anchor="middle" fill="white" font-size="8">REPORTING</text>
-
-                <rect x="490" y="405" width="80" height="20" rx="6" fill="#A7F3D0" opacity="0.8"/>
-                <text x="530" y="418" text-anchor="middle" fill="white" font-size="8">ALERTING</text>
-              </g>
-            </g>
-
-            {/* Enhanced SIEM Ingestion System */}
-            <g class="network-component">
-              <rect x="620" y="280" width="150" height="120" rx="12" fill="url(#siemGradient)" stroke="#B91C1C" stroke-width="3" stroke-dasharray="6,3" class="animated-security-shield"/>
-              <text x="630" y="305" fill="#DC2626" font-size="14" font-weight="bold">SIEM INGESTION</text>
-              <text x="630" y="320" fill="#EF4444" font-size="10">Security Event Management</text>
-
-              {/* Enhanced SIEM Components */}
-              <g class="animated-server">
-                <rect x="635" y="330" width="120" height="15" rx="4" fill="#B91C1C" opacity="0.8"/>
-                <text x="695" y="340" text-anchor="middle" fill="white" font-size="7">Log Aggregation</text>
-
-                <rect x="635" y="350" width="120" height="15" rx="4" fill="#DC2626" opacity="0.8"/>
-                <text x="695" y="360" text-anchor="middle" fill="white" font-size="7">Event Correlation</text>
-
-                <rect x="635" y="370" width="120" height="15" rx="4" fill="#EF4444" opacity="0.8"/>
-                <text x="695" y="380" text-anchor="middle" fill="white" font-size="7">Threat Intelligence</text>
-              </g>
-            </g>
-
-            {/* Enhanced Network Connections */}
-            <g class="network-connections">
-              {/* Data collectors to Kafka */}
-              <path d="M400 100 L400 120" stroke="#EF4444" stroke-width="4" fill="none" marker-end="url(#streamFlow)" class="animated-high-traffic"/>
-              <circle cx="400" cy="105" r="3" fill="#EF4444" class="animated-data-packet"/>
-
-              {/* Kafka to Stream Processors */}
-              <path d="M350 230 L140 285" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#streamFlow)"/>
-              <path d="M380 230 L280 285" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#streamFlow)"/>
-              <path d="M420 230 L420 285" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#streamFlow)"/>
-              <path d="M450 230 L560 285" stroke="#9333EA" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#streamFlow)"/>
-
-              {/* Stream processors to Analytics */}
-              <path d="M280 340 L300 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-              <path d="M420 340 L400 360" stroke="#10B981" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-              <path d="M560 340 L500 360" stroke="#F59E0B" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-
-              {/* Analytics to SIEM */}
-              <path d="M600 395 L620 350" stroke="#22C55E" stroke-width="3" fill="none" stroke-dasharray="6,3" class="animated-secure-connection" marker-end="url(#fraudFlow)"/>
-
-              {/* Cross-processor correlation */}
-              <path d="M200 307 L360 307" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-              <path d="M480 307 L620 307" stroke="#A855F7" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-
-              {/* Data flow particles */}
-              <circle cx="375" cy="260" r="2" fill="#9333EA" class="animated-data-packet"/>
-              <circle cx="300" cy="307" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="450" cy="350" r="2" fill="#22C55E" class="animated-data-packet" style="animation-delay: 0.5s"/>
-              <circle cx="610" cy="372" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 1.5s"/>
-            </g>
-
-            {/* Enhanced Connection Labels with professional styling */}
-            <g class="connection-labels">
-              <rect x="350" y="90" width="100" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="400" y="102" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">STREAM FEED</text>
-              <rect x="280" y="190" width="80" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
-              <text x="320" y="202" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">EVENT BUS</text>
-              <rect x="520" y="190" width="80" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
-              <text x="560" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">ANALYTICS</text>
-              <rect x="320" y="330" width="80" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="360" y="342" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">SIEM</text>
-            </g>
+            
+            {/* Site A */}
+            <rect x="50" y="50" width="300" height="350" rx="12" fill="rgba(59, 130, 246, 0.1)" stroke="#3B82F6" stroke-width="3"/>
+            <text x="70" y="80" fill="#60A5FA" font-size="16" font-weight="bold">SITE A - PRIMARY</text>
+            
+            {/* Site B */}
+            <rect x="450" y="50" width="300" height="350" rx="12" fill="rgba(168, 85, 247, 0.1)" stroke="#A855F7" stroke-width="3"/>
+            <text x="470" y="80" fill="#C4B5FD" font-size="16" font-weight="bold">SITE B - SECONDARY</text>
           </svg>
         `;
-        title = 'Event-Driven Stream Processing Mesh';
-        description = 'High-throughput pub/sub overlay (Kafka/MQ) connecting collectors → stream processors → analytics cluster, with TAP/SPAN feeds and SIEM ingestion lanes';
+        title = 'High Availability Storage Solutions - Dual-Site Replication';
+        description = 'Active/active storage clusters across geographic sites with synchronous and asynchronous replication';
         break;
 
-      case 'rug-pull-detection':
+      case 'treasury-risk-dashboards':
         svgContent = `
           <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <filter id="rugShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <filter id="rugGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <marker id="rugFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#F59E0B" filter="url(#rugGlow)"/>
-              </marker>
-              <marker id="mlFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#3B82F6" filter="url(#rugGlow)"/>
-              </marker>
-              <marker id="alertFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#22C55E" filter="url(#rugGlow)"/>
-              </marker>
-              <pattern id="rugMeshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#F59E0B" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="0" cy="0" r="0.5" fill="#F59E0B" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="dexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="collectorGridGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(16, 185, 129, 0.1)"/>
-              </linearGradient>
-              <radialGradient id="secureOverlayGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(147, 51, 234, 0.4)"/>
-                <stop offset="70%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.2)"/>
-              </radialGradient>
-              <linearGradient id="gpuClusterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-            </defs>
-
-            {/* Enhanced Background with depth */}
             <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#rugMeshPattern)" opacity="0.4"/>
-
-            {/* Floating fraud detection particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#9333EA" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#22C55E" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
-
-            {/* DEX Exchange Endpoints */}
-            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="40" y="45" fill="#F59E0B" font-size="16" font-weight="bold" class="jump-icon">⚠️</text>
-            <text x="90" y="45" fill="#FBBF24" font-size="14" font-weight="bold">DECENTRALIZED EXCHANGE ENDPOINTS</text>
-            <text x="30" y="60" fill="#FCA5A5" font-size="12">Real-time Contract Monitoring • Liquidity Pool Analysis • Transaction Pattern Detection</text>
-
-            {/* Enhanced DEX Endpoint Monitors */}
-            <g class="animated-server">
-              <ellipse cx="120" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="120" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">🦄</text>
-              <text x="120" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">Uniswap V3</text>
-
-              <ellipse cx="250" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="250" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">🥞</text>
-              <text x="250" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">PancakeSwap</text>
-
-              <ellipse cx="380" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="380" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">🍣</text>
-              <text x="380" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">SushiSwap</text>
-
-              <ellipse cx="510" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="510" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">📈</text>
-              <text x="510" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">1inch</text>
-
-              <ellipse cx="640" cy="85" rx="60" ry="20" fill="url(#dexGradient)" stroke="#F59E0B" stroke-width="2" filter="url(#rugShadow)"/>
-              <text x="640" y="82" text-anchor="middle" fill="#F59E0B" font-size="12" font-weight="bold" class="jump-icon">⚖️</text>
-              <text x="640" y="92" text-anchor="middle" fill="#FBBF24" font-size="9">Balancer</text>
-            </g>
-
-            {/* Enhanced Distributed Lightweight Collectors */}
-            <g class="network-component">
-              <rect x="80" y="120" width="640" height="60" rx="12" fill="url(#collectorGridGradient)" stroke="#10B981" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
-              <text x="90" y="145" fill="#34D399" font-size="14" font-weight="bold">DISTRIBUTED LIGHTWEIGHT COLLECTORS</text>
-              <text x="90" y="160" fill="#6EE7B7" font-size="10">Smart Contract Monitoring • Transaction Analysis • Behavioral Tracking</text>
-
-              {/* Enhanced Collector Grid */}
-              <g class="animated-server">
-                <rect x="100" y="155" width="80" height="15" rx="4" fill="#10B981" opacity="0.8"/>
-                <text x="140" y="165" text-anchor="middle" fill="white" font-size="8">CONTRACT-MON</text>
-
-                <rect x="190" y="155" width="80" height="15" rx="4" fill="#34D399" opacity="0.8"/>
-                <text x="230" y="165" text-anchor="middle" fill="white" font-size="8">LIQ-TRACKER</text>
-
-                <rect x="280" y="155" width="80" height="15" rx="4" fill="#6EE7B7" opacity="0.8"/>
-                <text x="320" y="165" text-anchor="middle" fill="white" font-size="8">TX-ANALYZER</text>
-
-                <rect x="370" y="155" width="80" height="15" rx="4" fill="#A7F3D0" opacity="0.8"/>
-                <text x="410" y="165" text-anchor="middle" fill="white" font-size="8">GAS-MONITOR</text>
-
-                <rect x="460" y="155" width="80" height="15" rx="4" fill="#ECFDF5" opacity="0.8"/>
-                <text x="500" y="165" text-anchor="middle" fill="black" font-size="8">WHALE-DETECT</text>
-
-                <rect x="550" y="155" width="80" height="15" rx="4" fill="#10B981" opacity="0.8"/>
-                <text x="590" y="165" text-anchor="middle" fill="white" font-size="8">RUG-SIGNAL</text>
-
-                <rect x="640" y="155" width="70" height="15" rx="4" fill="#34D399" opacity="0.8"/>
-                <text x="675" y="165" text-anchor="middle" fill="white" font-size="8">API-RELAY</text>
-              </g>
-            </g>
-
-            {/* Enhanced Secure Overlay Network */}
-            <g class="network-component">
-              <ellipse cx="400" cy="220" rx="200" ry="50" fill="url(#secureOverlayGradient)" stroke="#9333EA" stroke-width="4" stroke-dasharray="12,6" class="animated-secure-connection"/>
-              <text x="400" y="210" text-anchor="middle" fill="#A855F7" font-size="16" font-weight="bold">SECURE OVERLAY NETWORK</text>
-              <text x="400" y="225" text-anchor="middle" fill="#C4B5FD" font-size="12">Encrypted Data Distribution • ML Model Sync</text>
-              <text x="400" y="240" text-anchor="middle" fill="#DDD6FE" font-size="10">End-to-End Encryption • Zero-Trust Architecture</text>
-
-              {/* Enhanced Overlay Nodes */}
-              <g class="animated-node">
-                <circle cx="320" cy="200" r="12" fill="rgba(147, 51, 234, 0.4)" stroke="#9333EA" stroke-width="2"/>
-                <text x="320" y="205" text-anchor="middle" fill="#A855F7" font-size="8">E1</text>
-
-                <circle cx="400" cy="185" r="12" fill="rgba(168, 85, 247, 0.4)" stroke="#A855F7" stroke-width="2"/>
-                <text x="400" y="190" text-anchor="middle" fill="#C4B5FD" font-size="8">E2</text>
-
-                <circle cx="480" cy="200" r="12" fill="rgba(196, 181, 253, 0.4)" stroke="#C4B5FD" stroke-width="2"/>
-                <text x="480" y="205" text-anchor="middle" fill="#DDD6FE" font-size="8">E3</text>
-
-                {/* Encrypted connections */}
-                <path d="M332 200 L388 185" stroke="#9333EA" stroke-width="2" stroke-dasharray="4,2" class="animated-secure-connection"/>
-                <path d="M412 185 L468 200" stroke="#A855F7" stroke-width="2" stroke-dasharray="4,2" class="animated-secure-connection"/>
-              </g>
-            </g>
-
-            {/* Enhanced Central GPU Training Cluster */}
-            <g class="network-component">
-              <rect x="150" y="280" width="500" height="90" rx="12" fill="url(#gpuClusterGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-server"/>
-              <text x="160" y="305" fill="#60A5FA" font-size="16" font-weight="bold">🤖 CENTRAL GPU TRAINING CLUSTER</text>
-              <text x="160" y="320" fill="#93C5FD" font-size="12">Advanced ML Models • Pattern Recognition • Behavioral Analysis</text>
-              <text x="160" y="335" fill="#BFDBFE" font-size="10">PyTorch • TensorFlow • CUDA Acceleration • Real-time Inference</text>
-
-              {/* Enhanced GPU Node Array */}
-              <g class="animated-node">
-                <rect x="170" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="175" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="175" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="175" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="200" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-1</text>
-
-                <rect x="240" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="245" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="245" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="245" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="270" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-2</text>
-
-                <rect x="310" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="315" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="315" y="353" width="50" height="3" rx="1" fill="#93CFD" opacity="0.6"/>
-                <rect x="315" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="340" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-3</text>
-
-                <rect x="380" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="385" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="385" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="385" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="410" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-4</text>
-
-                <rect x="450" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="455" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="455" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="455" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="480" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-5</text>
-
-                <rect x="520" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="525" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="525" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="525" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="550" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-6</text>
-
-                <rect x="590" y="345" width="60" height="20" rx="6" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" filter="url(#rugShadow)"/>
-                <rect x="595" y="347" width="50" height="4" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="595" y="353" width="50" height="3" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="595" y="358" width="50" height="3" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <text x="620" y="380" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">GPU-7</text>
-              </g>
-            </g>
-
-            {/* Enhanced Edge Inference Infrastructure */}
-            <g class="network-component">
-              <rect x="40" y="390" width="720" height="50" rx="12" fill="rgba(34, 197, 94, 0.08)" stroke="#22C55E" stroke-width="3" stroke-dasharray="8,4" class="animated-network-glow"/>
-              <text x="50" y="410" fill="#4ADE80" font-size="14" font-weight="bold">EDGE INFERENCE INFRASTRUCTURE</text>
-              <text x="50" y="425" fill="#86EFAC" font-size="10">Low-Latency Detection • Real-time Alerts • Mobile Notifications</text>
-
-              {/* Enhanced Edge Inference Nodes */}
-              <g class="animated-server">
-                <rect x="60" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="80" cy="422" r="3" fill="#22C55E" class="animated-status"/>
-                <text x="100" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-DETECT-1</text>
-                <text x="100" y="428" fill="#86EFAC" font-size="7">Instant Detection</text>
-
-                <rect x="200" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="220" cy="422" r="3" fill="#34D399" class="animated-status"/>
-                <text x="240" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-SCORE-2</text>
-                <text x="240" y="428" fill="#86EFAC" font-size="7">Risk Scoring</text>
-
-                <rect x="340" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="360" cy="422" r="3" fill="#6EE7B7" class="animated-status"/>
-                <text x="380" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-ALERT-3</text>
-                <text x="380" y="428" fill="#86EFAC" font-size="7">Alert Generation</text>
-
-                <rect x="480" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="500" cy="422" r="3" fill="#A7F3D0" class="animated-status"/>
-                <text x="520" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-MOBILE-4</text>
-                <text x="520" y="428" fill="#86EFAC" font-size="7">Mobile Push</text>
-
-                <rect x="620" y="410" width="120" height="25" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2" filter="url(#rugShadow)"/>
-                <circle cx="640" cy="422" r="3" fill="#ECFDF5" class="animated-status"/>
-                <text x="660" y="418" fill="#4ADE80" font-size="9" font-weight="bold">EDGE-API-5</text>
-                <text x="660" y="428" fill="#86EFAC" font-size="7">API Gateway</text>
-              </g>
-            </g>
-
-            {/* Enhanced Network Connections */}
-            <g class="network-connections">
-              {/* DEX to Collectors */}
-              <path d="M120 105 L120 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M250 105 L250 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M380 105 L380 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M510 105 L510 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-              <path d="M640 105 L640 120" stroke="#F59E0B" stroke-width="3" fill="none" marker-end="url(#rugFlow)" class="animated-connection"/>
-
-              {/* Collectors to Overlay */}
-              <path d="M400 180 L400 195" stroke="#10B981" stroke-width="4" fill="none" marker-end="url(#streamFlow)" class="animated-high-traffic"/>
-              <circle cx="400" cy="190" r="3" fill="#10B981" class="animated-data-packet"/>
-
-              {/* Stream processors to Analytics */}
-              <path d="M280 340 L300 360" stroke="#3B82F6" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-              <path d="M420 340 L400 360" stroke="#10B981" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-              <path d="M560 340 L500 360" stroke="#F59E0B" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#analyticsFlow)"/>
-
-              {/* Analytics to SIEM */}
-              <path d="M600 395 L620 350" stroke="#22C55E" stroke-width="3" fill="none" stroke-dasharray="6,3" class="animated-secure-connection" marker-end="url(#fraudFlow)"/>
-
-              {/* Cross-processor correlation */}
-              <path d="M200 307 L360 307" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-              <path d="M480 307 L620 307" stroke="#A855F7" stroke-width="2" fill="none" stroke-dasharray="4,2" class="animated-connection"/>
-
-              {/* Data flow particles */}
-              <circle cx="375" cy="260" r="2" fill="#9333EA" class="animated-data-packet"/>
-              <circle cx="300" cy="307" r="2" fill="#3B82F6" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="450" cy="350" r="2" fill="#22C55E" class="animated-data-packet" style="animation-delay: 0.5s"/>
-              <circle cx="610" cy="372" r="2" fill="#EF4444" class="animated-data-packet" style="animation-delay: 1.5s"/>
-            </g>
-
-            {/* Enhanced Connection Labels with professional styling */}
-            <g class="connection-labels">
-              <rect x="350" y="90" width="100" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="400" y="102" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">STREAM FEED</text>
-              <rect x="280" y="190" width="80" height="20" rx="10" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
-              <text x="320" y="202" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">EVENT BUS</text>
-              <rect x="520" y="190" width="80" height="20" rx="10" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
-              <text x="560" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">ANALYTICS</text>
-              <rect x="320" y="330" width="80" height="20" rx="10" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="1"/>
-              <text x="360" y="342" text-anchor="middle" fill="#FBBF24" font-size="10" font-weight="700">SIEM</text>
-            </g>
+            
+            {/* Financial VLAN */}
+            <rect x="50" y="50" width="700" height="200" rx="12" fill="rgba(239, 68, 68, 0.1)" stroke="#EF4444" stroke-width="3"/>
+            <text x="70" y="80" fill="#F87171" font-size="16" font-weight="bold">SECURE FINANCIAL VLAN</text>
           </svg>
         `;
-        title = 'Event-Driven Stream Processing Mesh';
-        description = 'High-throughput pub/sub overlay (Kafka/MQ) connecting collectors → stream processors → analytics cluster, with TAP/SPAN feeds and SIEM ingestion lanes';
+        title = 'Treasury & Risk Dashboards - Secure Financial Infrastructure';
+        description = 'Financial engines and vaults in segregated subnets with read-only market data feeds';
+        break;
+
+      case 'defi-yield-arbitrage':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Liquidity Pool Mesh */}
+            <rect x="50" y="50" width="700" height="150" rx="12" fill="rgba(16, 185, 129, 0.1)" stroke="#10B981" stroke-width="3"/>
+            <text x="70" y="80" fill="#34D399" font-size="16" font-weight="bold">MULTI-POOL LIQUIDITY MESH</text>
+          </svg>
+        `;
+        title = 'DeFi Yield & Arbitrage Systems - Multi-Pool Liquidity Mesh';
+        description = 'Low-latency connectivity between liquidity nodes and exchange relays with secure wallet nodes';
+        break;
+
+      case 'training-knowledge-platforms':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* DMZ - Web Tier */}
+            <rect x="50" y="50" width="700" height="100" rx="12" fill="rgba(34, 197, 94, 0.1)" stroke="#22C55E" stroke-width="3"/>
+            <text x="70" y="80" fill="#4ADE80" font-size="16" font-weight="bold">DMZ - PRESENTATION / WEB TIER</text>
+          </svg>
+        `;
+        title = 'Training & Knowledge Platforms - Multi-Tier LMS Topology';
+        description = 'Presentation/web tier in DMZ, application tier in private subnets, content storage with CDN';
         break;
 
     }
 
+    // Use InteractiveTopology component for full functionality
     return (
-      <div className={`topology-container ${isExpanded ? 'expanded' : ''}`}>
-        <div className="topology-header flex justify-between items-center p-4 bg-slate-800/50 border-b border-gray-700/50 rounded-t-2xl">
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
-          <button onClick={toggleExpand} className="text-gray-400 hover:text-blue-400 transition-colors">
-            {isExpanded ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m7 0H9m7 0h3a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3m7 0h3"></path>
-                <path d="M16 17v3a2 2 0 0 0 2 2h3m0 0V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3m7 0h3"></path>
-              </svg>
-            )}
-          </button>
-        </div>
-        <div className={`topology-content p-4 ${isExpanded ? 'h-auto' : 'h-48 overflow-hidden'}`}>
-          <div
-            className="svg-wrapper"
-            dangerouslySetInnerHTML={{ __html: svgContent }}
-          />
-        </div>
-        {description && (
-          <p className={`text-gray-300 text-sm leading-relaxed p-4 ${isExpanded ? '' : 'pb-0'}`}>
-            {description}
-          </p>
-        )}
-      </div>
+      <InteractiveTopology
+        svgContent={svgContent}
+        title={title}
+        description={description}
+        className="w-full h-full min-h-[400px]"
+        enablePerformanceMode={true}
+        animationQuality="medium"
+        minScale={0.2}
+        maxScale={6}
+        initialFit={true}
+      />
     );
-  }, [solutionId, isExpanded]);
+  }, [solutionId]);
 
   return renderTopology;
 };
@@ -4754,6 +3709,66 @@ export default function BusinessSolutions() {
         { id: '1', icon: Network, label: 'Edge Distribution', description: 'Deploy edge AI nodes' },
         { id: '2', icon: Bot, label: 'AI Processing', description: 'Local machine learning' },
         { id: '3', icon: Settings, label: 'Central Control', description: 'Cloud orchestration' }
+      ],
+      category: 'specialized'
+    },
+    {
+      id: 'custom-security-appliances',
+      name: 'Custom Security Appliances',
+      icon: Lock,
+      description: 'Isolated Appliance Subnet with Inline TAPs - appliances deployed in inline DMZ or inspection path with dedicated management VLAN.',
+      workflow: [
+        { id: '1', icon: Network, label: 'Inline Deployment', description: 'Deploy appliances in traffic path' },
+        { id: '2', icon: Eye, label: 'Traffic Inspection', description: 'Monitor and analyze traffic' },
+        { id: '3', icon: Settings, label: 'Management VLAN', description: 'Secure appliance management' }
+      ],
+      category: 'specialized'
+    },
+    {
+      id: 'ha-storage-solutions',
+      name: 'High Availability Storage Solutions',
+      icon: HardDrive,
+      description: 'Dual-Site Replicated SAN/NAS Fabric - active/active storage clusters across sites with synchronous/asynchronous replication.',
+      workflow: [
+        { id: '1', icon: HardDrive, label: 'Storage Cluster', description: 'Deploy distributed storage' },
+        { id: '2', icon: ArrowLeftRight, label: 'Site Replication', description: 'Cross-site data sync' },
+        { id: '3', icon: CheckCircle, label: 'High Availability', description: 'Active/active failover' }
+      ],
+      category: 'specialized'
+    },
+    {
+      id: 'treasury-risk-dashboards',
+      name: 'Treasury & Risk Dashboards',
+      icon: BarChart3,
+      description: 'Secure Financial VLAN + Read-Only Feeds - financial engines and vaults in segregated subnets with read-only market feeds.',
+      workflow: [
+        { id: '1', icon: Lock, label: 'Financial Vault', description: 'Secure financial data storage' },
+        { id: '2', icon: BarChart3, label: 'Risk Analytics', description: 'Real-time risk assessment' },
+        { id: '3', icon: Share, label: 'Market Data', description: 'External market feed integration' }
+      ],
+      category: 'specialized'
+    },
+    {
+      id: 'defi-yield-arbitrage',
+      name: 'DeFi Yield & Arbitrage Systems',
+      icon: TrendingUp,
+      description: 'Multi-Pool Liquidity Mesh - low-latency connectivity between liquidity nodes and exchange relays with secure wallet nodes.',
+      workflow: [
+        { id: '1', icon: Network, label: 'Liquidity Mesh', description: 'Connect multiple liquidity pools' },
+        { id: '2', icon: TrendingUp, label: 'Arbitrage Engine', description: 'Automated opportunity detection' },
+        { id: '3', icon: Lock, label: 'Secure Wallets', description: 'HSM-protected wallet nodes' }
+      ],
+      category: 'specialized'
+    },
+    {
+      id: 'training-knowledge-platforms',
+      name: 'Training & Knowledge Platforms',
+      icon: GraduationCap,
+      description: 'Multi-Tier LMS Topology - presentation/web tier in DMZ, application tier in private subnets, content storage with CDN.',
+      workflow: [
+        { id: '1', icon: Globe, label: 'Web Tier', description: 'Public-facing presentation layer' },
+        { id: '2', icon: Database, label: 'Content Storage', description: 'Secure content repository' },
+        { id: '3', icon: GraduationCap, label: 'Learning Management', description: 'Training delivery platform' }
       ],
       category: 'specialized'
     }
