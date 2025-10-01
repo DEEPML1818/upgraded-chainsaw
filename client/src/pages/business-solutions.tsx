@@ -3165,91 +3165,910 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         break;
 
 
-      case 'dao-governance':
+      case 'pen-test':
         svgContent = `
           <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <linearGradient id="daoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="100%" stop-color="rgba(147, 51, 234, 0.1)"/>
+              <linearGradient id="pentestGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
               </linearGradient>
             </defs>
             <rect width="100%" height="100%" fill="#0F172A"/>
-
-            {/* P2P Blockchain Overlay Network */}
-            <ellipse cx="400" cy="120" rx="300" ry="60" fill="url(#daoGradient)" stroke="#3B82F6" stroke-width="4" stroke-dasharray="12,6" class="animated-connection"/>
-            <text x="400" y="110" text-anchor="middle" fill="#60A5FA" font-size="16" font-weight="bold">🏛️ P2P BLOCKCHAIN OVERLAY NETWORK</text>
-            <text x="400" y="125" text-anchor="middle" fill="#93C5FD" font-size="11">Fully Decentralized On-Chain Voting Infrastructure</text>
-            <text x="400" y="140" text-anchor="middle" fill="#BFDBFE" font-size="9">Ethereum • Polygon • Arbitrum • Base</text>
-
-            {/* Blockchain Nodes */}
-            <g class="animated-node">
-              <circle cx="200" cy="80" r="20" fill="#3B82F6" class="animated-status"/>
-              <text x="200" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ETH</text>
-
-              <circle cx="350" cy="60" r="20" fill="#8B5CF6" class="animated-status"/>
-              <text x="350" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">POL</text>
-
-              <circle cx="450" cy="60" r="20" fill="#06B6D4" class="animated-status"/>
-              <text x="450" y="65" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ARB</text>
-
-              <circle cx="600" cy="80" r="20" fill="#0EA5E9" class="animated-status"/>
-              <text x="600" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="bold">BASE</text>
-            </g>
-
-            {/* API Gateway & Relay Nodes */}
-            <rect x="250" y="200" width="300" height="70" rx="12" fill="rgba(16, 185, 129, 0.15)" stroke="#10B981" stroke-width="3" class="animated-server"/>
-            <text x="260" y="225" fill="#34D399" font-size="14" font-weight="bold">API GATEWAY & RELAY NODES</text>
-            <text x="260" y="240" fill="#6EE7B7" font-size="10">Web3 Interface & Transaction Broadcasting</text>
-            <text x="260" y="255" fill="#A7F3D0" font-size="9">IPFS Integration • MetaMask • WalletConnect</text>
-
-            {/* UI & Indexing Services */}
+            
+            {/* Security Testing Environment */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#pentestGradient)" stroke="#EF4444" stroke-width="3" class="animated-security-shield"/>
+            <text x="70" y="90" fill="#F87171" font-size="18" font-weight="bold">ISOLATED TESTING ENVIRONMENT</text>
+            
+            {/* Testing Components */}
             <g class="animated-server">
-              <rect x="100" y="300" width="180" height="80" rx="8" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2"/>
-              <text x="110" y="325" fill="#FBBF24" font-size="12" font-weight="bold">GOVERNANCE UI</text>
-              <text x="110" y="340" fill="#FCD34D" font-size="10">Web Interface</text>
-              <text x="110" y="355" fill="#FEF3C7" font-size="9">• Proposal Creation</text>
-              <text x="110" y="368" fill="#FEF3C7" font-size="9">• Voting Interface</text>
-
-              <rect x="320" y="300" width="160" height="80" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="#A855F7" stroke-width="2"/>
-              <text x="330" y="325" fill="#C4B5FD" font-size="12" font-weight="bold">INDEXING SERVICE</text>
-              <text x="330" y="340" fill="#DDD6FE" font-size="10">Data Aggregation</text>
-              <text x="330" y="355" fill="#F3F4F6" font-size="9">• Vote Tracking</text>
-              <text x="330" y="368" fill="#F3F4F6" font-size="9">• Analytics</text>
-
-              <rect x="520" y="300" width="180" height="80" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="#EC4899" stroke-width="2"/>
-              <text x="530" y="325" fill="#F472B6" font-size="12" font-weight="bold">NOTIFICATION SYS</text>
-              <text x="530" y="340" fill="#FBBF24" font-size="10">Alert Distribution</text>
-              <text x="530" y="355" fill="#FEF3C7" font-size="9">• Discord Bots</text>
-              <text x="530" y="368" fill="#FEF3C7" font-size="9">• Email Alerts</text>
+              <rect x="100" y="150" width="180" height="100" rx="8" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2"/>
+              <text x="120" y="190" fill="#FCA5A5" font-size="14">Vulnerability Scanner</text>
+              
+              <rect x="310" y="150" width="180" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="330" y="190" fill="#93C5FD" font-size="14">Attack Simulation</text>
+              
+              <rect x="520" y="150" width="180" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="540" y="190" fill="#86EFAC" font-size="14">Report Generation</text>
             </g>
-
-            {/* Segregated Network Subnets */}
-            <rect x="50" y="410" width="200" height="30" rx="6" fill="rgba(239, 68, 68, 0.15)" stroke="#EF4444" stroke-width="2" class="animated-security-shield"/>
-            <text x="60" y="428" fill="#F87171" font-size="10" font-weight="bold">Security Subnet</text>
-
-            <rect x="300" y="410" width="200" height="30" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22C55E" stroke-width="2"/>
-            <text x="310" y="428" fill="#4ADE80" font-size="10" font-weight="bold">Application Subnet</text>
-
-            <rect x="550" y="410" width="200" height="30" rx="6" fill="rgba(59, 130, 246, 0.15)" stroke="#3B82F6" stroke-width="2"/>
-            <text x="560" y="428" fill="#60A5FA" font-size="10" font-weight="bold">Data Subnet</text>
-
-            {/* Network Connections */}
-            <path d="M200 100 L300 180" stroke="#3B82F6" stroke-width="3" class="animated-connection"/>
-            <path d="M350 80 L400 180" stroke="#8B5CF6" stroke-width="3" class="animated-connection"/>
-            <path d="M450 80 L610 180" stroke="#0EA5E9" stroke-width="3" class="animated-connection"/>
-
-            <path d="M300 270 L190 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-            <path d="M400 270 L400 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-            <path d="M500 270 L610 300" stroke="#10B981" stroke-width="3" class="animated-connection"/>
-
-            <path d="M150 380 L150 410" stroke="#EF4444" stroke-width="2" class="animated-secure-connection"/>
-            <path d="M400 380 L400 410" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
-            <path d="M610 380 L650 410" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            
+            {/* Connections */}
+            <path d="M280 200 L310 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M490 200 L520 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
           </svg>
         `;
-        title = 'P2P Overlay + API Gateway';
-        description = 'Fully decentralized P2P blockchain overlay for on-chain votes, with an API gateway and relay nodes for UIs and indexing services in separate subnets';
+        title = 'Isolated Pentesting Environment';
+        description = 'Secure and isolated testing environment for vulnerability assessment and penetration testing';
+        break;
+        
+      case 'soc-automation':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="socGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* SOC Infrastructure */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#socGradient)" stroke="#10B981" stroke-width="3" class="animated-server"/>
+            <text x="70" y="90" fill="#34D399" font-size="18" font-weight="bold">SOC AUTOMATION INFRASTRUCTURE</text>
+            
+            {/* Components */}
+            <g class="animated-node">
+              <rect x="100" y="150" width="180" height="100" rx="8" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="2"/>
+              <text x="120" y="190" fill="#6EE7B7" font-size="14">SIEM Engine</text>
+              
+              <rect x="310" y="150" width="180" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="330" y="190" fill="#93C5FD" font-size="14">Automation Engine</text>
+              
+              <rect x="520" y="150" width="180" height="100" rx="8" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="2"/>
+              <text x="540" y="190" fill="#F472B6" font-size="14">Alert Management</text>
+            </g>
+            
+            {/* Data Flow */}
+            <path d="M280 200 L310 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M490 200 L520 200" stroke="#EC4899" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'SOC Automation Infrastructure';
+        description = 'Security operations center with automated incident response and alert management';
+        break;
+
+      case 'ai-cybersecurity':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="aiSecGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* AI Security Infrastructure */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#aiSecGradient)" stroke="#A855F7" stroke-width="3" class="animated-server"/>
+            <text x="70" y="90" fill="#C4B5FD" font-size="18" font-weight="bold">AI-POWERED SECURITY PLATFORM</text>
+            
+            {/* Components */}
+            <g class="animated-node">
+              <rect x="100" y="150" width="200" height="120" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="120" y="200" fill="#DDD6FE" font-size="14">GPU Training Cluster</text>
+              
+              <rect x="500" y="150" width="200" height="120" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="520" y="200" fill="#93C5FD" font-size="14">Threat Analysis Engine</text>
+            </g>
+            
+            {/* Data Flow */}
+            <path d="M300 210 L500 210" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'AI-Powered Security Platform';
+        description = 'GPU-accelerated security analysis and threat detection system';
+        break;
+
+      case 'dsoc':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="dsocGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(236, 72, 153, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* DSOC Network */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#dsocGradient)" stroke="#EC4899" stroke-width="3"/>
+            <text x="70" y="90" fill="#F472B6" font-size="18" font-weight="bold">DECENTRALIZED SOC NETWORK</text>
+            
+            {/* Nodes */}
+            <g class="animated-node">
+              <circle cx="200" cy="200" r="40" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="2"/>
+              <text x="200" y="205" text-anchor="middle" fill="#F472B6" font-size="12">SOC Node 1</text>
+              
+              <circle cx="400" cy="200" r="40" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="400" y="205" text-anchor="middle" fill="#93C5FD" font-size="12">SOC Node 2</text>
+              
+              <circle cx="600" cy="200" r="40" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="600" y="205" text-anchor="middle" fill="#86EFAC" font-size="12">SOC Node 3</text>
+            </g>
+            
+            {/* Connections */}
+            <path d="M240 200 L360 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M440 200 L560 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+            <path d="M200 240 L600 240" stroke="#EC4899" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Decentralized SOC Network';
+        description = 'Distributed security operations with blockchain-based threat intelligence sharing';
+        break;
+
+      case 'ai-threat-hunting':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="threatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(34, 197, 94, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Threat Hunting Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#threatGradient)" stroke="#22C55E" stroke-width="3"/>
+            <text x="70" y="90" fill="#4ADE80" font-size="18" font-weight="bold">AI THREAT HUNTING SYSTEM</text>
+            
+            {/* Components */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="160" height="120" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="120" y="200" fill="#86EFAC" font-size="14">Data Collection</text>
+              
+              <rect x="320" y="150" width="160" height="120" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="340" y="200" fill="#93C5FD" font-size="14">AI Analysis</text>
+              
+              <rect x="540" y="150" width="160" height="120" rx="8" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="2"/>
+              <text x="560" y="200" fill="#F472B6" font-size="14">Threat Response</text>
+            </g>
+            
+            {/* Data Flow */}
+            <path d="M260 210 L320 210" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M480 210 L540 210" stroke="#EC4899" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'AI-Powered Threat Hunting';
+        description = 'Advanced persistent threat detection using machine learning and real-time analysis';
+        break;
+
+      case 'tokenomics-simulator':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="tokenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Tokenomics Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#tokenGradient)" stroke="#F59E0B" stroke-width="3"/>
+            <text x="70" y="90" fill="#FBBF24" font-size="18" font-weight="bold">TOKENOMICS SIMULATION ENVIRONMENT</text>
+            
+            {/* Components */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="160" height="120" rx="8" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="120" y="200" fill="#FCD34D" font-size="14">Economic Models</text>
+              
+              <rect x="320" y="150" width="160" height="120" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="340" y="200" fill="#93C5FD" font-size="14">Simulation Engine</text>
+              
+              <rect x="540" y="150" width="160" height="120" rx="8" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="2"/>
+              <text x="560" y="200" fill="#6EE7B7" font-size="14">Analytics Dashboard</text>
+            </g>
+            
+            {/* Data Flow */}
+            <path d="M260 210 L320 210" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M480 210 L540 210" stroke="#10B981" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Tokenomics Simulation Platform';
+        description = 'Economic modeling and simulation platform for cryptocurrency token design';
+        break;
+
+      case 'web3-ecommerce':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="ecomGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* E-commerce Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#ecomGradient)" stroke="#A855F7" stroke-width="3"/>
+            <text x="70" y="90" fill="#C4B5FD" font-size="18" font-weight="bold">WEB3 E-COMMERCE PLATFORM</text>
+            
+            {/* Components */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="160" height="120" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="120" y="200" fill="#DDD6FE" font-size="14">Storefront</text>
+              
+              <rect x="320" y="150" width="160" height="120" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="340" y="200" fill="#93C5FD" font-size="14">Smart Contracts</text>
+              
+              <rect x="540" y="150" width="160" height="120" rx="8" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="2"/>
+              <text x="560" y="200" fill="#F472B6" font-size="14">Payment Gateway</text>
+            </g>
+            
+            {/* Data Flow */}
+            <path d="M260 210 L320 210" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M480 210 L540 210" stroke="#EC4899" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Web3 E-Commerce Infrastructure';
+        description = 'Decentralized e-commerce platform with blockchain-based payments and smart contracts';
+        break;
+
+      case 'cloud-dr':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="drGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(34, 197, 94, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* DR Infrastructure */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#drGradient)" stroke="#3B82F6" stroke-width="3"/>
+            <text x="70" y="90" fill="#60A5FA" font-size="18" font-weight="bold">CLOUD DISASTER RECOVERY</text>
+            
+            {/* Primary Site */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="250" height="120" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="140" y="200" fill="#93C5FD" font-size="14">Primary Site</text>
+              <text x="140" y="220" fill="#93C5FD" font-size="12">Active Workloads</text>
+            </g>
+            
+            {/* DR Site */}
+            <g class="animated-server">
+              <rect x="450" y="150" width="250" height="120" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="490" y="200" fill="#4ADE80" font-size="14">DR Site</text>
+              <text x="490" y="220" fill="#4ADE80" font-size="12">Standby Resources</text>
+            </g>
+            
+            {/* Replication */}
+            <path d="M350 210 L450 210" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <text x="400" y="190" fill="#93C5FD" font-size="12" text-anchor="middle">Replication</text>
+          </svg>
+        `;
+        title = 'Cloud Disaster Recovery';
+        description = 'High-availability disaster recovery solution with automated failover';
+        break;
+
+      case 'iot-telemetry':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="iotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* IoT Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#iotGradient)" stroke="#F59E0B" stroke-width="3"/>
+            <text x="70" y="90" fill="#FBBF24" font-size="18" font-weight="bold">IoT TELEMETRY PLATFORM</text>
+            
+            {/* Edge Devices */}
+            <g class="animated-node">
+              <circle cx="150" cy="200" r="30" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="150" y="205" text-anchor="middle" fill="#FCD34D" font-size="12">Edge</text>
+              
+              <circle cx="150" cy="300" r="30" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="150" y="305" text-anchor="middle" fill="#FCD34D" font-size="12">Edge</text>
+            </g>
+            
+            {/* Gateway */}
+            <rect x="300" y="180" width="200" height="120" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="400" y="240" text-anchor="middle" fill="#93C5FD" font-size="14">Gateway</text>
+            
+            {/* Cloud */}
+            <rect x="600" y="180" width="100" height="120" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+            <text x="650" y="240" text-anchor="middle" fill="#4ADE80" font-size="14">Cloud</text>
+            
+            {/* Connections */}
+            <path d="M180 200 L300 240" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M180 300 L300 240" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M500 240 L600 240" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'IoT Telemetry Stack';
+        description = 'Edge computing and data collection infrastructure for IoT devices';
+        break;
+
+      case 'edge-ai':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="edgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Edge AI Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#edgeGradient)" stroke="#A855F7" stroke-width="3"/>
+            <text x="70" y="90" fill="#C4B5FD" font-size="18" font-weight="bold">EDGE AI DEPLOYMENT</text>
+            
+            {/* Edge Nodes */}
+            <g class="animated-node">
+              <rect x="100" y="150" width="140" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="170" y="200" text-anchor="middle" fill="#DDD6FE" font-size="14">Edge Node 1</text>
+              
+              <rect x="100" y="270" width="140" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="170" y="320" text-anchor="middle" fill="#DDD6FE" font-size="14">Edge Node 2</text>
+            </g>
+            
+            {/* Processing */}
+            <rect x="330" y="150" width="140" height="220" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="400" y="260" text-anchor="middle" fill="#93C5FD" font-size="14">AI Processing</text>
+            
+            {/* Results */}
+            <rect x="560" y="150" width="140" height="220" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+            <text x="630" y="260" text-anchor="middle" fill="#4ADE80" font-size="14">Results</text>
+            
+            {/* Connections */}
+            <path d="M240 200 L330 260" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M240 320 L330 260" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M470 260 L560 260" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Edge AI Infrastructure';
+        description = 'Distributed AI processing at the edge with centralized orchestration';
+        break;
+
+      case 'pen-test':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="pentestGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(168, 85, 247, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Test Lab Environment */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#pentestGradient)" stroke="#EF4444" stroke-width="3"/>
+            <text x="70" y="90" fill="#FCA5A5" font-size="18" font-weight="bold">PEN-TEST TOOLKIT LAB</text>
+            
+            {/* VLAN Segments */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="180" height="100" rx="8" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2"/>
+              <text x="190" y="200" text-anchor="middle" fill="#FCA5A5" font-size="14">Test VLAN</text>
+              
+              <rect x="310" y="150" width="180" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="400" y="200" text-anchor="middle" fill="#DDD6FE" font-size="14">Production Mirror</text>
+              
+              <rect x="520" y="150" width="180" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="610" y="200" text-anchor="middle" fill="#4ADE80" font-size="14">Control Gateway</text>
+            </g>
+            
+            {/* Air Gap */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#93C5FD" font-size="14">Air-Gap Isolation Layer</text>
+            
+            {/* Connections */}
+            <path d="M280 200 L310 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M490 200 L520 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Pen-Test Environment';
+        description = 'Air-gapped test lab with mirrored production and controlled gateway';
+        break;
+
+      case 'soc-automation':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="socGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(34, 197, 94, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* SOC Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#socGradient)" stroke="#22C55E" stroke-width="3"/>
+            <text x="70" y="90" fill="#4ADE80" font-size="18" font-weight="bold">SOC AUTOMATION FABRIC</text>
+            
+            {/* Components */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="160" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="180" y="200" text-anchor="middle" fill="#4ADE80" font-size="14">TAP/SPAN</text>
+              
+              <rect x="320" y="150" width="160" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="400" y="200" text-anchor="middle" fill="#93C5FD" font-size="14">SIEM Cluster</text>
+              
+              <rect x="540" y="150" width="160" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="620" y="200" text-anchor="middle" fill="#DDD6FE" font-size="14">Orchestration</text>
+            </g>
+            
+            {/* Monitoring Backbone */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#93C5FD" font-size="14">Monitoring Backbone</text>
+            
+            {/* Data Flow */}
+            <path d="M260 200 L320 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M480 200 L540 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'SOC Automation Infrastructure';
+        description = 'Dedicated monitoring backbone with SIEM cluster and orchestration';
+        break;
+
+      case 'ai-cybersecurity':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="aiSecGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(34, 197, 94, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* AI Security Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#aiSecGradient)" stroke="#A855F7" stroke-width="3"/>
+            <text x="70" y="90" fill="#C4B5FD" font-size="18" font-weight="bold">AI CYBERSECURITY PLATFORM</text>
+            
+            {/* GPU Cluster */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#DDD6FE" font-size="14">GPU Cluster</text>
+              <text x="200" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Model Training</text>
+            </g>
+            
+            {/* Data Ingestion */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#93C5FD" font-size="14">Encrypted Ingest</text>
+              <text x="450" y="205" text-anchor="middle" fill="#93C5FD" font-size="12">Data Pipeline</text>
+            </g>
+            
+            {/* Model Serving */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#4ADE80" font-size="14">Serving</text>
+            
+            {/* Network Overlay */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#93C5FD" font-size="14">Hybrid Cloud Network Overlay</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'AI-Powered Security';
+        description = 'GPU-accelerated security platform with encrypted data ingestion';
+        break;
+
+      case 'dsoc':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="dsocGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(245, 158, 11, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* DSOC Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#dsocGradient)" stroke="#F59E0B" stroke-width="3"/>
+            <text x="70" y="90" fill="#FBBF24" font-size="18" font-weight="bold">DECENTRALIZED SOC (dSOC)</text>
+            
+            {/* SOC Nodes */}
+            <g class="animated-node">
+              <circle cx="200" cy="200" r="40" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="200" y="205" text-anchor="middle" fill="#FCD34D" font-size="12">SOC 1</text>
+              
+              <circle cx="400" cy="200" r="40" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="400" y="205" text-anchor="middle" fill="#FCD34D" font-size="12">SOC 2</text>
+              
+              <circle cx="600" cy="200" r="40" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="600" y="205" text-anchor="middle" fill="#FCD34D" font-size="12">SOC 3</text>
+            </g>
+            
+            {/* Blockchain Layer */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#DDD6FE" font-size="14">Blockchain Audit Trail</text>
+            
+            {/* Mesh Connections */}
+            <path d="M240 200 L360 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M440 200 L560 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M200 240 L200 280" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M400 240 L400 280" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M600 240 L600 280" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Decentralized SOC';
+        description = 'Federated SOC mesh with blockchain-anchored audit trail';
+        break;
+        
+      case 'threat-hunting':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="threatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(236, 72, 153, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(34, 197, 94, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Threat Hunting Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#threatGradient)" stroke="#EC4899" stroke-width="3"/>
+            <text x="70" y="90" fill="#F472B6" font-size="18" font-weight="bold">AI THREAT HUNTING SYSTEM</text>
+            
+            {/* Data Lake */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(236, 72, 153, 0.2)" stroke="#EC4899" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#F472B6" font-size="14">Data Lake</text>
+              <text x="200" y="205" text-anchor="middle" fill="#F472B6" font-size="12">Telemetry Storage</text>
+            </g>
+            
+            {/* Analytics */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#4ADE80" font-size="14">Analytics Cluster</text>
+              <text x="450" y="205" text-anchor="middle" fill="#4ADE80" font-size="12">Private Subnet</text>
+            </g>
+            
+            {/* Investigation */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#93C5FD" font-size="14">Bastion</text>
+            
+            {/* Ingest Pipeline */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#DDD6FE" font-size="14">High-Volume Telemetry Pipeline</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'AI Threat Hunting';
+        description = 'High-volume telemetry analysis with segregated data lake';
+        break;
+
+      case 'tokenomics':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="tokenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Tokenomics Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#tokenGradient)" stroke="#A855F7" stroke-width="3"/>
+            <text x="70" y="90" fill="#C4B5FD" font-size="18" font-weight="bold">TOKENOMICS SIMULATOR</text>
+            
+            {/* Compute Cluster */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#DDD6FE" font-size="14">Compute Cluster</text>
+              <text x="200" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Simulation Engine</text>
+            </g>
+            
+            {/* Sandbox */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#FCD34D" font-size="14">Sandbox Network</text>
+              <text x="450" y="205" text-anchor="middle" fill="#FCD34D" font-size="12">Ephemeral VLANs</text>
+            </g>
+            
+            {/* Test Data */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#93C5FD" font-size="14">Test Data</text>
+            
+            {/* Control Layer */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#4ADE80" font-size="14">Controlled Egress Layer</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#F59E0B" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Tokenomics Simulator';
+        description = 'Isolated compute environment for token simulation and testing';
+        break;
+
+      case 'compliance':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="complianceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(34, 197, 94, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(168, 85, 247, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Compliance Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#complianceGradient)" stroke="#22C55E" stroke-width="3"/>
+            <text x="70" y="90" fill="#4ADE80" font-size="18" font-weight="bold">COMPLIANCE & REPORTING</text>
+            
+            {/* Document Generation */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#4ADE80" font-size="14">Doc Generation</text>
+              <text x="200" y="205" text-anchor="middle" fill="#4ADE80" font-size="12">Isolated Subnet</text>
+            </g>
+            
+            {/* Storage */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#DDD6FE" font-size="14">Signed Storage</text>
+              <text x="450" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Immutable Artifacts</text>
+            </g>
+            
+            {/* Submission */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#93C5FD" font-size="14">Submission</text>
+            
+            {/* Security Zone */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#FCA5A5" font-size="14">Locked Egress Policy Zone</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Compliance & Reporting';
+        description = 'Secure document generation with immutable storage and controlled submission';
+        break;
+
+      case 'security-appliance':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="applianceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(34, 197, 94, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Security Appliance Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#applianceGradient)" stroke="#EF4444" stroke-width="3"/>
+            <text x="70" y="90" fill="#FCA5A5" font-size="18" font-weight="bold">SECURITY APPLIANCE INFRASTRUCTURE</text>
+            
+            {/* Inline DMZ */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#FCA5A5" font-size="14">Inline DMZ</text>
+              <text x="200" y="205" text-anchor="middle" fill="#FCA5A5" font-size="12">Inspection Path</text>
+            </g>
+            
+            {/* Management */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#4ADE80" font-size="14">Management VLAN</text>
+              <text x="450" y="205" text-anchor="middle" fill="#4ADE80" font-size="12">Secure Control</text>
+            </g>
+            
+            {/* Monitoring */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#93C5FD" font-size="14">TAP Mirror</text>
+            
+            {/* Network Layer */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#DDD6FE" font-size="14">Network Monitoring Fabric</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Security Appliance Network';
+        description = 'Inline security appliances with dedicated management and monitoring';
+        break;
+
+      case 'ha-storage':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="storageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(168, 85, 247, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Storage Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#storageGradient)" stroke="#3B82F6" stroke-width="3"/>
+            <text x="70" y="90" fill="#93C5FD" font-size="18" font-weight="bold">HA STORAGE SOLUTION</text>
+            
+            {/* Site A */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#93C5FD" font-size="14">Site A</text>
+              <text x="200" y="205" text-anchor="middle" fill="#93C5FD" font-size="12">Active Cluster</text>
+            </g>
+            
+            {/* Site B */}
+            <g class="animated-server">
+              <rect x="500" y="150" width="200" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="600" y="185" text-anchor="middle" fill="#93C5FD" font-size="14">Site B</text>
+              <text x="600" y="205" text-anchor="middle" fill="#93C5FD" font-size="12">Active Cluster</text>
+            </g>
+            
+            {/* Replication */}
+            <rect x="350" y="150" width="100" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+            <text x="400" y="185" text-anchor="middle" fill="#DDD6FE" font-size="14">Sync</text>
+            <text x="400" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Replication</text>
+            
+            {/* Storage Network */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#4ADE80" font-size="14">Dedicated Storage Network</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M450 200 L500 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'High Availability Storage';
+        description = 'Active/active storage clusters with synchronous replication';
+        break;
+
+      case 'treasury':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="treasuryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(34, 197, 94, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Treasury Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#treasuryGradient)" stroke="#EF4444" stroke-width="3"/>
+            <text x="70" y="90" fill="#FCA5A5" font-size="18" font-weight="bold">TREASURY & RISK DASHBOARD</text>
+            
+            {/* Financial Engine */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#FCA5A5" font-size="14">Financial Engine</text>
+              <text x="200" y="205" text-anchor="middle" fill="#FCA5A5" font-size="12">Secure VLAN</text>
+            </g>
+            
+            {/* Market Feeds */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#4ADE80" font-size="14">Market Data</text>
+              <text x="450" y="205" text-anchor="middle" fill="#4ADE80" font-size="12">Read-Only Feed</text>
+            </g>
+            
+            {/* DMZ */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#93C5FD" font-size="14">DMZ Proxy</text>
+            
+            {/* Control Layer */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#DDD6FE" font-size="14">Strict Egress Control Layer</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#22C55E" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Treasury & Risk Platform';
+        description = 'Secure financial platform with controlled market data feeds';
+        break;
+
+      case 'defi':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="defiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(168, 85, 247, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(245, 158, 11, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* DeFi Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#defiGradient)" stroke="#A855F7" stroke-width="3"/>
+            <text x="70" y="90" fill="#C4B5FD" font-size="18" font-weight="bold">DEFI YIELD & ARBITRAGE</text>
+            
+            {/* Liquidity Nodes */}
+            <g class="animated-node">
+              <circle cx="150" cy="200" r="40" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="150" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Pool 1</text>
+              
+              <circle cx="400" cy="200" r="40" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="400" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Pool 2</text>
+              
+              <circle cx="650" cy="200" r="40" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+              <text x="650" y="205" text-anchor="middle" fill="#DDD6FE" font-size="12">Pool 3</text>
+            </g>
+            
+            {/* Routing Mesh */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#FCD34D" font-size="14">Federated Order Router Mesh</text>
+            
+            {/* Connections */}
+            <path d="M190 200 L360 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M440 200 L610 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+            <path d="M150 240 L150 280" stroke="#F59E0B" stroke-width="2" class="animated-connection"/>
+            <path d="M400 240 L400 280" stroke="#F59E0B" stroke-width="2" class="animated-connection"/>
+            <path d="M650 240 L650 280" stroke="#F59E0B" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'DeFi Yield Platform';
+        description = 'Multi-pool liquidity system with federated order routing';
+        break;
+
+      case 'training':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="trainingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(34, 197, 94, 0.2)"/>
+                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
+              </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="#0F172A"/>
+            
+            {/* Training Platform */}
+            <rect x="50" y="50" width="700" height="350" rx="12" fill="url(#trainingGradient)" stroke="#22C55E" stroke-width="3"/>
+            <text x="70" y="90" fill="#4ADE80" font-size="18" font-weight="bold">TRAINING & KNOWLEDGE PLATFORM</text>
+            
+            {/* Web Tier */}
+            <g class="animated-server">
+              <rect x="100" y="150" width="200" height="100" rx="8" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+              <text x="200" y="185" text-anchor="middle" fill="#4ADE80" font-size="14">Web Tier</text>
+              <text x="200" y="205" text-anchor="middle" fill="#4ADE80" font-size="12">DMZ</text>
+            </g>
+            
+            {/* App Tier */}
+            <g class="animated-server">
+              <rect x="350" y="150" width="200" height="100" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="2"/>
+              <text x="450" y="185" text-anchor="middle" fill="#93C5FD" font-size="14">App Tier</text>
+              <text x="450" y="205" text-anchor="middle" fill="#93C5FD" font-size="12">Private Subnet</text>
+            </g>
+            
+            {/* Storage */}
+            <rect x="600" y="150" width="100" height="100" rx="8" fill="rgba(168, 85, 247, 0.2)" stroke="#A855F7" stroke-width="2"/>
+            <text x="650" y="200" text-anchor="middle" fill="#DDD6FE" font-size="14">Storage</text>
+            
+            {/* CDN Layer */}
+            <rect x="100" y="280" width="600" height="60" rx="8" fill="rgba(245, 158, 11, 0.2)" stroke="#F59E0B" stroke-width="2"/>
+            <text x="400" y="315" text-anchor="middle" fill="#FCD34D" font-size="14">Content Delivery Network</text>
+            
+            {/* Connections */}
+            <path d="M300 200 L350 200" stroke="#3B82F6" stroke-width="2" class="animated-connection"/>
+            <path d="M550 200 L600 200" stroke="#A855F7" stroke-width="2" class="animated-connection"/>
+          </svg>
+        `;
+        title = 'Training Platform';
+        description = 'Multi-tier LMS with CDN-backed content delivery';
         break;
 
       case 'custom-security-appliances':
@@ -3846,14 +4665,20 @@ export default function BusinessSolutions() {
                 <p className="text-gray-300 text-lg">Advanced cybersecurity, AI-powered platforms, and enterprise tools</p>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                {specializedSolutions.map((solution) => (
-                  <SolutionCard
-                    key={solution.id}
-                    solution={solution}
-                    isActive={activeCard === solution.id}
-                    onHover={setActiveCard}
-                  />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {specializedSolutions.map((solution, index) => (
+                  <div key={solution.id} className="solution-wrapper">
+                    <SolutionCard
+                      solution={solution}
+                      isActive={activeCard === solution.id}
+                      onHover={setActiveCard}
+                    />
+                    {activeCard === solution.id && (
+                      <div className="mt-4 bg-slate-900/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-700/50">
+                        <ExpandableTopologyDiagram solutionId={solution.id} />
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
