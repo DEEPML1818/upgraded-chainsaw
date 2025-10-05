@@ -74,3 +74,25 @@ Brand Identity: Professional cybersecurity platform with authentic programming v
 ## Development Database
 - **connect-pg-simple**: PostgreSQL session store for Express sessions
 - Note: The application uses Drizzle ORM configured for PostgreSQL, though actual database connection may be added later
+
+# Replit Environment Setup
+
+## Development Configuration (Completed: October 1, 2025)
+- **Dev Server Workflow**: Configured to run `npm run dev` on port 5000 with webview output
+- **Host Configuration**: Vite configured with `host: 0.0.0.0` and `allowedHosts: true` for Replit proxy compatibility
+- **HMR Setup**: Hot Module Replacement configured on port 5000 for seamless development
+- **Build Scripts**: 
+  - `npm run dev`: Development server with tsx
+  - `npm run build`: Production build (Vite + esbuild)
+  - `npm run start`: Production server
+- **Storage**: Currently using MemStorage (in-memory) for development; PostgreSQL can be added via DATABASE_URL environment variable
+
+## Port Configuration
+- **Frontend & Backend**: Unified server on port 5000 (0.0.0.0)
+- Vite development server integrated via middleware in Express
+- All API routes prefixed with `/api`
+
+## Deployment Configuration
+- **Target**: Autoscale deployment (stateless)
+- **Build**: `npm run build` (Vite + esbuild bundling)
+- **Run**: `npm run start` (production Node.js server)
