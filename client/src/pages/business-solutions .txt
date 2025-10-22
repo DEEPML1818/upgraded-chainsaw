@@ -3389,130 +3389,65 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         svgContent = `
           <svg viewBox="0 0 1400 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pen-test lab topology">
             <defs>
-              <filter id="networkShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <filter id="serverGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <marker id="networkFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#60A5FA" filter="url(#serverGlow)"/>
-              </marker>
-              <marker id="secureFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#10B981" filter="url(#serverGlow)"/>
-              </marker>
-              <marker id="dangerFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L12,4 z" fill="#EF4444" filter="url(#serverGlow)"/>
-              </marker>
-              <pattern id="meshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
-                <circle cx="0" cy="0" r="0.5" fill="#60A5FA" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="routerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="firewallGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.4)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.9)"/>
-                <stop offset="100%" stop-color="rgba(239, 68, 68, 0.2)"/>
-              </linearGradient>
-              <linearGradient id="serverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-                <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
+              <linearGradient id="bg" x1="0" x2="1"><stop offset="0%" stop-color="#071426"/><stop offset="100%" stop-color="#021021"/></linearGradient>
+              <filter id="soft"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-opacity="0.12"/></filter>
+              <marker id="arrow" markerWidth="12" markerHeight="8" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 z" fill="#60A5FA"/></marker>
+              <marker id="secureArrow" markerWidth="12" markerHeight="8" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 z" fill="#10B981"/></marker>
+              <marker id="dangerArrow" markerWidth="12" markerHeight="8" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 z" fill="#EF4444"/></marker>
               <style>
                 .t { font-family: Inter, system-ui, -apple-system; fill:#E6F0FF; font-size:13px }
                 .s { fill:#94A3B8; font-size:11px }
-                .zone { fill: rgba(15, 23, 42, 0.8); stroke-width:2 }
-                .ephemeral { stroke-dasharray:8,4 }
-                .box { fill: rgba(30, 41, 59, 0.8); stroke-width:2 }
+                .zone { fill: rgba(2,6,23,0.66); stroke-width:2 }
+                .ephemeral { stroke-dasharray:7 6 }
+                .box { fill:#061122; stroke-width:1.5 }
                 .small { font-size:10px; fill:#94a3b8 }
-                .animated-network-glow { animation: network-glow 2s infinite ease-in-out; }
-                .animated-secure-connection { animation: secure-pulse 3s infinite ease-in-out; }
-                .animated-data-packet { animation: data-flow 4s infinite linear; }
-                .animated-status { animation: status-blink 2s infinite ease-in-out; }
+                .vibrant { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)) }
               </style>
             </defs>
 
-            <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#meshPattern)" opacity="0.4"/>
-
-            {/* Floating data particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#60A5FA" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#10B981" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#8B5CF6" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
+            <rect width="100%" height="100%" fill="url(#bg)"/>
 
             <text x="36" y="44" class="t" font-weight="700" font-size="18">🛡️ Pen-Test Lab — Air-gapped, Segmented & Audited Environment</text>
             <text x="36" y="64" class="small">Design: Bastioned access → Mirrored (one-way) sanitized snapshots → Ephemeral sandbox VLANs → Controlled egress + immutable telemetry</text>
 
             <!-- Air-gapped envelope -->
-            <g class="animated-secure-connection">
-              <rect x="28" y="92" width="1344" height="620" rx="16" fill="rgba(239, 68, 68, 0.08)" stroke="#EF4444" stroke-width="3" stroke-dasharray="8,4" filter="url(#networkShadow)"/>
-              <text x="48" y="118" class="small" fill="#FCA5A5">Air-gapped Test Envelope (VLAN 600) — strict ingress/egress, audited</text>
+            <g filter="url(#soft)">
+              <rect x="28" y="92" width="1344" height="620" rx="16" class="zone" stroke="#EF4444"/>
+              <text x="48" y="118" class="small" fill="#FCA5A5">Air-gapped Test Envelope (VLAN 600) — strict ingress/egress, audited)</text>
             </g>
 
             <!-- Bastion / Jump (Management) -->
-            <g class="network-component animated-network-glow">
-              <rect x="56" y="156" width="260" height="140" rx="12" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow)"/>
-              <text x="186" y="186" text-anchor="middle" class="t" filter="url(#serverGlow)">🛡️ Jump Bastion / Admin Gateway</text>
+            <g class="vibrant">
+              <rect x="56" y="156" width="260" height="140" rx="12" class="box" stroke="#60A5FA"/>
+              <text x="186" y="186" text-anchor="middle" class="t">🛡️ Jump Bastion / Admin Gateway</text>
               <text x="186" y="204" text-anchor="middle" class="s">MFA, session recording, IP allowlist</text>
               <text x="186" y="222" text-anchor="middle" class="small">Mgmt VLAN: VLAN 602 — 10.62.0.0/24</text>
-              <circle cx="166" cy="238" r="2" fill="#3B82F6" class="animated-status"/>
-              <circle cx="186" cy="238" r="2" fill="#10B981" class="animated-status"/>
-              <circle cx="206" cy="238" r="2" fill="#F59E0B" class="animated-status"/>
+              <text x="186" y="238" text-anchor="middle" class="small">🔐 Hardened SSH + VPN access</text>
             </g>
 
             <!-- Mirror/TAP / Snapshot scrubber -->
-            <g class="network-component animated-network-glow">
-              <rect x="344" y="156" width="320" height="140" rx="12" fill="url(#firewallGradient)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow)"/>
-              <text x="504" y="186" text-anchor="middle" class="t" filter="url(#serverGlow)">🔄 Mirrored Snapshot Zone</text>
+            <g class="vibrant">
+              <rect x="344" y="156" width="320" height="140" rx="12" class="box" stroke="#FCA5A5"/>
+              <text x="504" y="186" text-anchor="middle" class="t">🔄 Mirrored Snapshot Zone</text>
               <text x="504" y="204" text-anchor="middle" class="s">Sanitizer (PII redaction) • One-way replication</text>
               <text x="504" y="222" text-anchor="middle" class="small">Test VLAN: VLAN 600 — 10.60.0.0/24 (read-only snapshots)</text>
 
               <!-- internal clones -->
-              <g class="animated-secure-connection">
-                <rect x="384" y="216" width="120" height="64" rx="8" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow)"/>
-                <text x="444" y="249" text-anchor="middle" class="small">📱 App Clone</text>
-                <circle cx="424" cy="235" r="2" fill="#3B82F6" class="animated-status"/>
-                <circle cx="444" cy="235" r="2" fill="#10B981" class="animated-status"/>
-              </g>
+              <rect x="384" y="216" width="120" height="64" rx="8" class="box" stroke="#EF4444"/>
+              <text x="444" y="249" text-anchor="middle" class="small">📱 App Clone</text>
 
-              <g class="animated-secure-connection">
-                <rect x="516" y="216" width="120" height="64" rx="8" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow)"/>
-                <text x="576" y="249" text-anchor="middle" class="small">💾 DB Snapshot</text>
-                <circle cx="556" cy="235" r="2" fill="#3B82F6" class="animated-status"/>
-                <circle cx="576" cy="235" r="2" fill="#10B981" class="animated-status"/>
-              </g>
+              <rect x="516" y="216" width="120" height="64" rx="8" class="box" stroke="#EF4444"/>
+              <text x="576" y="249" text-anchor="middle" class="small">💾 DB Snapshot</text>
             </g>
 
             <!-- Ephemeral Labs -->
-            <g class="network-component">
-              <rect x="704" y="156" width="616" height="320" rx="12" fill="rgba(249, 115, 22, 0.08)" stroke="#F97316" stroke-width="3" stroke-dasharray="8,4" filter="url(#networkShadow)" class="animated-secure-connection"/>
-              <text x="1012" y="186" text-anchor="middle" class="t" filter="url(#serverGlow)">⚡ Ephemeral Labs VLAN (VLAN 601)</text>
+            <g class="vibrant">
+              <rect x="704" y="156" width="616" height="320" rx="12" class="box" stroke="#F97316" class="ephemeral"/>
+              <text x="1012" y="186" text-anchor="middle" class="t">⚡ Ephemeral Labs VLAN (VLAN 601)</text>
               <text x="1012" y="204" text-anchor="middle" class="s">Disposable VMs/containers • Network NS/iptables isolation</text>
 
               <!-- key components inside ephemeral -->
-              <g class="animated-network-glow">
-                <rect x="740" y="220" width="160" height="96" rx="10" fill="url(#serverGradient)" stroke="#A855F7" stroke-width="2" filter="url(#networkShadow)"/>
-                <circle cx="760" cy="240" r="2" fill="#A855F7" class="animated-status"/>
-                <circle cx="780" cy="240" r="2" fill="#10B981" class="animated-status"/>
-                <circle cx="800" cy="240" r="2" fill="#F59E0B" class="animated-status"/>
-              </g>
+              <rect x="740" y="220" width="160" height="96" rx="10" class="box" stroke="#A855F7"/>
               <text x="820" y="256" text-anchor="middle" class="small">🚀 Exploit Runner (Isolated)</text>
 
               <rect x="920" y="220" width="160" height="96" rx="10" class="box" stroke="#3B82F6"/>
@@ -3555,7 +3490,7 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
             <path d="M316 216 L344 216" stroke="#60A5FA" stroke-width="3" marker-end="url(#arrow)"/>
             <path d="M664 216 L704 216" stroke="#F97316" stroke-width="3" marker-end="url(#secureArrow)"/>
             <path d="M920 320 L920 512" stroke="#A3E635" stroke-width="3" marker-end="url(#dangerArrow)"/>
-
+            
             <!-- Additional flow indicators -->
             <path d="M316 380 L344 380" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)"/>
             <path d="M316 560 L344 560" stroke="#A3E635" stroke-width="2" marker-end="url(#secureArrow)"/>
@@ -3577,230 +3512,130 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       /* ------------------------- SOC AUTOMATION TOPOLOGY (robust) ------------------------- */
       case 'soc-automation':
         svgContent = `
-            <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <filter id="networkShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
-          <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-              </filter>
-              <filter id="serverGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-              </filter>
-              <marker id="networkFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-          <path d="M0,0 L0,8 L12,4 z" fill="#60A5FA" filter="url(#serverGlow)"/>
-              </marker>
-              <marker id="secureFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-          <path d="M0,0 L0,8 L12,4 z" fill="#10B981" filter="url(#serverGlow)"/>
-              </marker>
-              <pattern id="meshPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" stroke-width="0.5" opacity="0.3"/>
-          <circle cx="0" cy="0" r="0.5" fill="#60A5FA" opacity="0.2"/>
-              </pattern>
-              <linearGradient id="routerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-          <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-          <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-              <linearGradient id="firewallGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="rgba(239, 68, 68, 0.4)"/>
-          <stop offset="50%" stop-color="rgba(30, 41, 59, 0.9)"/>
-          <stop offset="100%" stop-color="rgba(239, 68, 68, 0.2)"/>
-              </linearGradient>
-              <linearGradient id="serverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="rgba(59, 130, 246, 0.3)"/>
-          <stop offset="50%" stop-color="rgba(30, 41, 59, 0.8)"/>
-          <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-            </defs>
+      <svg viewBox="0 0 1400 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SOC automation topology">
+        <defs>
+          <linearGradient id="bg" x1="0" x2="1">
+            <stop offset="0%" stop-color="#04121a"/>
+            <stop offset="100%" stop-color="#00121a"/>
+          </linearGradient>
 
-            {/* Enhanced Background with depth */}
-            <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#meshPattern)" opacity="0.4"/>
+          <filter id="soft"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity="0.12"/></filter>
 
-            {/* Floating data particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#60A5FA" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#10B981" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#8B5CF6" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+            <path d="M0 0 L12 6 L0 12 z" fill="#F59E0B"/>
+          </marker>
 
-            {/* Top title updated to SOC Automation Starter */}
-            <text x="36" y="44" fill="#E6F0FF" font-size="18" font-weight="700">🛡️ SOC Automation Starter — SIEM Ingest Fabric + Monitoring Backbone</text>
-            <text x="36" y="64" fill="#94A3B8" font-size="11">Dedicated monitoring backbone with TAP/SPAN aggregators feeding a hardened SIEM cluster and orchestration subnetwork for playbook automation.</text>
+          <style>
+            .title { font-family: Inter, system-ui, -apple-system; fill:#DFF6FF; font-size:18px; font-weight:700; }
+            .note  { font-family: Inter, system-ui; fill:#94A3B8; font-size:11px; }
+            .zone  { fill: rgba(2,6,23,0.64); stroke-width:2 }
+            .box   { fill:#061428; stroke-width:1.5 }
+            .small { font-family: Inter; fill:#BFDFFF; font-size:11px }
+            .muted { fill:#94A3B8; font-size:10.5px }
+            .dashed { stroke-dasharray:6 6 }
+          </style>
+        </defs>
 
-            {/* Telemetry Sources (was Internet) */}
-            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="40" y="45" fill="#F59E0B" font-size="16" font-weight="bold" class="jump-icon">🌐</text>
-            <text x="90" y="45" fill="#FBBF24" font-size="14" font-weight="bold">TELEMETRY SOURCES</text>
-            <text x="400" y="60" text-anchor="middle" fill="#FCD34D" font-size="12" font-weight="600">TAP/SPAN, EDR, Cloud Logs, Network Feeds → Ingest Fabric</text>
+        <rect width="100%" height="100%" fill="url(#bg)"/>
 
-            {/* Network performance indicators */}
-            <g class="performance-indicators">
-              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
-              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">INGEST: ONLINE</text>
-              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
-              <text x="720" y="52" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="600">QUEUE: STABLE</text>
-            </g>
+        <text x="36" y="44" class="title">SOC Automation — TAP/SPAN Ingest Fabric + Hardened Orchestration (SOAR)</text>
+        <text x="36" y="68" class="note">Design objectives: high-fidelity telemetry, fast enrichment & indexing, automated playbooks, strict management plane isolation</text>
 
-            {/* TAP/SPAN Aggregators Subnet (was Gateway Subnet) */}
-            <g class="network-component">
-              <rect x="650" y="100" width="130" height="90" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="660" y="120" fill="#34D399" font-size="13" font-weight="bold">TAP/SPAN AGGREGATORS</text>
+        <!-- TAP / SPAN collectors -->
+        <g filter="url(#soft)">
+          <rect x="40" y="96" width="280" height="180" rx="12" class="zone" stroke="#F59E0B"/>
+          <text x="180" y="128" text-anchor="middle" class="small">TAP / SPAN Collection Layer</text>
+          <text x="180" y="146" text-anchor="middle" class="muted">Passive mirroring & inline collectors</text>
 
-              {/* Aggregator node */}
-              <g transform="translate(665, 130)" class="animated-network-glow">
-          <rect width="45" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow)"/>
-          <circle cx="22.5" cy="12" r="8" fill="none" stroke="#6EE7B7" stroke-width="1.5" class="animated-router"/>
-          <circle cx="22.5" cy="12" r="4" fill="#10B981" opacity="0.8"/>
-          <rect x="18" y="20" width="9" height="3" rx="1" fill="#6EE7B7" opacity="0.9"/>
-          <rect x="16" y="25" width="13" height="2" rx="1" fill="#34D399" opacity="0.7"/>
-          <text x="22.5" y="32" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">AGG</text>
-              </g>
-            </g>
+          <!-- TAP modules (icons) -->
+          <rect x="64" y="146" width="120" height="104" rx="8" class="box" stroke="#F59E0B"/>
+          <text x="124" y="186" text-anchor="middle" class="small">Packet TAPs</text>
+          <rect x="196" y="146" width="120" height="104" rx="8" class="box" stroke="#60A5FA"/>
+          <text x="256" y="186" text-anchor="middle" class="small">L7 Brokers / Inline IDS</text>
+        </g>
 
-            {/* SIEM Ingest (was Private DMZ IN) */}
-            <g class="network-component">
-              <rect x="20" y="220" width="200" height="120" rx="12" fill="rgba(59, 130, 246, 0.08)" stroke="#3B82F6" stroke-width="3" stroke-dasharray="12,6" class="animated-secure-connection"/>
-              <text x="30" y="240" fill="#60A5FA" font-size="13" font-weight="bold">SIEM INGEST</text>
+        <!-- Host agents -->
+        <g>
+          <rect x="360" y="96" width="240" height="120" rx="12" class="box" stroke="#60A5FA"/>
+          <text x="480" y="126" text-anchor="middle" class="small">Host Telemetry Agents</text>
+          <text x="480" y="144" text-anchor="middle" class="muted">osquery, Wazuh, EDR, sysmon</text>
 
-              <g transform="translate(35, 260)" class="animated-server">
-          <rect width="60" height="40" rx="6" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow)"/>
-          <rect x="8" y="8" width="44" height="6" rx="2" fill="#60A5FA" opacity="0.8"/>
-          <rect x="8" y="16" width="44" height="4" rx="1" fill="#93C5FD" opacity="0.6"/>
-          <rect x="8" y="22" width="44" height="4" rx="1" fill="#BFDBFE" opacity="0.4"/>
-          <circle cx="15" cy="32" r="2" fill="#3B82F6" class="animated-status"/>
-          <circle cx="25" cy="32" r="2" fill="#10B981" class="animated-status"/>
-          <circle cx="35" cy="32" r="2" fill="#F59E0B" class="animated-status"/>
-          <text x="30" y="52" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">INGEST</text>
-              </g>
+          <rect x="360" y="220" width="240" height="56" rx="8" class="box" stroke="#94A3B8"/>
+          <text x="480" y="256" text-anchor="middle" class="small">Agent Gateways / Relay (TLS + mTLS)</text>
+        </g>
 
-              <g transform="translate(105, 260)" class="animated-server">
-          <rect width="60" height="40" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow)"/>
-          <rect x="8" y="8" width="20" height="24" rx="3" fill="#34D399" opacity="0.8"/>
-          <rect x="32" y="8" width="20" height="24" rx="3" fill="#6EE7B7" opacity="0.6"/>
-          <circle cx="18" cy="14" r="1.5" fill="#10B981"/>
-          <circle cx="42" cy="14" r="1.5" fill="#10B981"/>
-          <path d="M20 20 L40 20" stroke="#10B981" stroke-width="2" marker-end="url(#secureFlow)" class="animated-connection"/>
-          <text x="30" y="52" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">PARSE</text>
-              </g>
-            </g>
+        <!-- Ingest Fabric (Kafka / message bus) -->
+        <g>
+          <rect x="640" y="96" width="420" height="320" rx="14" class="zone" stroke="#10B981" filter="url(#soft)"/>
+          <text x="860" y="126" text-anchor="middle" class="small">SIEM Ingest Fabric — Kafka / NATS / Pulsar</text>
+          <text x="860" y="144" text-anchor="middle" class="muted">Normalization • Enrichment • Deduplication • Short-term hotstore</text>
 
-            {/* Orchestration Subnet (was Service Mesh Layer) */}
-            <g class="network-component">
-              <rect x="240" y="220" width="320" height="120" rx="12" fill="rgba(139, 92, 246, 0.08)" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
-              <text x="250" y="240" fill="#A78BFA" font-size="13" font-weight="bold">ORCHESTRATION SUBNET</text>
+          <!-- Enrichment boxes -->
+          <rect x="680" y="160" width="120" height="84" rx="8" class="box" stroke="#A855F7"/>
+          <text x="740" y="200" text-anchor="middle" class="small">Threat Intel Enricher</text>
 
-              <g transform="translate(275, 262)" class="animated-server">
-          <ellipse cx="0" cy="0" rx="28" ry="20" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
-          <rect x="-12" y="-8" width="24" height="4" rx="2" fill="#A78BFA" opacity="0.9"/>
-          <rect x="-12" y="-2" width="24" height="3" rx="1" fill="#C4B5FD" opacity="0.7"/>
-          <rect x="-12" y="3" width="24" height="3" rx="1" fill="#DDD6FE" opacity="0.5"/>
-          <circle cx="0" cy="10" r="3" fill="#8B5CF6" class="animated-icon-pulse"/>
-          <text x="0" y="32" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">ORCH-1</text>
-              </g>
+          <rect x="820" y="160" width="120" height="84" rx="8" class="box" stroke="#3B82F6"/>
+          <text x="880" y="200" text-anchor="middle" class="small">User/Asset Enricher</text>
 
-              <g transform="translate(340, 260)" class="animated-server">
-          <rect width="80" height="28" rx="14" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#serverGlow)"/>
-          <rect x="8" y="6" width="16" height="16" rx="3" fill="#F59E0B" opacity="0.8"/>
-          <circle cx="16" cy="14" r="3" fill="#FBBF24"/>
-          <text x="40" y="40" text-anchor="middle" fill="#FBBF24" font-size="9" font-weight="600">Playbook Engine</text>
-              </g>
+          <rect x="960" y="160" width="120" height="84" rx="8" class="box" stroke="#F97316"/>
+          <text x="1020" y="200" text-anchor="middle" class="small">Parsing / IOC extraction</text>
 
-              <g transform="translate(475, 262)" class="animated-server">
-          <ellipse cx="0" cy="0" rx="28" ry="20" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
-          <circle cx="0" cy="10" r="3" fill="#8B5CF6" class="animated-icon-pulse"/>
-          <text x="0" y="32" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">ORCH-2</text>
-              </g>
+          <!-- Hotstore cache -->
+          <rect x="740" y="260" width="240" height="112" rx="10" class="box" stroke="#60A5FA"/>
+          <text x="860" y="302" text-anchor="middle" class="small">Hotstore (ClickHouse / Elasticsearch)</text>
+          <text x="860" y="320" text-anchor="middle" class="muted">Fast query for triage, TTL-based indices</text>
+        </g>
 
-              <path d="M303 262 L340 268" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
-              <path d="M420 268 L447 262" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
-            </g>
+        <!-- SOAR / Orchestration Plane -->
+        <g>
+          <rect x="1100" y="96" width="260" height="240" rx="12" class="zone" stroke="#8B5CF6" filter="url(#soft)"/>
+          <text x="1230" y="126" text-anchor="middle" class="small">Orchestration & Playbooks (SOAR)</text>
+          <text x="1230" y="144" text-anchor="middle" class="muted">Centrally runbooks, RBAC, audit logs</text>
 
-            {/* Monitoring Backbone (was Tenant Applications) */}
-            <g class="network-component">
-              <rect x="580" y="360" width="200" height="80" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="590" y="380" fill="#34D399" font-size="13" font-weight="bold">MONITORING BACKBONE</text>
+          <rect x="1120" y="160" width="220" height="96" rx="8" class="box" stroke="#A78BFA"/>
+          <text x="1230" y="192" text-anchor="middle" class="small">Playbook Engine</text>
 
-              <g transform="translate(595, 390)" class="animated-server">
-          <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-          <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
-          <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
-          <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
-          <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Indexers</text>
-              </g>
+          <rect x="1120" y="264" width="220" height="60" rx="8" class="box" stroke="#C4B5FD"/>
+          <text x="1230" y="296" text-anchor="middle" class="small">Connector Store (Tickets, Firewalls, MDM)</text>
+        </g>
 
-              <g transform="translate(655, 390)" class="animated-server">
-          <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-          <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Alerting</text>
-              </g>
+        <!-- Alert / Dashboard -->
+        <g>
+          <rect x="640" y="440" width="720" height="180" rx="12" class="box" stroke="#3B82F6"/>
+          <text x="1000" y="468" text-anchor="middle" class="small">Alert Manager & Dashboards</text>
+          <text x="1000" y="486" text-anchor="middle" class="muted">Role-based dashboards • Ticketing integration • SOC NOC views</text>
+        </g>
 
-              <g transform="translate(715, 390)" class="animated-server">
-          <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-          <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Dashboards</text>
-              </g>
-            </g>
+        <!-- Long-term cold store -->
+        <g>
+          <rect x="40" y="440" width="520" height="180" rx="12" class="box" stroke="#A3E635"/>
+          <text x="300" y="468" text-anchor="middle" class="small">Long-term Evidence Archive</text>
+          <text x="300" y="486" text-anchor="middle" class="muted">S3 WORM, Glacier/Cold, Retention & legal hold</text>
+        </g>
 
-            {/* SIEM Cluster (was Data & Storage Layer) */}
-            <g class="network-component">
-              <rect x="20" y="360" width="320" height="80" rx="12" fill="rgba(220, 38, 38, 0.08)" stroke="#DC2626" stroke-width="3" stroke-dasharray="6,3" class="animated-connection"/>
-              <text x="30" y="380" fill="#F87171" font-size="13" font-weight="bold">SIEM CLUSTER & EVIDENCE STORE</text>
+        <!-- Management / Bastion -->
+        <g>
+          <rect x="40" y="660" width="520" height="120" rx="12" class="box" stroke="#60A5FA"/>
+          <text x="300" y="700" text-anchor="middle" class="small">Management Plane (Bastions, Admins)</text>
+          <text x="300" y="718" text-anchor="middle" class="muted">Isolated network, strict MFA and session recording</text>
+        </g>
 
-              <g transform="translate(35, 390)" class="animated-server">
-          <rect width="60" height="35" rx="6" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#serverGlow)"/>
-          <text x="30" y="48" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">Log Indexer</text>
-              </g>
+        <!-- Flows -->
+        <path d="M320 186 L360 156" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M480 196 L640 196" stroke="#60A5FA" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M880 320 L1100 200" stroke="#A78BFA" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M860 372 L860 440" stroke="#60A5FA" stroke-width="2" marker-end="url(#arrow)"/>
 
-              <g transform="translate(105, 390)" class="animated-server">
-          <rect width="60" height="35" rx="6" fill="url(#firewallGradient)" stroke="#DC2626" stroke-width="2" filter="url(#serverGlow)"/>
-          <text x="30" y="48" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Fast Cache</text>
-              </g>
-
-              <g transform="translate(175, 390)" class="animated-server">
-          <rect width="60" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-          <text x="30" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Evidence Store</text>
-              </g>
-
-              <g transform="translate(245, 390)" class="animated-server">
-          <rect width="80" height="35" rx="6" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
-          <text x="40" y="48" text-anchor="middle" fill="#C4B5FD" font-size="8" font-weight="600">Event Bus</text>
-              </g>
-            </g>
-
-            {/* Network Connections updated to SIEM-focused flows */}
-            <g class="network-connections">
-              <path d="M715 80 L715 100" stroke="#60A5FA" stroke-width="4" fill="none" marker-end="url(#networkFlow)" class="animated-high-traffic"/>
-              <circle cx="715" cy="90" r="3" fill="#60A5FA" class="animated-data-packet"/>
-
-              <path d="M650 145 Q400 180 220 220" stroke="#60A5FA" stroke-width="3" fill="none" stroke-dasharray="12,6" class="animated-secure-connection" marker-end="url(#secureFlow)"/>
-              <path d="M240 280 L580 280" stroke="#A78BFA" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
-              <path d="M180 360 L400 340" stroke="#F87171" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#secureFlow)"/>
-              <path d="M400 340 L680 360" stroke="#34D399" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
-            </g>
-
-            {/* Connection Labels */}
-            <g class="connection-labels">
-              <rect x="370" y="190" width="60" height="20" rx="10" fill="rgba(96, 165, 250, 0.2)" stroke="#60A5FA" stroke-width="1"/>
-              <text x="400" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">INGEST</text>
-              <rect x="520" y="190" width="60" height="20" rx="10" fill="rgba(244, 114, 182, 0.2)" stroke="#F472B6" stroke-width="1"/>
-              <text x="550" y="202" text-anchor="middle" fill="#F472B6" font-size="10" font-weight="700">PARSE</text>
-              <rect x="270" y="340" width="60" height="20" rx="10" fill="rgba(248, 113, 113, 0.2)" stroke="#F87171" stroke-width="1"/>
-              <text x="300" y="352" text-anchor="middle" fill="#F87171" font-size="10" font-weight="700">EVIDENCE</text>
-              <rect x="510" y="340" width="60" height="20" rx="10" fill="rgba(52, 211, 153, 0.2)" stroke="#34D399" stroke-width="1"/>
-              <text x="540" y="352" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">ALERTS</text>
-            </g>
-          </svg>
+        <!-- legend -->
+        <g>
+          <rect x="580" y="660" width="780" height="120" rx="8" fill="#021024" stroke="#94A3B8"/>
+          <text x="600" y="686" class="muted">Legend: TAP = passive capture; Agents = host telemetry; Ingest = message bus + enrichment; SOAR = automation & connectors; Hotstore = fast triage store; Coldstore = WORM archive</text>
+          <text x="600" y="704" class="muted">Tip: keep orchestration plane in a separate management VPC/subnet and restrict egress to only allowed connector endpoints</text>
+        </g>
+      </svg>
         `;
-        title = 'AI-Powered Cybersecurity Platform';
-        description = 'Advanced threat detection system utilizing GPU-accelerated machine learning models for real-time analysis and response.';
+        title = 'SIEM Ingest Fabric + Monitoring Backbone';
+        description = 'TAP/SPAN collectors and host agents feed a centralized, normalized ingest fabric with enrichment layers, a hotstore for triage, long-term evidence archive, and a hardened SOAR orchestration plane.';
         break;
 
 
@@ -3808,367 +3643,121 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
       /* ---------------------- AI-POWERED CYBERSECURITY (robust) ---------------------- */
       case 'ai-cybersecurity':
         svgContent = `
-          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <filter id="gpuGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <linearGradient id="gpuGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#6366f1"/>
-                <stop offset="50%" stop-color="#4f46e5"/>
-                <stop offset="100%" stop-color="#4338ca"/>
-              </linearGradient>
-              <linearGradient id="mlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#06b6d4"/>
-                <stop offset="50%" stop-color="#0891b2"/>
-                <stop offset="100%" stop-color="#0e7490"/>
-              </linearGradient>
-              <marker id="dataFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#06b6d4"/>
-              </marker>
-              <marker id="threatFlow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L0,8 L10,4 z" fill="#ef4444"/>
-              </marker>
-            </defs>
+      <svg viewBox="0 0 1400 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI cybersecurity topology">
+        <defs>
+          <linearGradient id="bg" x1="0" x2="1"><stop offset="0%" stop-color="#071426"/><stop offset="100%" stop-color="#021021"/></linearGradient>
+          <filter id="soft"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-opacity="0.12" /></filter>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 z" fill="#A855F7" /></marker>
+          <style>
+            .title { font-family: Inter, system-ui, -apple-system; fill:#EDE9FE; font-size:18px; font-weight:700; }
+            .note  { font-family: Inter; fill:#94A3B8; font-size:11px; }
+            .zone  { fill: rgba(2,6,23,0.66); stroke-width:2; }
+            .box   { fill:#071022; stroke-width:1.5; }
+            .muted { fill:#9CA3AF; font-size:11px; }
+            .small { fill:#C7D2FE; font-size:11px; }
+            .ephemeral { stroke-dasharray:7 6; }
+          </style>
+        </defs>
 
-            <!-- Model Gateway + API Layer -->
-            <g transform="translate(350, 50)">
-              <rect x="-100" y="0" width="300" height="60" rx="8" fill="url(#mlGradient)" filter="url(#gpuGlow)" opacity="0.9"/>
-              <text x="50" y="35" class="text-sm font-semibold" fill="white" text-anchor="middle">Model Gateway + API Layer</text>
-              <!-- Real-time Metrics Display -->
-              <rect x="120" y="10" width="100" height="40" rx="4" fill="rgba(0,0,0,0.3)" stroke="#06b6d4" stroke-width="1"/>
-              <text x="170" y="30" class="text-xs" fill="#06b6d4" text-anchor="middle">Detection Rate</text>
-              <text x="170" y="42" class="text-xs font-bold" fill="#06b6d4" text-anchor="middle">99.9%</text>
-            </g>
+        <rect width="100%" height="100%" fill="url(#bg)" />
+        <text x="36" y="44" class="title">AI-Powered Cybersecurity — Encrypted Ingest, Hybrid GPU Training & Isolated Model Serving</text>
+        <text x="36" y="64" class="note">Goal: confidential training, auditable data lineage, isolated model serving, and safe model updates (canary/blue-green).</text>
 
-            <!-- GPU Cluster -->
-            <g transform="translate(300, 160)">
-              <!-- GPU Units -->
-              <g class="gpu-cluster">
-                <rect x="0" y="0" width="80" height="100" rx="6" fill="url(#gpuGradient)" filter="url(#gpuGlow)" opacity="0.95"/>
-                <rect x="100" y="0" width="80" height="100" rx="6" fill="url(#gpuGradient)" filter="url(#gpuGlow)" opacity="0.95"/>
-                <rect x="0" y="120" width="80" height="100" rx="6" fill="url(#gpuGradient)" filter="url(#gpuGlow)" opacity="0.95"/>
-                <rect x="100" y="120" width="80" height="100" rx="6" fill="url(#gpuGradient)" filter="url(#gpuGlow)" opacity="0.95"/>
-                <text x="90" y="-20" class="text-sm font-semibold" fill="white" text-anchor="middle">GPU Cluster</text>
-              </g>
-              <!-- Processing Metrics -->
-              <rect x="200" y="60" width="120" height="100" rx="8" fill="rgba(0,0,0,0.3)" stroke="#4f46e5" stroke-width="1"/>
-              <text x="260" y="90" class="text-xs" fill="#4f46e5" text-anchor="middle">Response Time</text>
-              <text x="260" y="110" class="text-xs font-bold" fill="#4f46e5" text-anchor="middle">&lt;50ms</text>
-              <text x="260" y="130" class="text-xs" fill="#4f46e5" text-anchor="middle">Real-time Analysis</text>
-            </g>
+        <!-- Encrypted Ingest Overlay -->
+        <g filter="url(#soft)">
+          <rect x="36" y="96" width="1328" height="96" rx="12" class="zone" stroke="#94A3B8" />
+          <text x="700" y="140" text-anchor="middle" class="small">Encrypted Ingest Overlay — TLS + mTLS + Client KMS-wrapped envelopes</text>
+          <text x="700" y="158" text-anchor="middle" class="muted">Ingress: logs, telemetry, pcaps → pre-processor (scrubbing/PII masking) → secure queue</text>
+        </g>
 
-            <!-- Data Ingest Layer -->
-            <g transform="translate(250, 350)">
-              <rect x="0" y="0" width="300" height="60" rx="8" fill="url(#mlGradient)" filter="url(#gpuGlow)" opacity="0.8"/>
-              <text x="150" y="35" class="text-sm font-semibold" fill="white" text-anchor="middle">Real-time Data Ingest Layer</text>
-            </g>
+        <!-- Data Lake (secure) -->
+        <g>
+          <rect x="48" y="220" width="360" height="260" rx="12" class="box" stroke="#10B981" />
+          <text x="228" y="248" text-anchor="middle" class="small">Secure Encrypted Data Lake</text>
+          <text x="228" y="266" text-anchor="middle" class="muted">KMS-backed buckets, immutability option, dataset versioning</text>
+          <text x="228" y="286" text-anchor="middle" class="muted">Data access via ephemeral, auditable query workers</text>
+        </g>
 
-            <!-- Data Flow Paths -->
-            <g class="data-flows">
-              <!-- Ingest to GPU -->
-              <path d="M400,350 C400,300 400,300 400,260" fill="none" stroke="#06b6d4" stroke-width="2" marker-end="url(#dataFlow)" class="animate-pulse">
-                <animate attributeName="stroke-dasharray" values="5,5" dur="1s" repeatCount="indefinite"/>
-              </path>
-              <!-- GPU to Gateway -->
-              <path d="M400,160 C400,120 400,120 400,110" fill="none" stroke="#06b6d4" stroke-width="2" marker-end="url(#dataFlow)" class="animate-pulse">
-                <animate attributeName="stroke-dasharray" values="5,5" dur="1s" repeatCount="indefinite"/>
-              </path>
-              <!-- Threat Detection Flows -->
-              <path d="M300,200 C250,200 250,350 250,350" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#threatFlow)" opacity="0.6">
-                <animate attributeName="stroke-dasharray" values="5,5" dur="2s" repeatCount="indefinite"/>
-              </path>
-              <path d="M480,200 C530,200 530,350 530,350" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#threatFlow)" opacity="0.6">
-                <animate attributeName="stroke-dasharray" values="5,5" dur="2s" repeatCount="indefinite"/>
-              </path>
-            </g>
-                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.1)"/>
-              </linearGradient>
-            </defs>
+        <!-- Feature Store -->
+        <g>
+          <rect x="440" y="220" width="320" height="150" rx="12" class="box" stroke="#F97316" />
+          <text x="600" y="248" class="small" text-anchor="middle">Feature Store / Data Prep</text>
+          <text x="600" y="266" class="muted" text-anchor="middle">Feature pipelines, drift checks, anonymization</text>
+        </g>
 
-            {/* Enhanced Background with depth */}
-            <rect width="100%" height="100%" fill="#0F172A"/>
-            <rect width="100%" height="100%" fill="url(#meshPattern)" opacity="0.4"/>
+        <!-- GPU Training Cluster (hybrid cloud) -->
+        <g filter="url(#soft)">
+          <rect x="800" y="220" width="520" height="260" rx="12" class="zone" stroke="#A855F7" />
+          <text x="1060" y="248" class="small" text-anchor="middle">GPU Training Cluster (Hybrid) — Isolated Subnets</text>
+          <text x="1060" y="266" class="muted" text-anchor="middle">Ephemeral GPU nodes, confidential compute options, encrypted scratch</text>
 
-            {/* Floating data particles */}
-            <g opacity="0.6">
-              <circle cx="150" cy="100" r="2" fill="#60A5FA" class="animated-data-packet" style="animation-delay: 0s"/>
-              <circle cx="650" cy="150" r="1.5" fill="#10B981" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="400" cy="300" r="2" fill="#8B5CF6" class="animated-data-packet" style="animation-delay: 2s"/>
-              <circle cx="200" cy="250" r="1" fill="#F59E0B" class="animated-data-packet" style="animation-delay: 0.5s"/>
-            </g>
+          <!-- trainer pods -->
+          <rect x="840" y="300" width="160" height="96" rx="10" class="box" stroke="#A855F7" />
+          <text x="920" y="336" text-anchor="middle" class="small">Model Trainer</text>
 
-            {/* Network Segments */}
+          <rect x="1012" y="300" width="160" height="96" rx="10" class="box" stroke="#60A5FA" />
+          <text x="1092" y="336" text-anchor="middle" class="small">Distributed Trainer Controller</text>
 
-            {/* Internet/External Zone */}
-            <rect x="20" y="20" width="760" height="60" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5,5"/>
-            <text x="40" y="45" fill="#F59E0B" font-size="16" font-weight="bold" class="jump-icon">🌐</text>
-            <text x="90" y="45" fill="#FBBF24" font-size="14" font-weight="bold">INTERNET</text>
-            <text x="400" y="60" text-anchor="middle" fill="#FCD34D" font-size="12" font-weight="600">External Access Layer - Secure Internet Gateway</text>
+          <rect x="1184" y="300" width="112" height="96" rx="10" class="box" stroke="#34D399" />
+          <text x="1258" y="336" text-anchor="middle" class="small">Checkpoint Store (Encrypted)</text>
+        </g>
 
-            {/* Network performance indicators */}
-            <g class="performance-indicators">
-              <rect x="680" y="25" width="80" height="15" rx="7" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
-              <text x="720" y="35" text-anchor="middle" fill="#10B981" font-size="8" font-weight="600">STATUS: ACTIVE</text>
-              <rect x="680" y="42" width="80" height="15" rx="7" fill="rgba(59, 130, 246, 0.2)" stroke="#3B82F6" stroke-width="1"/>
-              <text x="720" y="52" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="600">LOAD: 68%</text>
-            </g>
+        <!-- Model Registry & Governance -->
+        <g>
+          <rect x="440" y="392" width="320" height="150" rx="12" class="box" stroke="#C4B5FD" />
+          <text x="600" y="420" class="small" text-anchor="middle">Model Registry & Governance</text>
+          <text x="600" y="438" class="muted" text-anchor="middle">Signed model artifacts, provenance metadata, approval workflows</text>
+          <text x="600" y="456" class="muted" text-anchor="middle">Drift detectors, explainability metadata attached</text>
+        </g>
 
-            {/* Enhanced Gateway Subnet with detailed components */}
-            <g class="network-component">
-              <rect x="650" y="100" width="130" height="90" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="660" y="120" fill="#34D399" font-size="13" font-weight="bold">GATEWAY SUBNET</text>
+        <!-- Model Serving / Inference (isolated) -->
+        <g>
+          <rect x="48" y="500" width="500" height="240" rx="12" class="box" stroke="#3B82F6" />
+          <text x="298" y="532" class="small" text-anchor="middle">Isolated Model Serving VLAN</text>
+          <text x="298" y="550" class="muted" text-anchor="middle">Authenticated API endpoints, rate-limited, per-tenant isolation</text>
 
-              {/* Enhanced Internet Gateway */}
-              <g transform="translate(665, 130)" class="animated-network-glow">
-                <rect width="45" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow)"/>
-                <circle cx="22.5" cy="12" r="8" fill="none" stroke="#6EE7B7" stroke-width="1.5" class="animated-router"/>
-                <circle cx="22.5" cy="12" r="4" fill="#10B981" opacity="0.8"/>
-                <rect x="18" y="20" width="9" height="3" rx="1" fill="#6EE7B7" opacity="0.9"/>
-                <rect x="16" y="25" width="13" height="2" rx="1" fill="#34D399" opacity="0.7"/>
-                <text x="22.5" y="32" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">IGW</text>
-              </g>
+          <!-- edge inference nodes -->
+          <rect x="84" y="580" width="160" height="96" rx="10" class="box" stroke="#3B82F6" />
+          <text x="164" y="616" text-anchor="middle" class="small">Model Serving Pod (Canary)</text>
 
-              {/* Enhanced WAF */}
-              <g transform="translate(720, 130)" class="animated-security-shield">
-                <rect width="45" height="35" rx="6" fill="url(#firewallGradient)" stroke="#EF4444" stroke-width="2" filter="url(#networkShadow)"/>
-                <path d="M22.5 8 L28 12 L22.5 20 L17 12 Z" fill="none" stroke="#FCA5A5" stroke-width="2" class="animated-security-shield"/>
-                <circle cx="22.5" cy="14" r="3" fill="#EF4444" opacity="0.8"/>
-                <text x="22.5" y="32" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">WAF</text>
-              </g>
-            </g>
+          <rect x="264" y="580" width="160" height="96" rx="10" class="box" stroke="#60A5FA" />
+          <text x="344" y="616" text-anchor="middle" class="small">Model Serving Pod (Prod)</text>
+        </g>
 
-            {/* Enhanced Private DMZ IN with detailed network security components */}
-            <g class="network-component">
-              <rect x="20" y="220" width="200" height="120" rx="12" fill="rgba(59, 130, 246, 0.08)" stroke="#3B82F6" stroke-width="3" stroke-dasharray="12,6" class="animated-secure-connection"/>
-              <text x="30" y="240" fill="#60A5FA" font-size="13" font-weight="bold">PRIVATE DMZ IN</text>
+        <!-- Cert/KMS/HSM -->
+        <g>
+          <rect x="560" y="500" width="320" height="160" rx="12" class="box" stroke="#10B981" />
+          <text x="720" y="532" class="small" text-anchor="middle">KMS / HSM (Key Management & Signing)</text>
+          <text x="720" y="548" class="muted" text-anchor="middle">Sign model artifacts & evidence; key rotation; HSM-backed signing for production keys</text>
+        </g>
 
-              {/* Enhanced Network Security Group */}
-              <g transform="translate(35, 260)" class="animated-server">
-                <rect width="60" height="40" rx="6" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#networkShadow)"/>
-                <rect x="8" y="8" width="44" height="6" rx="2" fill="#60A5FA" opacity="0.8"/>
-                <rect x="8" y="16" width="44" height="4" rx="1" fill="#93C5FD" opacity="0.6"/>
-                <rect x="8" y="22" width="44" height="4" rx="1" fill="#BFDBFE" opacity="0.4"/>
-                <circle cx="15" cy="32" r="2" fill="#3B82F6" class="animated-status"/>
-                <circle cx="25" cy="32" r="2" fill="#10B981" class="animated-status"/>
-                <circle cx="35" cy="32" r="2" fill="#F59E0B" class="animated-status"/>
-                <text x="30" y="52" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">NSG</text>
-              </g>
+        <!-- Monitoring / Explainability / Audit -->
+        <g>
+          <rect x="900" y="500" width="420" height="240" rx="12" class="box" stroke="#F59E0B" />
+          <text x="1110" y="532" class="small" text-anchor="middle">Observability & Explainability</text>
+          <text x="1110" y="550" class="muted" text-anchor="middle">Model metrics, drift detectors, SHAP/LIME stores, audit logs</text>
+          <text x="1110" y="568" class="muted" text-anchor="middle">Alerting → SOAR for automated rollback / isolation</text>
+        </g>
 
-              {/* Enhanced Network Virtual Appliance */}
-              <g transform="translate(105, 260)" class="animated-server">
-                <rect width="60" height="40" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#networkShadow)"/>
-                <rect x="8" y="8" width="20" height="24" rx="3" fill="#34D399" opacity="0.8"/>
-                <rect x="32" y="8" width="20" height="24" rx="3" fill="#6EE7B7" opacity="0.6"/>
-                <circle cx="18" cy="14" r="1.5" fill="#10B981"/>
-                <circle cx="42" cy="14" r="1.5" fill="#10B981"/>
-                <path d="M20 20 L40 20" stroke="#10B981" stroke-width="2" marker-end="url(#secureFlow)" class="animated-connection"/>
-                <text x="30" y="52" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">NVA</text>
-              </g>
+        <!-- Management / Bastion -->
+        <g>
+          <rect x="560" y="680" width="760" height="96" rx="12" class="box" stroke="#60A5FA" />
+          <text x="940" y="712" class="small" text-anchor="middle">Management Plane (Bastion, CI/CD pipelines for models & infra)</text>
+          <text x="940" y="730" class="muted" text-anchor="middle">Role-based approvals, audit trails, signed CI artifacts</text>
+        </g>
 
-              {/* Enhanced Availability Set indicator */}
-              <g transform="translate(65, 310)">
-                <rect width="60" height="20" rx="6" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,2"/>
-                <circle cx="20" cy="10" r="2" fill="#F59E0B" class="animated-icon-pulse"/>
-                <circle cx="30" cy="10" r="2" fill="#F59E0B" class="animated-icon-pulse" style="animation-delay: 0.5s"/>
-                <circle cx="40" cy="10" r="2" fill="#F59E0B" class="animated-icon-pulse" style="animation-delay: 1s"/>
-                <text x="30" y="28" text-anchor="middle" fill="#FBBF24" font-size="8" font-weight="500">Availability Set</text>
-              </g>
-            </g>
+        <!-- flows -->
+        <path d="M196 192 L440 240" stroke="#C4B5FD" stroke-width="2" marker-end="url(#arrow)" />
+        <path d="M560 280 L800 280" stroke="#F97316" stroke-width="2" marker-end="url(#arrow)" />
+        <path d="M940 320 L980 360" stroke="#A855F7" stroke-width="2" marker-end="url(#arrow)" />
+        <path d="M640 500 L640 560" stroke="#10B981" stroke-width="2" marker-end="url(#arrow)" />
 
-            {/* Public DMZ OUT */}
-            <rect x="580" y="220" width="200" height="120" rx="8" fill="rgba(236, 72, 153, 0.1)" stroke="#EC4899" stroke-width="2"/>
-            <text x="590" y="240" fill="#F472B6" font-size="12" font-weight="bold">PUBLIC DMZ OUT</text>
-            <rect x="595" y="260" width="60" height="40" rx="4" fill="rgba(30, 41, 59, 0.8)" stroke="#EC4899" stroke-width="1" filter="url(#networkShadow)"/>
-            <text x="625" y="275" text-anchor="middle" fill="#EC4899" font-size="12" class="jump-icon">🛡️</text>
-            <text x="625" y="290" text-anchor="middle" fill="#F9A8D4" font-size="9" font-weight="500">NSG</text>
-            <rect x="665" y="260" width="60" height="40" rx="4" fill="rgba(30, 41, 59, 0.8)" stroke="#10B981" stroke-width="1" filter="url(#networkShadow)"/>
-            <text x="695" y="275" text-anchor="middle" fill="#10B981" font-size="12" class="jump-icon">🔒</text>
-            <text x="695" y="290" text-anchor="middle" fill="#6EE7B7" font-size="9" font-weight="500">NVA</text>
-            <rect x="625" y="310" width="60" height="20" rx="4" fill="rgba(245, 158, 11, 0.1)" stroke="#F59E0B" stroke-width="1"/>
-            <text x="655" y="323" text-anchor="middle" fill="#FBBF24" font-size="9" font-weight="500">Availability Set</text>
-
-            {/* Enhanced Service Mesh Layer with microservices visualization */}
-            <g class="network-component">
-              <rect x="240" y="220" width="320" height="120" rx="12" fill="rgba(139, 92, 246, 0.08)" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="10,5" class="animated-connection"/>
-              <text x="250" y="240" fill="#A78BFA" font-size="13" font-weight="bold">SERVICE MESH LAYER</text>
-
-              {/* Enhanced Microservice Node 1 */}
-              <g transform="translate(275, 262)" class="animated-server">
-                <ellipse cx="0" cy="0" rx="28" ry="20" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="-12" y="-8" width="24" height="4" rx="2" fill="#A78BFA" opacity="0.9"/>
-                <rect x="-12" y="-2" width="24" height="3" rx="1" fill="#C4B5FD" opacity="0.7"/>
-                <rect x="-12" y="3" width="24" height="3" rx="1" fill="#DDD6FE" opacity="0.5"/>
-                <circle cx="0" cy="10" r="3" fill="#8B5CF6" class="animated-icon-pulse"/>
-                <text x="0" y="32" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">API-1</text>
-              </g>
-
-              {/* Enhanced Auth Service */}
-              <g transform="translate(340, 260)" class="animated-server">
-                <rect width="80" height="28" rx="14" fill="rgba(245, 158, 11, 0.15)" stroke="#F59E0B" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="6" width="16" height="16" rx="3" fill="#F59E0B" opacity="0.8"/>
-                <circle cx="16" cy="14" r="3" fill="#FBBF24"/>
-                <path d="M30 8 L70 8 M30 14 L70 14 M30 20 L70 20" stroke="#F59E0B" stroke-width="1.5" opacity="0.8"/>
-                <text x="40" y="40" text-anchor="middle" fill="#FBBF24" font-size="9" font-weight="600">Auth Service</text>
-              </g>
-
-              {/* Enhanced Microservice Node 2 */}
-              <g transform="translate(475, 262)" class="animated-server">
-                <ellipse cx="0" cy="0" rx="28" ry="20" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="-12" y="-8" width="24" height="4" rx="2" fill="#A78BFA" opacity="0.9"/>
-                <rect x="-12" y="-2" width="24" height="3" rx="1" fill="#C4B5FD" opacity="0.7"/>
-                <rect x="-12" y="3" width="24" height="3" rx="1" fill="#DDD6FE" opacity="0.5"/>
-                <circle cx="0" cy="10" r="3" fill="#8B5CF6" class="animated-icon-pulse"/>
-                <text x="0" y="32" text-anchor="middle" fill="#A78BFA" font-size="8" font-weight="600">API-2</text>
-              </g>
-
-              {/* Service Mesh connections */}
-              <path d="M303 262 L340 268" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
-              <path d="M420 268 L447 262" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,2" class="animated-connection" marker-end="url(#networkFlow)"/>
-
-              <text x="400" y="325" text-anchor="middle" fill="#C4B5FD" font-size="11" font-weight="600">Service Mesh Infrastructure</text>
-            </g>
-
-            {/* Enhanced Tenant Applications with detailed application containers */}
-            <g class="network-component">
-              <rect x="580" y="360" width="200" height="80" rx="12" fill="rgba(16, 185, 129, 0.08)" stroke="#10B981" stroke-width="3" stroke-dasharray="8,4" class="animated-secure-connection"/>
-              <text x="590" y="380" fill="#34D399" font-size="13" font-weight="bold">TENANT APPLICATIONS</text>
-
-              {/* Enhanced Tenant C Application */}
-              <g transform="translate(595, 390)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
-                <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
-                <rect x="8" y="20" width="34" height="4" rx="2" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
-                <circle cx="25" cy="28" r="1.5" fill="#34D399" class="animated-status"/>
-                <circle cx="35" cy="28" r="1.5" fill="#6EE7B7" class="animated-status"/>
-                <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant C</text>
-              </g>
-
-              {/* Enhanced Tenant A Application */}
-              <g transform="translate(655, 390)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
-                <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
-                <rect x="8" y="20" width="34" height="4" rx="2" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
-                <circle cx="25" cy="28" r="1.5" fill="#34D399" class="animated-status"/>
-                <circle cx="35" cy="28" r="1.5" fill="#6EE7B7" class="animated-status"/>
-                <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant A</text>
-              </g>
-
-              {/* Enhanced Tenant B Application */}
-              <g transform="translate(715, 390)" class="animated-server">
-                <rect width="50" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="6" width="34" height="6" rx="3" fill="#10B981" opacity="0.9"/>
-                <rect x="8" y="14" width="34" height="4" rx="2" fill="#34D399" opacity="0.7"/>
-                <rect x="8" y="20" width="34" height="4" rx="2" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="15" cy="28" r="1.5" fill="#10B981" class="animated-status"/>
-                <circle cx="25" cy="28" r="1.5" fill="#34D399" class="animated-status"/>
-                <circle cx="35" cy="28" r="1.5" fill="#6EE7B7" class="animated-status"/>
-                <text x="25" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">Tenant B</text>
-              </g>
-            </g>
-
-            {/* Enhanced Data & Storage Layer with detailed database components */}
-            <g class="network-component">
-              <rect x="20" y="360" width="320" height="80" rx="12" fill="rgba(220, 38, 38, 0.08)" stroke="#DC2626" stroke-width="3" stroke-dasharray="6,3" class="animated-connection"/>
-              <text x="30" y="380" fill="#F87171" font-size="13" font-weight="bold">DATA & STORAGE LAYER</text>
-
-              {/* Enhanced PostgreSQL Database */}
-              <g transform="translate(35, 390)" class="animated-server">
-                <rect width="60" height="35" rx="6" fill="url(#serverGradient)" stroke="#3B82F6" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="6" width="44" height="8" rx="2" fill="#3B82F6" opacity="0.9"/>
-                <rect x="10" y="8" width="40" height="1" fill="#60A5FA"/>
-                <rect x="10" y="10" width="40" height="1" fill="#93C5FD" opacity="0.8"/>
-                <rect x="10" y="12" width="40" height="1" fill="#BFDBFE" opacity="0.6"/>
-                <rect x="8" y="18" width="44" height="6" rx="1" fill="#1E293B" stroke="#3B82F6" stroke-width="0.5"/>
-                <circle cx="15" cy="21" r="1" fill="#3B82F6" class="animated-icon-pulse"/>
-                <circle cx="25" cy="21" r="1" fill="#10B981" class="animated-icon-pulse"/>
-                <circle cx="35" cy="21" r="1" fill="#F59E0B" class="animated-icon-pulse"/>
-                <circle cx="45" cy="21" r="1" fill="#EF4444" class="animated-icon-pulse"/>
-                <text x="30" y="48" text-anchor="middle" fill="#93C5FD" font-size="8" font-weight="600">PostgreSQL</text>
-              </g>
-
-              {/* Enhanced Redis Cache */}
-              <g transform="translate(105, 390)" class="animated-server">
-                <rect width="60" height="35" rx="6" fill="url(#firewallGradient)" stroke="#DC2626" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="8" width="16" height="16" rx="2" fill="#DC2626" opacity="0.8"/>
-                <rect x="28" y="8" width="16" height="16" rx="2" fill="#EF4444" opacity="0.6"/>
-                <circle cx="16" cy="16" r="2" fill="#FCA5A5" class="animated-status"/>
-                <circle cx="36" cy="16" r="2" fill="#F87171" class="animated-status"/>
-                <path d="M10 26 L50 26" stroke="#DC2626" stroke-width="1" opacity="0.8"/>
-                <text x="30" y="48" text-anchor="middle" fill="#FCA5A5" font-size="8" font-weight="600">Redis Cache</text>
-              </g>
-
-              {/* Enhanced File Storage */}
-              <g transform="translate(175, 390)" class="animated-server">
-                <rect width="60" height="35" rx="6" fill="url(#routerGradient)" stroke="#10B981" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="8" width="12" height="18" rx="2" fill="#10B981" opacity="0.9"/>
-                <rect x="22" y="8" width="12" height="18" rx="2" fill="#34D399" opacity="0.7"/>
-                <rect x="36" y="8" width="12" height="18" rx="2" fill="#6EE7B7" opacity="0.5"/>
-                <circle cx="14" cy="12" r="1" fill="#ECFDF5"/>
-                <circle cx="28" cy="12" r="1" fill="#ECFDF5"/>
-                <circle cx="42" cy="12" r="1" fill="#ECFDF5"/>
-                <text x="30" y="48" text-anchor="middle" fill="#6EE7B7" font-size="8" font-weight="600">File Storage</text>
-              </g>
-
-              {/* Enhanced Message Queues */}
-              <g transform="translate(245, 390)" class="animated-server">
-                <rect width="80" height="35" rx="6" fill="url(#serverGradient)" stroke="#8B5CF6" stroke-width="2" filter="url(#serverGlow)"/>
-                <rect x="8" y="8" width="64" height="6" rx="2" fill="#8B5CF6" opacity="0.9"/>
-                <rect x="8" y="14" width="64" height="3" rx="1" fill="#A78BFA" opacity="0.7"/>
-                <rect x="8" y="19" width="64" height="3" rx="1" fill="#C4B5FD" opacity="0.5"/>
-                <rect x="8" y="24" width="64" height="3" rx="1" fill="#DDD6FE" opacity="0.3"/>
-                <circle cx="20" cy="29" r="1.5" fill="#8B5CF6" class="animated-data-packet"/>
-                <circle cx="40" cy="29" r="1.5" fill="#A78BFA" class="animated-data-packet" style="animation-delay: 0.5s"/>
-                <circle cx="60" cy="29" r="1.5" fill="#C4B5FD" class="animated-data-packet" style="animation-delay: 1s"/>
-                <text x="40" y="48" text-anchor="middle" fill="#C4B5FD" font-size="8" font-weight="600">Message Queues</text>
-              </g>
-            </g>
-
-            {/* Enhanced Network Connections with data flow visualization */}
-            <g class="network-connections">
-              {/* Internet to Gateway flow */}
-              <path d="M715 80 L715 100" stroke="#60A5FA" stroke-width="4" fill="none" marker-end="url(#networkFlow)" class="animated-high-traffic"/>
-              <circle cx="715" cy="90" r="3" fill="#60A5FA" class="animated-data-packet"/>
-
-              {/* Gateway to DMZ flows */}
-              <path d="M650 145 Q400 180 220 220" stroke="#60A5FA" stroke-width="3" fill="none" stroke-dasharray="12,6" class="animated-secure-connection" marker-end="url(#secureFlow)"/>
-              <path d="M720 145 Q680 180 650 220" stroke="#F472B6" stroke-width="3" fill="none" stroke-dasharray="10,5" class="animated-encrypted-connection" marker-end="url(#networkFlow)"/>
-
-              {/* Service mesh connections */}
-              <path d="M240 280 L580 280" stroke="#A78BFA" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
-              <circle cx="300" cy="280" r="2" fill="#A78BFA" class="animated-data-packet"/>
-              <circle cx="400" cy="280" r="2" fill="#8B5CF6" class="animated-data-packet" style="animation-delay: 1s"/>
-              <circle cx="500" cy="280" r="2" fill="#A78BFA" class="animated-data-packet" style="animation-delay: 2s"/>
-
-              {/* Data layer connections */}
-              <path d="M180 360 L400 340" stroke="#F87171" stroke-width="3" fill="none" stroke-dasharray="8,4" class="animated-connection" marker-end="url(#secureFlow)"/>
-              <path d="M400 340 L680 360" stroke="#34D399" stroke-width="3" fill="none" class="animated-connection" marker-end="url(#networkFlow)"/>
-
-              {/* Cross-layer security connections */}
-              <path d="M120 300 Q200 320 300 340" stroke="#EF4444" stroke-width="2" fill="none" stroke-dasharray="6,3" class="animated-security-shield" opacity="0.7"/>
-              <path d="M680 300 Q600 320 500 340" stroke="#EF4444" stroke-width="2" fill="none" stroke-dasharray="6,3" class="animated-security-shield" opacity="0.7"/>
-            </g>
-
-            {/* Enhanced Connection Labels with Professional Styling */}
-            <g class="connection-labels">
-              <rect x="370" y="190" width="60" height="20" rx="10" fill="rgba(96, 165, 250, 0.2)" stroke="#60A5FA" stroke-width="1"/>
-              <text x="400" y="202" text-anchor="middle" fill="#60A5FA" font-size="10" font-weight="700">SERVICE</text>
-              <rect x="520" y="190" width="60" height="20" rx="10" fill="rgba(244, 114, 182, 0.2)" stroke="#F472B6" stroke-width="1"/>
-              <text x="550" y="202" text-anchor="middle" fill="#F472B6" font-size="10" font-weight="700">API</text>
-              <rect x="270" y="340" width="60" height="20" rx="10" fill="rgba(248, 113, 113, 0.2)" stroke="#F87171" stroke-width="1"/>
-              <text x="300" y="352" text-anchor="middle" fill="#F87171" font-size="10" font-weight="700">DATA</text>
-              <rect x="510" y="340" width="60" height="20" rx="10" fill="rgba(52, 211, 153, 0.2)" stroke="#34D399" stroke-width="1"/>
-              <text x="540" y="352" text-anchor="middle" fill="#34D399" font-size="10" font-weight="700">APPS</text>
-            </g>
-          </svg>
+        <!-- legend -->
+        <g>
+          <rect x="36" y="764" width="1328" height="40" rx="8" fill="#021024" stroke="#94A3B8" />
+          <text x="64" y="788" class="muted">Legend: Encrypted ingest → secure data lake → feature store → training cluster → model registry → isolated serving → KMS/HSM + observability & management plane. Canary/blue-green supported.</text>
+        </g>
+      </svg>
         `;
         title = 'Hybrid Cloud GPU Cluster + Encrypted Ingest Overlay';
         description = 'GPU-accelerated training in isolated subnets with an encrypted ingest overlay, secure data lake, model registry, signed artifacts, and isolated model-serving endpoints with canary rollouts.';
@@ -4976,7 +4565,7 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
             .muted { fill:#94a3b8; font-size:11px }
           </style>
         </defs>
-
+        
         <rect width="100%" height="100%" fill="url(#bgEdgeAI)"/>
         <text x="36" y="44" class="title">Edge AI Deployment — Distributed Edge Nodes + Central Orchestration</text>
         <text x="36" y="68" class="note">Design: edge AI nodes with GPUs/TPUs at field sites; central orchestrator pushes signed models & configs; certificate-based mesh ensures secure sync.</text>
@@ -4986,13 +4575,13 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="40" y="100" width="460" height="260" rx="12" class="zone" stroke="#38bdf8"/>
           <text x="270" y="128" text-anchor="middle" class="small">Edge AI Nodes (Field Deployed)</text>
           <text x="270" y="146" text-anchor="middle" class="muted">Inference close to data, GPU/TPU accelerators, TLS tunnels upstream</text>
-
+          
           <rect x="60" y="160" width="190" height="100" rx="8" class="box" stroke="#0ea5e9"/>
           <text x="155" y="200" text-anchor="middle" class="small">Camera/IoT AI Inference</text>
-
+          
           <rect x="260" y="160" width="190" height="100" rx="8" class="box" stroke="#22d3ee"/>
           <text x="355" y="200" text-anchor="middle" class="small">Industrial AI Node</text>
-
+          
           <rect x="160" y="270" width="190" height="70" rx="8" class="box" stroke="#2dd4bf"/>
           <text x="255" y="310" text-anchor="middle" class="small">Local Cache & Policy Agent</text>
         </g>
@@ -5002,10 +4591,10 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="540" y="100" width="460" height="260" rx="12" class="zone" stroke="#22c55e"/>
           <text x="770" y="128" text-anchor="middle" class="small">Regional Edge Hub / Aggregator</text>
           <text x="770" y="146" text-anchor="middle" class="muted">Aggregates edge telemetry, pushes OTA models, acts as control relay</text>
-
+          
           <rect x="560" y="160" width="200" height="100" rx="8" class="box" stroke="#16a34a"/>
           <text x="660" y="200" text-anchor="middle" class="small">Regional Cache / Model Store</text>
-
+          
           <rect x="770" y="160" width="210" height="100" rx="8" class="box" stroke="#4ade80"/>
           <text x="875" y="200" text-anchor="middle" class="small">Control Plane Relay (Policies, OTA)</text>
         </g>
@@ -5015,10 +4604,10 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="1040" y="100" width="520" height="260" rx="12" class="zone" stroke="#a855f7"/>
           <text x="1300" y="128" text-anchor="middle" class="small">Central AI Orchestration Cluster (Cloud/DC)</text>
           <text x="1300" y="146" text-anchor="middle" class="muted">Model registry, CI/CD for AI, signed artifact repo, orchestrator</text>
-
+          
           <rect x="1060" y="160" width="220" height="100" rx="8" class="box" stroke="#9333ea"/>
           <text x="1170" y="200" text-anchor="middle" class="small">Model Registry (versioned, signed)</text>
-
+          
           <rect x="1290" y="160" width="250" height="100" rx="8" class="box" stroke="#c084fc"/>
           <text x="1415" y="200" text-anchor="middle" class="small">AI Orchestrator (deploy/rollback)</text>
         </g>
@@ -5028,16 +4617,16 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="40" y="400" width="1520" height="220" rx="12" class="zone" stroke="#f97316"/>
           <text x="800" y="428" text-anchor="middle" class="small">Telemetry + Analytics Flow</text>
           <text x="800" y="446" text-anchor="middle" class="muted">Inference telemetry → stream bus → time-series DB → dashboards + SIEM</text>
-
+          
           <rect x="60" y="460" width="300" height="120" rx="8" class="box" stroke="#fb923c"/>
           <text x="210" y="500" text-anchor="middle" class="small">Stream Bus (Kafka/Pulsar)</text>
-
+          
           <rect x="380" y="460" width="300" height="120" rx="8" class="box" stroke="#f59e0b"/>
           <text x="530" y="500" text-anchor="middle" class="small">Time-series DB + OLAP</text>
-
+          
           <rect x="700" y="460" width="340" height="120" rx="8" class="box" stroke="#ef4444"/>
           <text x="870" y="500" text-anchor="middle" class="small">Immutable Evidence Store (WORM)</text>
-
+          
           <rect x="1060" y="460" width="480" height="120" rx="8" class="box" stroke="#fbbf24"/>
           <text x="1300" y="500" text-anchor="middle" class="small">SOC / Dashboards / Analysts (SIEM + Forensic Tools)</text>
         </g>
@@ -5087,13 +4676,13 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="40" y="100" width="480" height="240" rx="12" class="zone" stroke="#38bdf8"/>
           <text x="280" y="128" text-anchor="middle" class="small">Telemetry & Ingest Layer</text>
           <text x="280" y="146" text-anchor="middle" class="muted">NetFlow, Syslog, EDR, Cloud Trails, PCAPs</text>
-
+          
           <rect x="60" y="160" width="200" height="90" rx="8" class="box" stroke="#0ea5e9"/>
           <text x="160" y="200" text-anchor="middle" class="small">Ingest Gateways (mTLS, WAF)</text>
-
+          
           <rect x="280" y="160" width="220" height="90" rx="8" class="box" stroke="#22d3ee"/>
           <text x="390" y="200" text-anchor="middle" class="small">Streaming Collectors (Kafka / Pulsar)</text>
-
+          
           <rect x="150" y="260" width="220" height="60" rx="8" class="box" stroke="#2dd4bf"/>
           <text x="260" y="295" text-anchor="middle" class="small">Schema Registry + Normalization</text>
         </g>
@@ -5103,13 +4692,13 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="540" y="100" width="500" height="240" rx="12" class="zone" stroke="#f59e0b"/>
           <text x="790" y="128" text-anchor="middle" class="small">Data Lake & Evidence Store</text>
           <text x="790" y="146" text-anchor="middle" class="muted">Raw + normalized data, WORM store, encrypted partitions</text>
-
+          
           <rect x="560" y="160" width="220" height="90" rx="8" class="box" stroke="#fbbf24"/>
           <text x="670" y="200" text-anchor="middle" class="small">Raw Telemetry (Immutable)</text>
-
+          
           <rect x="800" y="160" width="220" height="90" rx="8" class="box" stroke="#f97316"/>
           <text x="910" y="200" text-anchor="middle" class="small">Enriched / Normalized Views</text>
-
+          
           <rect x="680" y="260" width="220" height="60" rx="8" class="box" stroke="#fb923c"/>
           <text x="790" y="295" text-anchor="middle" class="small">Evidence Vault (WORM, signed manifests)</text>
         </g>
@@ -5119,13 +4708,13 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="1060" y="100" width="540" height="240" rx="12" class="zone" stroke="#a855f7"/>
           <text x="1330" y="128" text-anchor="middle" class="small">Analytics & ML Fabric</text>
           <text x="1330" y="146" text-anchor="middle" class="muted">ML pipelines, anomaly detection, graph analysis</text>
-
+          
           <rect x="1080" y="160" width="240" height="90" rx="8" class="box" stroke="#9333ea"/>
           <text x="1200" y="200" text-anchor="middle" class="small">Streaming Analytics (Flink/Spark)</text>
-
+          
           <rect x="1340" y="160" width="240" height="90" rx="8" class="box" stroke="#c084fc"/>
           <text x="1460" y="200" text-anchor="middle" class="small">Graph/Link Analysis (Neo4j/TigerGraph)</text>
-
+          
           <rect x="1210" y="260" width="240" height="60" rx="8" class="box" stroke="#d946ef"/>
           <text x="1330" y="295" text-anchor="middle" class="small">ML/AI Detection Models</text>
         </g>
@@ -5135,16 +4724,16 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
           <rect x="40" y="380" width="1560" height="300" rx="12" class="zone" stroke="#22c55e"/>
           <text x="820" y="408" text-anchor="middle" class="small">Investigator Bastion & Hunting Tools</text>
           <text x="820" y="426" text-anchor="middle" class="muted">Isolated bastion → query lake, visualize anomalies, build hunts</text>
-
+          
           <rect x="60" y="440" width="360" height="120" rx="8" class="box" stroke="#16a34a"/>
           <text x="240" y="500" text-anchor="middle" class="small">Investigator Bastion (Jupyter, RStudio, read-only creds)</text>
-
+          
           <rect x="440" y="440" width="360" height="120" rx="8" class="box" stroke="#4ade80"/>
           <text x="620" y="500" text-anchor="middle" class="small">Hunting Workbench (query builders, hunt orchestration)</text>
-
+          
           <rect x="820" y="440" width="360" height="120" rx="8" class="box" stroke="#22d3ee"/>
           <text x="1000" y="500" text-anchor="middle" class="small">Visualization Dashboards (Kibana/Grafana/Custom)</text>
-
+          
           <rect x="1200" y="440" width="380" height="120" rx="8" class="box" stroke="#14b8a6"/>
           <text x="1390" y="500" text-anchor="middle" class="small">Case Management & SOAR (ticketing, playbooks)</text>
         </g>
@@ -5431,13 +5020,13 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         <g filter="url(#softSecApp)">
           <rect x="840" y="120" width="400" height="180" rx="12" class="zone" stroke="#38bdf8"/>
           <text x="1040" y="148" text-anchor="middle" class="small">Inline Security Appliances</text>
-
+          
           <rect x="860" y="160" width="120" height="100" rx="8" class="box" stroke="#0ea5e9"/>
           <text x="920" y="210" text-anchor="middle" class="small">Firewall (Next-Gen)</text>
-
+          
           <rect x="990" y="160" width="110" height="100" rx="8" class="box" stroke="#22d3ee"/>
           <text x="1045" y="210" text-anchor="middle" class="small">IPS / IDS</text>
-
+          
           <rect x="1110" y="160" width="110" height="100" rx="8" class="box" stroke="#38bdf8"/>
           <text x="1165" y="210" text-anchor="middle" class="small">DLP / WAF</text>
         </g>
@@ -5454,13 +5043,13 @@ const ExpandableTopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         <g filter="url(#softSecApp)">
           <rect x="440" y="340" width="760" height="160" rx="12" class="zone" stroke="#a855f7"/>
           <text x="820" y="368" text-anchor="middle" class="small">Dedicated Management & Monitoring VLAN</text>
-
+          
           <rect x="460" y="380" width="200" height="100" rx="8" class="box" stroke="#9333ea"/>
           <text x="560" y="430" text-anchor="middle" class="small">Mgmt Bastion (MFA + RBAC)</text>
-
+          
           <rect x="680" y="380" width="240" height="100" rx="8" class="box" stroke="#c084fc"/>
           <text x="800" y="430" text-anchor="middle" class="small">Config Mgmt (Ansible / GitOps)</text>
-
+          
           <rect x="940" y="380" width="240" height="100" rx="8" class="box" stroke="#d946ef"/>
           <text x="1060" y="430" text-anchor="middle" class="small">Monitoring Mirrors (SPAN / TAP)</text>
         </g>

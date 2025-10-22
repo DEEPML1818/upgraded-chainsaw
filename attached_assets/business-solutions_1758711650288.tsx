@@ -2706,6 +2706,111 @@ const TopologyDiagram = ({ solutionId }: { solutionId: string }) => {
         description = 'Distributed rug pull detection with edge inference and centralized AI training';
         break;
 
+      case 'ai-cybersecurity':
+        svgContent = `
+          <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <filter id="networkShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+                <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <filter id="gpuGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <linearGradient id="gpuGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(139, 92, 246, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(67, 56, 202, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(139, 92, 246, 0.1)"/>
+              </linearGradient>
+              <linearGradient id="mlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(52, 211, 153, 0.3)"/>
+                <stop offset="50%" stop-color="rgba(6, 78, 59, 0.8)"/>
+                <stop offset="100%" stop-color="rgba(52, 211, 153, 0.1)"/>
+              </linearGradient>
+              <marker id="dataFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#8B5CF6" filter="url(#gpuGlow)"/>
+              </marker>
+              <marker id="threatFlow" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                <path d="M0,0 L0,8 L12,4 z" fill="#EF4444" filter="url(#gpuGlow)"/>
+              </marker>
+            </defs>
+
+            <!-- Model Gateway and API Layer -->
+            <g transform="translate(400, 80)">
+              <rect x="-120" y="-30" width="240" height="60" rx="8" fill="url(#mlGradient)" filter="url(#gpuGlow)"/>
+              <text x="0" y="0" text-anchor="middle" dy="5" fill="white" font-size="14">AI Model Gateway</text>
+              <text x="0" y="20" text-anchor="middle" dy="5" fill="white" font-size="12" opacity="0.7">API Layer + Model Registry</text>
+            </g>
+
+            <!-- GPU Cluster -->
+            <g transform="translate(400, 200)">
+              <!-- Main Cluster Box -->
+              <rect x="-180" y="-60" width="360" height="120" rx="12" fill="url(#gpuGradient)" filter="url(#gpuGlow)"/>
+              <text x="0" y="-35" text-anchor="middle" dy="5" fill="white" font-size="16">Hybrid Cloud GPU Cluster</text>
+              
+              <!-- GPU Units -->
+              <g class="gpu-units">
+                <g transform="translate(-120, 0)">
+                  <rect x="-25" y="-20" width="50" height="40" rx="4" fill="#4C1D95" class="gpu-unit"/>
+                  <text x="0" y="5" text-anchor="middle" fill="white" font-size="10">GPU 1</text>
+                </g>
+                <g transform="translate(-40, 0)">
+                  <rect x="-25" y="-20" width="50" height="40" rx="4" fill="#4C1D95" class="gpu-unit"/>
+                  <text x="0" y="5" text-anchor="middle" fill="white" font-size="10">GPU 2</text>
+                </g>
+                <g transform="translate(40, 0)">
+                  <rect x="-25" y="-20" width="50" height="40" rx="4" fill="#4C1D95" class="gpu-unit"/>
+                  <text x="0" y="5" text-anchor="middle" fill="white" font-size="10">GPU 3</text>
+                </g>
+                <g transform="translate(120, 0)">
+                  <rect x="-25" y="-20" width="50" height="40" rx="4" fill="#4C1D95" class="gpu-unit"/>
+                  <text x="0" y="5" text-anchor="middle" fill="white" font-size="10">GPU 4</text>
+                </g>
+              </g>
+            </g>
+
+            <!-- Data Ingest Layer -->
+            <g transform="translate(400, 350)">
+              <rect x="-150" y="-30" width="300" height="60" rx="8" fill="url(#mlGradient)" filter="url(#gpuGlow)"/>
+              <text x="0" y="0" text-anchor="middle" dy="5" fill="white" font-size="14">Real-time Data Ingest</text>
+              <text x="0" y="20" text-anchor="middle" dy="5" fill="white" font-size="12" opacity="0.7">Network + Log Analytics</text>
+            </g>
+
+            <!-- Connection Lines -->
+            <g class="data-flows" stroke-dasharray="5,3" filter="url(#gpuGlow)">
+              <path d="M400 110 L400 140" stroke="#8B5CF6" stroke-width="2" marker-end="url(#dataFlow)"/>
+              <path d="M400 260 L400 320" stroke="#8B5CF6" stroke-width="2" marker-end="url(#dataFlow)"/>
+              
+              <!-- Threat Detection Flows -->
+              <path d="M250 350 L180 280" stroke="#EF4444" stroke-width="2" marker-end="url(#threatFlow)"/>
+              <path d="M550 350 L620 280" stroke="#EF4444" stroke-width="2" marker-end="url(#threatFlow)"/>
+            </g>
+
+            <!-- Metrics Display -->
+            <g transform="translate(100, 180)" class="metrics">
+              <rect x="-60" y="-40" width="120" height="80" rx="8" fill="rgba(17, 24, 39, 0.7)" stroke="#8B5CF6"/>
+              <text x="0" y="-20" text-anchor="middle" fill="#8B5CF6" font-size="12">Detection Rate</text>
+              <text x="0" y="10" text-anchor="middle" fill="white" font-size="16">99.9%</text>
+            </g>
+            <g transform="translate(700, 180)" class="metrics">
+              <rect x="-60" y="-40" width="120" height="80" rx="8" fill="rgba(17, 24, 39, 0.7)" stroke="#8B5CF6"/>
+              <text x="0" y="-20" text-anchor="middle" fill="#8B5CF6" font-size="12">Response Time</text>
+              <text x="0" y="10" text-anchor="middle" fill="white" font-size="16">&lt;50ms</text>
+            </g>
+          </svg>
+        `;
+        title = "AI-Powered Cybersecurity Platforms";
+        description = "Next-generation cybersecurity powered by GPU-accelerated ML models for real-time threat detection, anomaly identification, and automated response orchestration.";
+        break;
+
       case 'dao-governance':
         svgContent = `
           <svg viewBox="0 0 800 450" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
