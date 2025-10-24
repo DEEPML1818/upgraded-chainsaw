@@ -1,0 +1,172 @@
+You are creating the About Page for Klang IT Services (klangits.com).
+
+The goal is to design and generate a professional, tech-inspired “About Us” page that builds trust, credibility, and connection with customers.
+The page must follow a clean, modern layout, use interactive components, and match the existing Klang IT digital aesthetic (neon/dark tech theme, blue and grey tones).
+
+🔹 Page Structure & Content
+1. Hero Section (Top Banner)
+
+Design:
+
+Background: professional yet tech-inspired — think team working together, abstract network lines, or futuristic gradient lighting.
+
+Add a subtle animation (like pulsing network lines or light nodes moving).
+
+Text Content:
+
+Headline (H1): “About KlangIT — Powered by Expert Engineers”
+
+Subheading: “Behind every innovation is a team of certified experts dedicated to solving your toughest IT challenges.”
+
+CTA Button: “Meet Our Team” or “Work With Us”
+
+Layout:
+
+Left-aligned headline/subtext with CTA button.
+
+Right side: illustration of a professional tech team or network abstraction.
+
+2. Who We Are (Company Story / Mission)
+
+Layout:
+
+Two-column structure.
+
+Left column: short narrative about company’s story, mission, and vision.
+
+Right column: image, animated illustration, or looping video (e.g., engineers working or digital lines connecting nodes).
+
+Example Content:
+
+“At KlangIT, we believe technology should empower, not complicate.
+Our engineers combine deep expertise with a passion for innovation, helping businesses modernize, scale, and thrive in the digital age.”
+
+Add animated quote marks or typing-style text animation for dynamic engagement.
+
+3. About Our Engineers (Core Team Section)
+
+Headline: “Meet the Engineers Driving Innovation”
+
+Layout:
+
+Responsive grid (2–4 cards per row on desktop, stacked vertically on mobile).
+
+Each card includes:
+
+Engineer photo or avatar (use consistent style, professional headshots or illustrated avatars).
+
+Name + Title (e.g., “Lead Cloud Architect”).
+
+Short 2–3 sentence bio (skills, focus areas, years of experience).
+
+On hover → card expands or flips to reveal more info (skills list, certifications, or projects).
+
+Animation:
+
+Subtle glow or highlight on hover.
+
+Floating particle effect in the background to emphasize “innovation and engineering.”
+
+4. Certifications & Badges Carousel (Key Feature)
+
+Headline: “Proven Expertise — Certified Across Leading Technologies”
+
+Layout:
+
+Multi-row horizontal carousel that auto-scrolls (infinite loop).
+
+Each badge represents a certification (AWS, Azure, Cisco, CompTIA, CISSP, Red Hat, etc.).
+
+On hover → show certification name and details.
+
+Design & Animation:
+
+“Skills wall” effect — badges glow subtly when in focus or when hovered.
+
+Multiple rows (multi-storey) to display large number of badges.
+
+Group badges by category for clarity:
+
+Cloud (AWS, Azure, Google Cloud)
+
+Cybersecurity (CISSP, CEH, CompTIA Security+)
+
+Data & AI (Microsoft Data Scientist, TensorFlow)
+
+Networking (Cisco CCNA, CCNP)
+
+Smooth scrolling transitions, light glowing animations for active elements.
+
+5. Our Values / How We Work (Trust Section)
+
+Headline: “Our Commitment to Excellence”
+
+Layout:
+
+3 or 4 pillars with icons and short blurbs.
+
+Example pillars:
+
+Pillar	Icon	Short Description
+Integrity	🧭	We uphold transparency and ethical standards in every project.
+Innovation	💡	We embrace creativity and cutting-edge technologies to deliver smarter solutions.
+Collaboration	🤝	We work as one team — with our clients and within our organization.
+Reliability	⚙️	Consistency, dependability, and performance are our top priorities.
+
+Design:
+
+Horizontal cards or circular icons with hover glow.
+
+Subtle connecting lines between pillars (symbolizing teamwork).
+
+6. Call-to-Action (Bottom Section)
+
+Headline: “Ready to Work With World-Class Engineers?”
+Subtext: “Let our certified experts transform your IT challenges into growth opportunities.”
+CTA Button: “Start Your Project” or “Book a Consultation”
+
+Design:
+
+Centered text with high-contrast button.
+
+Background: subtle animation (light particles or a glowing grid).
+
+🔹 Design & Interaction Guidelines
+
+Theme:
+
+Modern tech aesthetic, matching Klang IT’s current branding.
+
+Neon highlights (blue/purple/cyan) on dark backgrounds.
+
+Use depth and soft glows for a “futuristic but trustworthy” look.
+
+Animation Guidelines:
+
+Micro-animations (hover glows, fade-in text).
+
+Smooth scroll transitions between sections.
+
+Carousel scrolls automatically, pauses on hover.
+
+Responsiveness:
+
+Engineer cards stack vertically on mobile.
+
+Badge carousel reduces to 2–3 visible badges per row on smaller screens.
+
+Typography:
+
+Headings: bold, futuristic sans-serif (e.g., “Inter” or “Poppins”).
+
+Body: clean and legible (e.g., “Open Sans” or “Roboto”).
+
+✅ Deliverables
+
+Fully structured About Page with the 6 defined sections.
+
+Interactive design: engineer cards + certification carousel.
+
+Clean, tech-inspired visuals consistent with Klang IT branding.
+
+Ready for integration into klangits.com.

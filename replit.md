@@ -1,6 +1,18 @@
 # Overview
 
-FlowTech is now a premium cybersecurity and programming-focused platform featuring live coding backgrounds and real-time security monitoring dashboards. The platform combines sophisticated GSAP animations with authentic cybersecurity themes, showcasing animated terminal windows running threat detection scripts, network monitoring panels, and matrix-style visual effects. Built with glass-morphism design and cutting-edge animation technology, it provides an immersive experience that appeals to cybersecurity professionals and developers with its authentic programming environment aesthetics.
+FlowTech (Klang IT Services) is now a premium cybersecurity and programming-focused platform featuring live coding backgrounds and real-time security monitoring dashboards. The platform combines sophisticated GSAP animations with authentic cybersecurity themes, showcasing animated terminal windows running threat detection scripts, network monitoring panels, and matrix-style visual effects. Built with glass-morphism design and cutting-edge animation technology, it provides an immersive experience that appeals to cybersecurity professionals and developers with its authentic programming environment aesthetics.
+
+## Key Pages (October 23, 2025)
+- **Home Page**: Cybersecurity-themed landing page with live coding background and animated terminals
+- **Services Page**: IT packages display (RM 80, RM 120, RM 180) with comparison table and detailed features
+- **Solutions Page**: Extra services grid layout with specialized business solutions and workflow diagrams
+- **About Page**: Comprehensive company profile featuring:
+  - Hero section with animated background and CTAs
+  - Who We Are company narrative with two-column layout
+  - Engineer Cards showcasing 6 team members with hover effects
+  - Auto-scrolling Certifications Carousel (2 rows, infinite loop, 14 certifications)
+  - Our Values section with 4 pillars: Integrity, Innovation, Collaboration, Reliability
+  - Bottom Call-to-Action section with gradient background
 
 # User Preferences
 

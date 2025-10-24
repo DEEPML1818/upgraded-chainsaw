@@ -1,167 +1,335 @@
 import { Navigation } from '@/components/navigation';
-import { EnhancedSectionBackgrounds } from '@/components/enhanced-section-backgrounds';
-import { useGSAPInit } from '@/hooks/use-gsap-init';
-import { useGSAPAnimations } from '@/hooks/use-gsap-animations';
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
+import { Compass, Lightbulb, Users, Settings } from 'lucide-react';
+import { useLocation } from 'wouter';
 
 export default function About() {
-  useGSAPInit();
-  useGSAPAnimations();
+  const [, setLocation] = useLocation();
 
   return (
     <div className="min-h-screen bg-slate-950">
-      <EnhancedSectionBackgrounds />
       <Navigation />
       
-      <main className="container mx-auto px-4">
+      <main className="container mx-auto px-4 py-20">
         {/* Hero Section */}
-        <section id="hero" className="liquid-section min-h-screen flex items-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950"></div>
-          
-          <div className="max-w-7xl mx-auto text-center relative z-10">
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 text-white slide-in-up">
-              About <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">FlowTech</span>
-            </h1>
-            <p className="text-2xl text-gray-300 mb-12 leading-relaxed max-w-4xl mx-auto font-light fade-in">
-              Bridging traditional finance with Web3 innovation. Built by crypto natives for the future of digital payments.
+        <section className="min-h-screen flex items-center relative">
+          <div className="max-w-7xl mx-auto w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
+                  About <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">KlangIT</span>
+                </h1>
+                <h2 className="text-2xl md:text-3xl text-cyan-400 mb-6 font-semibold">
+                  Powered by Expert Engineers
+                </h2>
+                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                  Behind every innovation is a team of certified experts dedicated to solving your toughest IT challenges.
+                </p>
+                <div className="flex gap-4 flex-wrap">
+                  <Button 
+                    size="lg"
+                    className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8"
+                    onClick={() => setLocation('/contact')}
+                  >
+                    Work With Us
+                  </Button>
+                  <Button 
+                    size="lg"
+                    variant="outline"
+                    className="border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 px-8"
+                  >
+                    Meet Our Team
+                  </Button>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-12 rounded-3xl border border-cyan-500/30 backdrop-blur-sm flex items-center justify-center h-96">
+                  <div className="text-8xl">👥</div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Who We Are Section */}
+        <section className="py-32">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+              <span className="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">Who We Are</span>
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="space-y-6">
+                <p className="text-xl text-gray-300 leading-relaxed">
+                  At <span className="text-cyan-400 font-semibold">KlangIT</span>, we believe technology should empower, not complicate.
+                </p>
+                <p className="text-lg text-gray-300 leading-relaxed">
+                  Our engineers combine deep expertise with a passion for innovation, helping businesses modernize, scale, and thrive in the digital age.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-cyan-500/20 backdrop-blur-sm">
+                <h3 className="text-2xl font-bold text-white mb-6">Our Commitment</h3>
+                <ul className="space-y-4 text-gray-300">
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-1">✓</span>
+                    <span><strong className="text-cyan-400">Expert-Driven:</strong> Every project led by certified professionals</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-1">✓</span>
+                    <span><strong className="text-cyan-400">Security-First:</strong> Enterprise-grade protection built into every solution</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-green-400 mt-1">✓</span>
+                    <span><strong className="text-cyan-400">Future-Ready:</strong> Cutting-edge technologies that scale with your business</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Engineers Section */}
+        <section className="py-32">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">
+              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Meet the Engineers Driving Innovation</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto text-center mb-16">
+              Our team brings decades of combined experience across cloud, security, networking, and AI technologies.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  name: 'Dr. Sarah Chen',
+                  title: 'Lead Cloud Architect',
+                  bio: 'Over 15 years of experience in enterprise cloud architecture. AWS Certified Solutions Architect Professional.',
+                  avatar: '👩‍💻',
+                  color: 'from-cyan-500 to-blue-500'
+                },
+                {
+                  name: 'Marcus Rodriguez',
+                  title: 'Chief Security Officer',
+                  bio: 'Former cybersecurity consultant for Fortune 500 companies. CISSP certified with specialization in penetration testing.',
+                  avatar: '👨‍💼',
+                  color: 'from-purple-500 to-pink-500'
+                },
+                {
+                  name: 'Aisha Patel',
+                  title: 'Senior Network Engineer',
+                  bio: '12+ years designing complex network infrastructures. Cisco certified expert in SD-WAN and network security.',
+                  avatar: '👩‍🔬',
+                  color: 'from-orange-500 to-yellow-500'
+                },
+                {
+                  name: 'James O\'Connor',
+                  title: 'Data & AI Specialist',
+                  bio: 'Machine learning engineer with expertise in AI-powered analytics and automation. Published researcher.',
+                  avatar: '👨‍🔬',
+                  color: 'from-green-500 to-emerald-500'
+                }
+              ].map((engineer, index) => (
+                <div key={index} className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300">
+                  <div className={`w-24 h-24 bg-gradient-to-br ${engineer.color} rounded-full mx-auto mb-6 flex items-center justify-center text-4xl shadow-lg`}>
+                    {engineer.avatar}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2 text-center">{engineer.name}</h3>
+                  <p className="text-cyan-400 mb-4 text-center font-medium">{engineer.title}</p>
+                  <p className="text-gray-300 text-sm leading-relaxed text-center">{engineer.bio}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications Section */}
+        <section className="py-32 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-8">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Proven Expertise — Certified Across Leading Technologies</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto text-center mb-16">
+              Our team holds industry-recognized certifications from the world's top technology providers.
+            </p>
+
+            <div className="space-y-6">
+              {/* First Row - Scrolls Left */}
+              <div className="relative overflow-hidden">
+                <motion.div 
+                  className="flex gap-6"
+                  animate={{
+                    x: ['0%', '-50%'],
+                  }}
+                  transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                >
+                  {[...Array(4)].map((_, repeatIndex) => (
+                    <div key={repeatIndex} className="flex gap-6 flex-shrink-0">
+                      {[
+                        { name: 'AWS Solutions Architect', category: 'cloud', logo: '☁️' },
+                        { name: 'Azure Administrator', category: 'cloud', logo: '☁️' },
+                        { name: 'Google Cloud Professional', category: 'cloud', logo: '☁️' },
+                        { name: 'CISSP', category: 'security', logo: '🔒' },
+                        { name: 'CEH', category: 'security', logo: '🔒' },
+                        { name: 'CompTIA Security+', category: 'security', logo: '🔒' },
+                        { name: 'Cisco CCNA', category: 'network', logo: '🌐' },
+                      ].map((cert, index) => (
+                        <div
+                          key={`${repeatIndex}-${index}`}
+                          className="flex-shrink-0 w-72 bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-2xl border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="text-4xl group-hover:scale-110 transition-transform">{cert.logo}</div>
+                            <div>
+                              <div className="font-semibold text-white text-sm group-hover:text-cyan-400 transition-colors">{cert.name}</div>
+                              <div className="text-xs text-gray-400 capitalize mt-1">{cert.category}</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Second Row - Scrolls Right */}
+              <div className="relative overflow-hidden">
+                <motion.div 
+                  className="flex gap-6"
+                  animate={{
+                    x: ['-50%', '0%'],
+                  }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                >
+                  {[...Array(4)].map((_, repeatIndex) => (
+                    <div key={repeatIndex} className="flex gap-6 flex-shrink-0">
+                      {[
+                        { name: 'Cisco CCNP', category: 'network', logo: '🌐' },
+                        { name: 'CompTIA Network+', category: 'network', logo: '🌐' },
+                        { name: 'Microsoft Data Scientist', category: 'data', logo: '📊' },
+                        { name: 'TensorFlow Developer', category: 'data', logo: '📊' },
+                        { name: 'Red Hat Engineer', category: 'cloud', logo: '☁️' },
+                        { name: 'ITIL Foundation', category: 'network', logo: '🌐' },
+                        { name: 'PMP', category: 'data', logo: '📊' },
+                      ].map((cert, index) => (
+                        <div
+                          key={`${repeatIndex}-${index}`}
+                          className="flex-shrink-0 w-72 bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-2xl border border-purple-500/20 backdrop-blur-sm hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 group"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="text-4xl group-hover:scale-110 transition-transform">{cert.logo}</div>
+                            <div>
+                              <div className="font-semibold text-white text-sm group-hover:text-purple-400 transition-colors">{cert.name}</div>
+                              <div className="text-xs text-gray-400 capitalize mt-1">{cert.category}</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+
+            <p className="text-center text-gray-500 text-sm mt-8">
+              🎯 Auto-scrolling carousel - Hover to interact
             </p>
           </div>
         </section>
 
-        {/* Mission Section */}
-        <section className="liquid-section py-32 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-              <div className="liquid-card">
-                <h2 className="text-5xl md:text-6xl font-bold mb-8 text-white slide-in-up">
-                  <span className="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">Our Mission</span>
-                </h2>
-                <p className="text-xl text-gray-300 mb-6 leading-relaxed fade-in">
-                  We're democratizing access to financial services by combining the security of traditional banking with the innovation of decentralized finance.
-                </p>
-                <p className="text-lg text-gray-400 mb-8 leading-relaxed fade-in">
-                  Every user deserves financial sovereignty - the ability to control their own money, access global markets, and build wealth without traditional barriers.
-                </p>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="liquid-stat text-center">
-                    <div className="text-3xl font-bold text-cyan-400 mb-2">2019</div>
-                    <div className="text-gray-300">Founded</div>
-                  </div>
-                  <div className="liquid-stat text-center">
-                    <div className="text-3xl font-bold text-purple-400 mb-2">50+</div>
-                    <div className="text-gray-300">Countries</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="liquid-card">
-                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-cyan-500/20 backdrop-blur-sm">
-                  <h3 className="text-3xl font-bold text-white mb-6">Why Web3 Matters</h3>
-                  <ul className="space-y-4 text-gray-300">
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 mt-1">✓</span>
-                      <span><strong>Self-Custody:</strong> Your private keys, your crypto - no third party can freeze your assets</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 mt-1">✓</span>
-                      <span><strong>Global Access:</strong> Send money anywhere in the world, 24/7, without banking restrictions</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 mt-1">✓</span>
-                      <span><strong>Higher Yields:</strong> DeFi protocols offer significantly higher returns than traditional savings</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-green-400 mt-1">✓</span>
-                      <span><strong>Transparency:</strong> All transactions on public blockchains - verifiable and auditable</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="liquid-section py-32 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-8 relative z-10">
-            <div className="text-center mb-20 fade-in">
-              <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white slide-in-up">
-                <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Our Team</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto font-light">
-                Crypto veterans, fintech experts, and blockchain developers building the future of money.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="liquid-card text-center">
-                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-purple-500/20 backdrop-blur-sm">
-                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mx-auto mb-6 flex items-center justify-center">
-                    <span className="text-2xl">👨‍💼</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Alex Chen</h3>
-                  <p className="text-purple-400 mb-4">CEO & Founder</p>
-                  <p className="text-gray-400 text-sm">Former Goldman Sachs, Early Bitcoin adopter since 2011</p>
-                </div>
-              </div>
-
-              <div className="liquid-card text-center">
-                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-cyan-500/20 backdrop-blur-sm">
-                  <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full mx-auto mb-6 flex items-center justify-center">
-                    <span className="text-2xl">👩‍💻</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Sarah Kim</h3>
-                  <p className="text-cyan-400 mb-4">CTO</p>
-                  <p className="text-gray-400 text-sm">Ex-Coinbase engineer, Smart contract security expert</p>
-                </div>
-              </div>
-
-              <div className="liquid-card text-center">
-                <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-orange-500/20 backdrop-blur-sm">
-                  <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full mx-auto mb-6 flex items-center justify-center">
-                    <span className="text-2xl">👨‍🔬</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Marcus Johnson</h3>
-                  <p className="text-orange-400 mb-4">Head of DeFi</p>
-                  <p className="text-gray-400 text-sm">Uniswap contributor, Yield farming pioneer</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Values Section */}
-        <section className="liquid-section py-32 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-8 relative z-10">
-            <div className="text-center mb-20 fade-in">
-              <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white slide-in-up">
-                <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Our Values</span>
-              </h2>
-            </div>
+        {/* Our Values Section */}
+        <section className="py-32">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+              <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Our Values</span>
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="liquid-card text-center">
-                <div className="text-4xl mb-4">🔒</div>
-                <h3 className="text-xl font-bold text-white mb-3">Security First</h3>
-                <p className="text-gray-400 text-sm">Multi-signature wallets, smart contract audits, and security-first development</p>
-              </div>
-              
-              <div className="liquid-card text-center">
-                <div className="text-4xl mb-4">🌍</div>
-                <h3 className="text-xl font-bold text-white mb-3">Global Access</h3>
-                <p className="text-gray-400 text-sm">Financial services for everyone, everywhere, without discrimination</p>
-              </div>
-              
-              <div className="liquid-card text-center">
-                <div className="text-4xl mb-4">🚀</div>
-                <h3 className="text-xl font-bold text-white mb-3">Innovation</h3>
-                <p className="text-gray-400 text-sm">Cutting-edge DeFi integration and Web3 technologies</p>
-              </div>
-              
-              <div className="liquid-card text-center">
-                <div className="text-4xl mb-4">🤝</div>
-                <h3 className="text-xl font-bold text-white mb-3">Transparency</h3>
-                <p className="text-gray-400 text-sm">Open-source code, public audits, and clear communication</p>
-              </div>
+              {[
+                {
+                  icon: Compass,
+                  title: 'Integrity',
+                  description: 'We uphold transparency and ethical standards in every project.',
+                  color: 'from-cyan-500 to-blue-500'
+                },
+                {
+                  icon: Lightbulb,
+                  title: 'Innovation',
+                  description: 'We embrace creativity and cutting-edge technologies.',
+                  color: 'from-purple-500 to-pink-500'
+                },
+                {
+                  icon: Users,
+                  title: 'Collaboration',
+                  description: 'We work as one team — with our clients and within our organization.',
+                  color: 'from-orange-500 to-yellow-500'
+                },
+                {
+                  icon: Settings,
+                  title: 'Reliability',
+                  description: 'Consistency and performance are our top priorities.',
+                  color: 'from-green-500 to-emerald-500'
+                }
+              ].map((value, index) => {
+                const Icon = value.icon;
+                return (
+                  <div key={index} className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-500/50 hover:shadow-xl transition-all text-center">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${value.color} rounded-full mx-auto mb-6 flex items-center justify-center`}>
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{value.title}</h3>
+                    <p className="text-gray-400 leading-relaxed">{value.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-32">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
+              Ready to Work With <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">World-Class Engineers?</span>
+            </h2>
+            <p className="text-xl text-gray-300 mb-12 leading-relaxed">
+              Let our certified experts transform your IT challenges into growth opportunities.
+            </p>
+            <div className="flex gap-6 justify-center flex-wrap">
+              <Button 
+                size="lg"
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-12 py-8 text-xl"
+                onClick={() => setLocation('/contact')}
+              >
+                Start Your Project
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                className="border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 px-12 py-8 text-xl"
+                onClick={() => setLocation('/it-services')}
+              >
+                Explore Our Services
+              </Button>
             </div>
           </div>
         </section>
